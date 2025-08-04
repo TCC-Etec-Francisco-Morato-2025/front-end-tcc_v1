@@ -1,1 +1,22 @@
 // app global css in SCSS form
+@import './variable';
+
+.fundo-principal{
+  background-color: $backgroud-1;
+}
+
+.fundo-itens-1{
+  background-color: $backgroud-2;
+}
+
+.fundo-itens-2{
+  background-color: $backgroud-3;
+}
+
+.txt-1{
+  color: $txt-1;
+}
+
+.txt-2{
+  color: $txt-2;
+}

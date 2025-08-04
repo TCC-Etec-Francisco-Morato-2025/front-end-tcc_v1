@@ -14,7 +14,7 @@ export default defineConfig((/* ctx */) => {
     boot: ['axios'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
-    css: ['app.scss'],
+    css: ['app.scss', 'main.css'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -29,6 +29,9 @@ export default defineConfig((/* ctx */) => {
       'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
+    metaVariables: {
+      font: 'Fredoka One', // ou 'Poppins', 'Open Sans', etc.
+    },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
@@ -78,9 +81,13 @@ export default defineConfig((/* ctx */) => {
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
       // https: true,
-      open: true, // opens browser window automatically
+      // open: true, // opens browser window automatically
+      allowedHosts: [
+        'tcc-test.projetos-ezequiel.site',
+      ]
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
