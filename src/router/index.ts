@@ -1,4 +1,5 @@
 import { defineRouter } from '#q-app/wrappers';
+import { LoadingBar } from 'quasar';
 import {
   createMemoryHistory,
   createRouter,
@@ -25,6 +26,7 @@ export default defineRouter(function (/* { store, ssrContext } */) {
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
+    // history: createWebHistory(),
     routes,
 
     // Leave this as is and make changes in quasar.conf.js instead!
@@ -32,6 +34,21 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
+
+Router.beforeEach((to, from, next) => {
+  LoadingBar.start()
+  next()
+})
+
+// Finaliza a barra após a navegação
+Router.afterEach(() => {
+  LoadingBar.stop()
+})
+
+// Trata erros também
+Router.onError(() => {
+  LoadingBar.stop()
+})
 
   return Router;
 });
