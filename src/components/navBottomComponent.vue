@@ -8,9 +8,10 @@ const router = useRouter();
 // Use o 'watch' para sincronizar tabAtual com o nome da rota.
 // A verificação `if (rota)` garante que o nome da rota seja válido.
 watchEffect(() => {
-  const routeName = useRoute().name;
-  if (routeName) {
-    tabAtual.value = routeName.toString();
+  const routeName = ref(useRoute().name);
+  console.log(routeName.value)
+  if (routeName.value) {
+    tabAtual.value = routeName.value.toString();
   }
 });
 

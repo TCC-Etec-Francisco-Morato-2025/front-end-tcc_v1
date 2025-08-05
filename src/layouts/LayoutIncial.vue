@@ -20,6 +20,6 @@ nav {
   bottom: 0;
   width: 100%;
   background-color: var(--cor-backgroud-1-dark);
-  z-index: 2;
+  z-index: 10;
 }
 </style>

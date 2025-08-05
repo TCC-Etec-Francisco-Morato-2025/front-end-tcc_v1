@@ -1,38 +1,11 @@
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation } from 'swiper/modules';
+
 import perfilComponent from 'components/inicio/perfilComponent.vue';
 import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
 import setaDuplaIcon from 'src/components/icons/setaDuplaIcon.vue';
 // import useMenuStore from 'src/stores/menuStore';
 import menuComponent from 'components/inicio/menu/menuComponent.vue';
-import useMateriaStore from 'src/stores/materiaStore';
-import 'swiper/css';
-import { ref } from 'vue';
-
-const materiaStore = useMateriaStore();
-const slides = ref<CarrocelItens[]>([]);
-const quant = 4;
-const modules = [Navigation];
-
-class CarrocelItens {
-  icon: string;
-  name: string;
-  cor: string;
-  id: number;
-
-  constructor(icon: string, name: string, cor: string, id: number) {
-    this.id = id;
-    this.icon = icon;
-    this.name = name;
-    this.cor = cor;
-  }
-}
-
-for (let i = 0; i < quant; i++) {
-  const newMateria = new CarrocelItens(materiaStore.icon, materiaStore.nome, materiaStore.cor, i);
-  slides.value.push(newMateria);
-}
+import carrocelComponent from 'src/components/inicio/carrocelComponent.vue';
 </script>
 
 <template id="inicioPage">
@@ -46,48 +19,12 @@ for (let i = 0; i < quant; i++) {
   <main>
     <section class="secao-para-voce">
       <div class="titulo-secao">Para você <seta-dupla-icon /></div>
-      <div style="position: relative;">
-        <swiper
-          :slides-per-view="'auto'"
-          :centered-slides="true"
-          :modules="modules"
-          :loop="true"
-          :space-between="20"
-          class="carrocel"
-        >
-          <swiper-slide
-            v-for="slide in slides"
-            :key="slide.id"
-            class="slide"
-            :style="`background-color: ${slide.cor};`"
-          >
-            <div class="nome-slide" :style="`color: ${slide.cor};`">{{ slide.name }}</div>
-            <q-img :src="slide.icon" :ratio="16 / 9" class="icon-slide" />
-          </swiper-slide>
-        </swiper>
-      </div>
+      <carrocel-component :quant="5"/>
     </section>
 
     <section class="secao-continuar">
       <div class="titulo-secao">Continuar <seta-dupla-icon /></div>
-      <swiper
-        :slides-per-view="'auto'"
-        :centered-slides="true"
-        navigation
-        :loop="true"
-        :space-between="20"
-        class="carrocel"
-      >
-        <swiper-slide
-          v-for="slide in slides"
-          :key="slide.id"
-          class="slide"
-          :style="`background-color: ${slide.cor};`"
-        >
-          <div class="nome-slide" :style="`color: ${slide.cor};`">{{ slide.name }}</div>
-          <q-img :src="slide.icon" :ratio="16 / 9" class="icon-slide" />
-        </swiper-slide>
-      </swiper>
+      <carrocel-component :quant="7"/>
     </section>
 
     <section class="secao-eventos"></section>
@@ -143,29 +80,5 @@ main {
   border-radius: 0 10px 10px 0;
   background-color: var(--color-background-3);
   color: var(--color-text-1);
-}
-
-/* carrocel */
-.carrocel {
-  width: 100%;
-  height: 200px;
-  padding: 30px 0;
-}
-.slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 220px; /* largura fixa para mostrar parciais */
-  border-radius: 10px;
-}
-
-.slide .icon-slide {
-  position: absolute;
-}
-
-.slide .nome-slide {
-  text-shadow: 2px 2px 10px rgb(0, 0, 0);
-  font-size: 40px;
-  font-family: 'Jua';
 }
 </style>
