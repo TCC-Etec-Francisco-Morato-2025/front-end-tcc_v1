@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import editarIcon from 'src/components/icons/editarIcon.vue';
 import useUserStore from 'src/stores/userStore';
+import { useQuasar } from 'quasar';
 import { ref, watch } from 'vue';
 
 const userStore = useUserStore();
-const darkMode = ref(true);
 const notificacao = ref(true);
+const $q = useQuasar();
 
 const newNome = ref(userStore.nome);
 
@@ -17,7 +18,6 @@ watch(()=>newNome.value,()=>{
     newNome.value = userStore.nome;
   }
 })
-
 </script>
 
 <template>
@@ -38,9 +38,9 @@ watch(()=>newNome.value,()=>{
         </div>
       </section>
       <section class="config-page">
-        <div class="opcoes" :class="{ ativo: darkMode }">
+        <div class="opcoes" :class="{ ativo: $q.dark.isActive }">
           <span>Dark Mode</span>
-          <q-toggle color="blue" v-model="darkMode" val="battery" />
+          <q-toggle color="blue" v-model="$q.dark.isActive" val="battery" @click="$q.dark.mode=!$q.dark.isActive" />
         </div>
         <div class="opcoes" :class="{ ativo: notificacao }">
           <span>Notificações</span>
