@@ -27,6 +27,6 @@ l-70 -97 0 -189 c0 -221 8 -255 78 -333 42 -47 79 -67 486 -271 243 -121 467
 
 <style scoped>
 g {
-  fill: var(--color-text-1);
+  fill: var(--color-text-2);
 }
 </style>

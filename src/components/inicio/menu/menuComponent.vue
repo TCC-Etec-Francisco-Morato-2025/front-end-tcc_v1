@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import { useRouter } from 'vue-router';
 import useMenuStore from 'src/stores/menuStore';
@@ -29,7 +30,8 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
           <sair-icon/>
         </q-btn>
         <q-avatar size="100px">
-          <img :src="userStore.perfil" alt="" />
+          <img :src="userStore.perfil" alt="" v-if="userStore.logado"/>
+          <perfil-icon/>
         </q-avatar>
       </q-card-section>
       <div class="navMenu center">
