@@ -35,6 +35,6 @@ svg{
   margin-top: 4px;
 }
   g{
-    fill: var(--color-background);
+    fill: var(--color-text-2);
   }
 </style>

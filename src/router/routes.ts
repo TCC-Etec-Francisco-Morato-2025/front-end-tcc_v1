@@ -7,17 +7,21 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', name: 'inicio', component: () => import('pages/InicioPage.vue') },
       {
-        path: '/materias',
+        path: 'materias',
         name: 'materias',
         component: () => import('pages/MateriasPage.vue'),
       },
-      { path: '/config', name: 'config', component: () => import('pages/ConfigPage.vue') },
+      { path: 'config', name: 'config', component: () => import('pages/ConfigPage.vue') },
       {
-        path: `/materias/:nomeMateria`,
+        path: `materias/:nomeMateria`,
         name: `materia-conteudo`,
         component: () => import('pages/MateriaConteudoPage.vue'),
       },
     ],
+  },
+  {
+    path: '/login',
+    component: ()=>import('pages/LoginPage.vue')
   },
   // Always leave this as last one,
   // but you can also remove it

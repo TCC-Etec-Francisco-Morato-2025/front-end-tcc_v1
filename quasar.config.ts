@@ -2,7 +2,6 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers';
-import { colors } from 'quasar';
 
 export default defineConfig((/* ctx */) => {
   return {
@@ -12,10 +11,10 @@ export default defineConfig((/* ctx */) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['axios'],
+    boot: ['axios','config','firebase'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
-    css: ['app.scss', 'main.css'],
+    css: ['main.css'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -86,20 +85,18 @@ export default defineConfig((/* ctx */) => {
     devServer: {
       // https: true,
       // open: true, // opens browser window automatically
-      allowedHosts: [
-        'tcc-test.projetos-ezequiel.site',
-      ]
+      allowedHosts: ['tcc-test.projetos-ezequiel.site'],
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {
-        loadingBar:{
+        loadingBar: {
           color: 'primary',
           size: '3px',
-        }
+        },
+        dark: false
       },
-
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
 
@@ -111,9 +108,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [
-        'LoadingBar'
-      ],
+      plugins: ['LoadingBar'],
     },
 
     // animations: 'all', // --- includes all animations

@@ -49,7 +49,7 @@ gerarExercicio(quant);
     <header>
       <div class="titulo" @click="voltar">
         <button>
-          <seta-icon :tamanho="22" :direcao="90" />
+          <seta-icon :tamanho="22" :direcao="90" :cor="'var(--color-text-3)'"/>
         </button>
         <div class="center">
           <q-icon size="50px" name="img:/public/icons/icon-materia.png" />
@@ -103,7 +103,7 @@ gerarExercicio(quant);
   }
 
   .q-icon {
-    color: var(--color-text-2);
+    color: var(--color-text-1);
   }
 
   // Estilos padrão do seu input
@@ -193,6 +193,7 @@ gerarExercicio(quant);
 .titulo div {
   width: 100%;
   margin-right: 35px;
+  color: var(--color-text-3);
 }
 .titulo div h1 {
   font-size: 40px;

@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import editarIcon from 'src/components/icons/editarIcon.vue';
+import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
-import { useQuasar } from 'quasar';
+import useConfig from 'src/stores/configStore';
 import { ref, watch } from 'vue';
 
 const userStore = useUserStore();
 const notificacao = ref(true);
-const $q = useQuasar();
-
+const configStore = useConfig();
 const newNome = ref(userStore.nome);
 
-watch(()=>newNome.value,()=>{
-  if(newNome.value != ''){
-    userStore.mudarNome(newNome.value);
-    console.log(userStore.nome)
-  }else{
-    newNome.value = userStore.nome;
+watch(
+  () => newNome.value,
+  () => {
+    if (newNome.value != '') {
+      userStore.mudarNome(newNome.value);
+      console.log(userStore.nome);
+    } else {
+      newNome.value = userStore.nome;
+    }
   }
-})
+);
 </script>
 
 <template>
@@ -28,19 +31,24 @@ watch(()=>newNome.value,()=>{
     <main>
       <section class="config-perfil">
         <q-avatar size="150px">
-          <img src="public/img/mapache-pedro.gif" alt="" />
+          <img src="public/img/mapache-pedro.gif" alt="" v-if="userStore.logado"/>
+          <perfil-icon v-else/>
         </q-avatar>
-        <div style="cursor: pointer;">
+        <div style="cursor: pointer" v-if="userStore.logado">
           {{ userStore.nome }}<editar-icon style="margin-left: 5px" />
           <q-popup-edit v-model="newNome" auto-save v-slot="scope">
             <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
           </q-popup-edit>
         </div>
+        <div v-else>
+          <q-btn class="btn-cadastro" align="center" label="Entrar" no-caps flat to="/login"/>
+          <q-btn class="btn-cadastro" label="Registrar-se" flat no-caps/>
+        </div>
       </section>
       <section class="config-page">
-        <div class="opcoes" :class="{ ativo: $q.dark.isActive }">
+        <div class="opcoes" :class="{ ativo: configStore.darkMode }">
           <span>Dark Mode</span>
-          <q-toggle color="blue" v-model="$q.dark.isActive" val="battery" @click="$q.dark.mode=!$q.dark.isActive" />
+          <q-toggle color="blue" v-model="configStore.darkMode" val="battery"/>
         </div>
         <div class="opcoes" :class="{ ativo: notificacao }">
           <span>Notificações</span>
@@ -109,6 +117,30 @@ main {
   gap: 10px;
 }
 
+.q-btn.btn-cadastro{
+  padding: 0 20px;
+  margin: 0 10px;
+  border-bottom: 2px solid var(--color-text-2);
+  border-radius: 0px;
+  color: var(--color-text-2);
+}
+.q-btn.btn-cadastro:hover {
+  animation: btnHover 300ms ease-in forwards;
+  border-radius: 5px;
+  border: 0;
+}
+
+@keyframes btnHover {
+  from {
+  }
+  to {
+    background-color: var(--cor-principal-1);
+    box-shadow: 0 3px 10px 1px var(--cor-principal-1);
+    color: var(--color-text-3);
+    transform: translatey(-2px);
+  }
+}
+
 .config-page {
   display: flex;
   align-items: center;
@@ -128,9 +160,11 @@ main {
   background-color: var(--color-background-3);
   /* background-color: var(--cor-principal-2-1); */
   padding: 15px;
+  transition: all 350ms ease-in-out;
 }
 
 .ativo {
+  color: var(--color-text-3);
   background-color: var(--cor-principal-2-1) !important;
 }
 

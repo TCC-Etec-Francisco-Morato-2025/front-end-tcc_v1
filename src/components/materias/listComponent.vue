@@ -1,3 +1,5 @@
+<!-- lista de todos os assuntos relacionados a matéria que aparece em materiaConteudo -->
+
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
 import setaIcon from '../icons/setaIcon.vue';
@@ -56,13 +58,13 @@ const props = defineProps({
   flex-direction: column;
 }
 .q-card {
-  color: var(--color-text-1);
+  color: var(--color-text-3);
   background-color: var(--cor-principal-1);
   border-radius: 0 0 5px 5px;
 }
 .ativo.q-btn {
   background-color: var(--cor-principal-2) !important;
-  color: var(--color-text-1) !important;
+  color: var(--color-text-3) !important;
   transition: 100ms ease-out;
   border-radius: 7px 7px 0px 0px;
 }
@@ -77,7 +79,7 @@ const props = defineProps({
   overflow: hidden;
   background-color: var(--color-background-3);
   transition: 1s ease-out;
-  color: var(--color-text-1);
+  color: var(--color-text-2);
   border-radius: 15px;
 }
 .q-btn div {
@@ -99,6 +101,7 @@ const props = defineProps({
   background-color:rgb(12, 146, 12);
   box-shadow: 0 0px 10px 1px rgba(0, 0, 0, 0.418);
   width: 170px;
+  color: var(--color-text-3);
   border-radius: 0 0 0 5px;
 }
 </style>

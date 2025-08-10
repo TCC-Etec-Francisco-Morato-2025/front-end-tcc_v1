@@ -3,8 +3,11 @@ import { defineStore } from "pinia";
 
 const useUserStore = defineStore('user', {
   state: ()=>({
-    nome: 'Fulano de tall',
-    perfil:'public/img/mapache-pedro.gif',
+    logado: false,
+    nome:'dsadsada',
+    perfil:'',
+    email:'',
+    token:'',
   }),
 
   actions:{

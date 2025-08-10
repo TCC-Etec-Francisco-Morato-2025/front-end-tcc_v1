@@ -1,3 +1,5 @@
+<!-- icone de todas as matérias que aparece na página matéria -->
+
 <script setup lang="ts">
 import { defineProps } from 'vue';
 import useMateriaStore from 'stores/materiaStore';

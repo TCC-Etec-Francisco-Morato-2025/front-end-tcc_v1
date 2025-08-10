@@ -110,7 +110,8 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
   }
   to {
     background-color: var(--cor-principal-1);
-    box-shadow: 0 6px 6px 1px var((--cor-principal-2), 100%);
+    box-shadow: 0 6px 6px 1px var(--cor-principal-2);
+    color: var(--color-text-3);
     transform: translatey(-5px);
   }
 }

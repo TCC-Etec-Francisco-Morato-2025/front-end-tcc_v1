@@ -47,12 +47,12 @@ onMounted(()=>{
 header{
   background-image: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.2) 0%,   /* Sombra preta sutil (10% opacidade) no topo */
-    rgba(255, 255, 255, 0.15) 20%,    /* Transparente 10% abaixo do topo */
-    rgba(255, 255, 255, 0.12) 30%,
-    rgba(255, 255, 255, 0.1) 50%,    /* Continua transparente até 10% antes da base */
-    rgba(255, 255, 255, 0.05) 70%,    /* Continua transparente até 10% antes da base */
-    rgba(255, 255, 255, 0) 100%  /* Sombra preta sutil (10% opacidade) na base */
+    rgba(var(--color-text-1), 0.2) 0%,   /* Sombra preta sutil (10% opacidade) no topo */
+    rgba(var(--color-text-1), 0.15) 20%,    /* Transparente 10% abaixo do topo */
+    rgba(var(--color-text-1), 0.12) 30%,
+    rgba(var(--color-text-1), 0.1) 50%,    /* Continua transparente até 10% antes da base */
+    rgba(var(--color-text-1), 0.05) 70%,    /* Continua transparente até 10% antes da base */
+    rgba(var(--color-text-1), 0) 100%  /* Sombra preta sutil (10% opacidade) na base */
   );
   height: 120px;
   margin-bottom: 20px;

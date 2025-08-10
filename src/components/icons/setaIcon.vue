@@ -43,7 +43,7 @@ watch(() => props.ativado, (ativado) => {
       ref="iconSeta"
       transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
       stroke="none"
-      fill="var(--color-text-2)"
+      :fill="props.cor"
     >
       <path
         d="M277 4009 c-103 -24 -197 -103 -244 -204 -23 -51 -28 -73 -27 -145 0
@@ -62,7 +62,7 @@ svg{
 }
 .ativado {
   transition: 0.3s linear;
-  fill: var(--color-text-1) !important;
+  fill: var(--color-text-3) !important;
 }
 .rodar{
   transform: rotate(-180deg);

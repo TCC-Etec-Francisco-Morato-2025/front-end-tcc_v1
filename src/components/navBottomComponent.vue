@@ -55,6 +55,7 @@ const navigateToTab = (tabName: string, path: string) => {
   height: 50px;
   margin-bottom: 4px;
   color: var(--color-text-2);
+  background-color: var(--color-background);
 }
 
 @keyframes subir {
