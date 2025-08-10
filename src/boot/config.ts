@@ -10,3 +10,4 @@ darkMode.set(configStore.darkMode);
 watch(()=>configStore.darkMode,()=>{
   darkMode.set(configStore.darkMode)
 });
+

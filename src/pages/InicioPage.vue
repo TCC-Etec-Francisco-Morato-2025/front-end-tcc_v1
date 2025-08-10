@@ -17,6 +17,7 @@ import carrocelComponent from 'src/components/inicio/carrocelComponent.vue';
     <btnMenuComponent />
   </header>
   <main>
+
     <section class="secao-para-voce">
       <div class="titulo-secao">Para você <seta-dupla-icon /></div>
       <carrocel-component :quant="5"/>

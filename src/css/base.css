@@ -4,7 +4,7 @@
   --cor-principal-1: rgb(30, 143, 225);
   --cor-principal-2: rgb(0, 68, 136);
   --cor-principal-2-1: rgb(0,63,126);
-}
+} 
 
 :root {
   /* cores modo escuro */
@@ -14,7 +14,7 @@
 
   --cor-texto-1:  rgb(0, 0, 0);
   --cor-texto-2: rgb(150, 150, 150);
-  --cor-texto-3: rgb(245, 245, 245);
+  --cor-texto-3: rgb(245, 245, 245); 
 }
 :root {
   /* cores modo claro */
