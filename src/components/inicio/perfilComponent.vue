@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import perfilIcon from '../icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import { useRouter } from 'vue-router';
 
@@ -15,14 +16,14 @@ const logar = () => {
 </script>
 
 <template>
-  <div id="perfil" @click="logar" class=".nLogado">
-    <q-avatar size="70px" v-if="userStore.logado">
-      <img :src="userStore.perfil" alt="" />
+  <q-btn align="left" no-caps flat id="perfil" @click="logar" class="nLogado">
+    <q-avatar size="70px">
+      <img :src="userStore.perfil" alt="" v-if="userStore.logado" />
+      <perfil-icon v-else />
     </q-avatar>
-    <perfil-icon v-else />
     <span id="nomeUser" v-if="userStore.logado">{{ userStore.nome }}</span>
     <span id="nomeUser" v-else>Entrar</span>
-  </div>
+  </q-btn>
 </template>
 
 <style scoped>
@@ -32,6 +33,8 @@ const logar = () => {
 }
 
 .nLogado{
-  cursor: pointer;
+  box-shadow: none;
+  padding: 10px;
+  width: 250px;
 }
 </style>

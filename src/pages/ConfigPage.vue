@@ -55,6 +55,7 @@ watch(
           <q-toggle color="blue" v-model="notificacao" val="battery" />
         </div>
       </section>
+      <q-btn no-caps label="Sair da conta" icon="logout" rounded class="btn-logout" @click="userStore.logout" v-if="userStore.logado"/>
     </main>
     <footer>
       <a href="#" class="opcao">Ajuda</a>
@@ -166,6 +167,10 @@ main {
 .ativo {
   color: var(--color-text-3);
   background-color: var(--cor-principal-2-1) !important;
+}
+
+.btn-logout{
+  background-color: rgb(236, 57, 57);
 }
 
 footer {

@@ -1,23 +1,24 @@
 /* color palette from <https://github.com/vuejs/theme> */
-:root{
+:root {
   /* cores principais */
   --cor-principal-1: rgb(30, 143, 225);
   --cor-principal-2: rgb(0, 68, 136);
-  --cor-principal-2-1: rgb(0,63,126);
+  --cor-principal-2-1: rgb(0, 63, 126);
+}
+
+:root {
+  /* cores modo claro */
+  --cor-backgroud-1: rgb(233, 233, 233);
+  --cor-backgroud-2: rgb(228, 227, 227);
+  --cor-backgroud-3: rgb(204, 204, 204);
+
+  --cor-texto-1: rgb(0, 0, 0);
+  --cor-texto-2: rgb(150, 150, 150);
+  --cor-texto-3: rgb(245, 245, 245);
 }
 
 :root {
   /* cores modo escuro */
-  --cor-backgroud-1: 	rgb(233, 233, 233);
-  --cor-backgroud-2: rgb(228, 227, 227);
-  --cor-backgroud-3: rgb(204, 204, 204);
-
-  --cor-texto-1:  rgb(0, 0, 0);
-  --cor-texto-2: rgb(150, 150, 150);
-  --cor-texto-3: rgb(245, 245, 245);
-}
-:root {
-  /* cores modo claro */
   --cor-backgroud-1-dark: rgb(30, 30, 30);
   --cor-backgroud-2-dark: rgb(56, 56, 56);
   --cor-backgroud-3-dark: rgb(83, 83, 83);
@@ -26,7 +27,7 @@
 }
 
 
-/* semantic color variables for this project */
+/* adicionar as cores as variaveis principais */
 :root {
   --color-background: var(--cor-backgroud-1);
   --color-background-2: var(--cor-backgroud-2);
@@ -37,12 +38,13 @@
   --color-text-3: var(--cor-texto-3);
 }
 
-body.body--dark{
-    --color-background: var(--cor-backgroud-1-dark);
-    --color-background-2: var(--cor-backgroud-2-dark);
-    --color-background-3: var(--cor-backgroud-3-dark);
+/* adicionar as cores do modo dark */
+body.body--dark {
+  --color-background: var(--cor-backgroud-1-dark);
+  --color-background-2: var(--cor-backgroud-2-dark);
+  --color-background-3: var(--cor-backgroud-3-dark);
 
-    --color-text-1: var(--cor-texto-1-dark);
+  --color-text-1: var(--cor-texto-1-dark);
 }
 
 *,

@@ -13,7 +13,7 @@ const useUserStore = defineStore('user', {
   }),
 
   actions:{
-    mudarUsuario(newUID:string,newNome:string|null,newPerfil:string|null,newEmail:string|null,newSenha:string,newToken:string){
+    login(newUID:string,newNome:string|null,newPerfil:string|null,newEmail:string|null,newSenha:string,newToken:string){
       if(newNome!=null && newPerfil!=null && newEmail!=null){
         this.uid=newUID
         this.nome=newNome
@@ -23,6 +23,15 @@ const useUserStore = defineStore('user', {
         this.token=newToken
         this.logado=true
       }
+    },
+    logout(){
+        this.uid=''
+        this.nome=''
+        this.perfil=''
+        this.email=''
+        this.senha=''
+        this.token=''
+        this.logado=false
     }
   },
   persist:{

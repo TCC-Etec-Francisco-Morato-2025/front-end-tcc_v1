@@ -17,7 +17,7 @@ const loginWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     console.log(user.photoURL)
-    useStore.mudarUsuario(user.uid,user.displayName,user.photoURL,user.email,user.refreshToken,user.refreshToken);
+    useStore.login(user.uid,user.displayName,user.photoURL,user.email,user.refreshToken,user.refreshToken);
     router.go(-1);
     // Redirecione o usuário ou atualize a UI
   } catch (error: unknown) {
