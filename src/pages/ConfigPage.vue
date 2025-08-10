@@ -14,7 +14,7 @@ watch(
   () => newNome.value,
   () => {
     if (newNome.value != '') {
-      userStore.mudarNome(newNome.value);
+      userStore.nome=newNome.value;
       console.log(userStore.nome);
     } else {
       newNome.value = userStore.nome;
@@ -31,7 +31,7 @@ watch(
     <main>
       <section class="config-perfil">
         <q-avatar size="150px">
-          <img src="public/img/mapache-pedro.gif" alt="" v-if="userStore.logado"/>
+          <img :src="userStore.perfil" alt="" v-if="userStore.logado"/>
           <perfil-icon v-else/>
         </q-avatar>
         <div style="cursor: pointer" v-if="userStore.logado">

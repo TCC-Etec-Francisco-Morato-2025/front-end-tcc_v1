@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import useUserStore from 'src/stores/userStore';
 
-  const imgPerfil = ref('./public/img/mapache-pedro.gif')
+const userStore = useUserStore();
 </script>
 
 <template>
   <div id="perfil">
     <q-avatar size="70px">
-      <img :src="imgPerfil" alt="">
+      <img :src="userStore.perfil" alt="">
     </q-avatar>
-    <span id="nomeUser">Fulano de tall</span>
+    <span id="nomeUser">{{ userStore.nome }}</span>
   </div>
 </template>
 

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import useUserStore from 'src/stores/userStore';
 import { useRouter } from 'vue-router';
 import useMenuStore from 'src/stores/menuStore';
 
 const menuStore = useMenuStore();
-const router = ref(useRouter());
+const router = useRouter();
+const userStore = useUserStore();
 
 const mudarRota = (path:string)=>{
   menuStore.toggleMenu();
-  router.value.push(path)
+  router.push(path)
   .catch(error => { // Adicione um .catch() aqui
       console.error('Erro ao navegar:', error);
       // Lidar com o erro, talvez mostrar uma mensagem para o usuário
@@ -25,10 +26,10 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
     <q-card>
       <q-card-section class="topo">
         <q-btn flat round dense @click="menuStore.toggleMenu" class="sair">
-          <sair-icon :tamanho="50" />
+          <sair-icon/>
         </q-btn>
         <q-avatar size="100px">
-          <img src="public/img/mapache-pedro.gif" alt="" />
+          <img :src="userStore.perfil" alt="" />
         </q-avatar>
       </q-card-section>
       <div class="navMenu center">
@@ -74,7 +75,8 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
 
 .q-btn.sair {
   position: absolute;
-  right: 0;
+  width: 50px;
+  right: 10px;
   z-index: 1;
 }
 

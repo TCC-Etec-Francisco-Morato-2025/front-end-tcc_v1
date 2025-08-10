@@ -2,9 +2,11 @@
 import { auth } from 'boot/firebase';
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+import useUserStore from 'src/stores/userStore';
 import sairIcon from 'src/components/icons/sairIcon.vue';
 import { ref } from 'vue';
 
+const useStore = useUserStore();
 const txtEmail = ref('');
 const txtSenha = ref('');
 const router = useRouter();
@@ -14,7 +16,9 @@ const loginWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    console.log('Login com Google bem-sucedido:', user);
+    console.log(user.photoURL)
+    useStore.mudarUsuario(user.uid,user.displayName,user.photoURL,user.email,user.refreshToken,user.refreshToken);
+    router.go(-1);
     // Redirecione o usuário ou atualize a UI
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -133,7 +137,7 @@ const loginWithFacebook = async () => {
 }
 .login-rapido-opcoes{
   height: 40px;
-  width: 60%;
+  width: 70%;
   border-radius: 10px;
 }
 .login-rapido-opcoes#login-google{

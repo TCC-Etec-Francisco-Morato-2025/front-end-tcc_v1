@@ -8,7 +8,7 @@
 
 :root {
   /* cores modo escuro */
-  --cor-backgroud-1: 	rgb(245, 245, 245);
+  --cor-backgroud-1: 	rgb(233, 233, 233);
   --cor-backgroud-2: rgb(228, 227, 227);
   --cor-backgroud-3: rgb(204, 204, 204);
 
@@ -58,7 +58,7 @@ body {
   min-height: 100vh;
   /* overflow-x: hidden; */
   color: var(--color-text-1);
-  background: var(--color-background);
+  background: var(--color-background) !important;
   transition:
     color 0.5s,
     background-color 0.5s;
