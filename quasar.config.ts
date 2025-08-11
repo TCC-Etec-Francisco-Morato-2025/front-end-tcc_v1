@@ -95,7 +95,7 @@ export default defineConfig((/* ctx */) => {
           color: 'primary',
           size: '3px',
         },
-        dark: false
+        dark: 'auto'
       },
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack

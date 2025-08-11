@@ -34,7 +34,7 @@ const logar = () => {
 
 .nLogado{
   box-shadow: none;
-  padding: 10px;
+
   width: 250px;
 }
 </style>

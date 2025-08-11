@@ -5,13 +5,16 @@ import { useRouter, useRoute } from 'vue-router';
 // Inicialize tabAtual com 'inicio' como valor padrão.
 const tabAtual = ref('inicio');
 const router = useRouter();
+const route = useRoute();
 // Use o 'watch' para sincronizar tabAtual com o nome da rota.
 // A verificação `if (rota)` garante que o nome da rota seja válido.
 watchEffect(() => {
-  const routeName = ref(useRoute().name);
+  const routeName = ref(route.name);
   console.log(routeName.value)
   if (routeName.value) {
     tabAtual.value = routeName.value.toString();
+    if(routeName.value=='materia-conteudo')
+      tabAtual.value='materias';
   }
 });
 

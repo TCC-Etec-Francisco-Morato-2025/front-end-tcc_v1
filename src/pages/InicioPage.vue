@@ -8,27 +8,29 @@ import menuComponent from 'components/inicio/menu/menuComponent.vue';
 import carrocelComponent from 'src/components/inicio/carrocelComponent.vue';
 </script>
 
-<template id="inicioPage">
-  <menu-component />
-  <header>
-    <div class="perfil">
-      <perfilComponent />
-    </div>
-    <btnMenuComponent />
-  </header>
-  <main>
-    <section class="secao-para-voce">
-      <div class="titulo-secao">Para você <seta-dupla-icon /></div>
-      <carrocel-component :quant="5"/>
-    </section>
+<template>
+  <q-layout>
+    <menu-component />
+    <header>
+      <div class="perfil">
+        <perfilComponent />
+      </div>
+      <btnMenuComponent />
+    </header>
+    <main>
+      <section class="secao-para-voce">
+        <div class="titulo-secao">Para você <seta-dupla-icon /></div>
+        <carrocel-component :quant="5"/>
+      </section>
 
-    <section class="secao-continuar">
-      <div class="titulo-secao">Continuar <seta-dupla-icon /></div>
-      <carrocel-component :quant="7"/>
-    </section>
+      <section class="secao-continuar">
+        <div class="titulo-secao">Continuar <seta-dupla-icon /></div>
+        <carrocel-component :quant="7"/>
+      </section>
 
-    <section class="secao-eventos"></section>
-  </main>
+      <section class="secao-eventos"></section>
+    </main>
+  </q-layout>
 </template>
 
 

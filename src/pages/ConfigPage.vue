@@ -2,10 +2,12 @@
 import editarIcon from 'src/components/icons/editarIcon.vue';
 import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
+import useLoginStore from 'src/stores/loginStore';
 import useConfig from 'src/stores/configStore';
 import { ref, watch } from 'vue';
 
 const userStore = useUserStore();
+const loginStore = useLoginStore();
 const notificacao = ref(true);
 const configStore = useConfig();
 const newNome = ref(userStore.nome);
@@ -42,7 +44,7 @@ watch(
         </div>
         <div v-else>
           <q-btn class="btn-cadastro" align="center" label="Entrar" no-caps flat to="/login"/>
-          <q-btn class="btn-cadastro" label="Registrar-se" flat no-caps/>
+          <q-btn class="btn-cadastro" label="Registrar-se" flat @click="loginStore.slide='registrar'" no-caps to="/login"/>
         </div>
       </section>
       <section class="config-page">
@@ -128,7 +130,7 @@ main {
 .q-btn.btn-cadastro:hover {
   animation: btnHover 300ms ease-in forwards;
   border-radius: 5px;
-  border: 0;
+  border: none;
 }
 
 @keyframes btnHover {
@@ -136,7 +138,7 @@ main {
   }
   to {
     background-color: var(--cor-principal-1);
-    box-shadow: 0 3px 10px 1px var(--cor-principal-1);
+    box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.425);
     color: var(--color-text-3);
     transform: translatey(-2px);
   }
