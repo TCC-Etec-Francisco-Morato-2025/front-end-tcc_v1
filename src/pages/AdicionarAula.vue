@@ -10,34 +10,48 @@ const formatURL = ref('');
 const handleUpload = () => {
   if (inputVideo.value) {
     srcVideo.value = URL.createObjectURL(inputVideo.value);
-    formatURL.value = "video/mp4";
+    formatURL.value = 'video/mp4';
     console.log('Preview URL:', srcVideo.value);
   }
 };
 
-const yotubeChange=()=>{
-  formatURL.value = "video/youtube";
+const yotubeChange = () => {
+  formatURL.value = 'video/youtube';
   srcVideo.value = youtubeUrl.value;
-}
+};
+
+
+// INFORMAÇÔES DA AULA
+const text = ref('')
 </script>
 
 
 <template>
   <q-stepper v-model="step" ref="stepper" animated header-nav contracted flat>
-    <q-step :name="1" title="INTRODUCAO" icon="person" :done="done >= 1"> INTRODUÇÂO </q-step>
+    <q-step :name="1" title="INTRODUCAO" icon="person" :done="done >= 1">
+      <h1 class="center">Informações da aula</h1>
+       <div class="containerInfo">
+         <q-input filled v-model="text" label="Nome da Aula"  />
+               <q-input type="textarea" filled v-model="text" label="Descrição da Aula" Borderless/>
+       </div>
+    </q-step>
     <q-step :name="2" title="VIDEO" icon="video_file" :done="done >= 2">
       <q-card class="cardVideo" flat>
-        <q-card-section> 
-            <Player :src="srcVideo" :format="formatURL"/>
+        <q-card-section>
+          <Player :src="srcVideo" :format="formatURL" />
         </q-card-section>
         <q-separator />
         <q-card-section>
-          <q-input v-model="youtubeUrl" class="inputYoutube"   @update:model-value="yotubeChange">
-            <template v-slot:prepend >
+          <q-input v-model="youtubeUrl" class="inputYoutube" @update:model-value="yotubeChange">
+            <template v-slot:prepend>
               <q-icon name="youtube_searched_for" />
             </template>
           </q-input>
-          <q-file v-model="inputVideo" label="Enviar video"  @update:model-value="handleUpload" accept="video/mp4,video/x-m4v,video/*"
+          <q-file
+            v-model="inputVideo"
+            label="Enviar video"
+            @update:model-value="handleUpload"
+            accept="video/mp4,video/x-m4v,video/*"
           >
             <template v-slot:prepend>
               <q-icon name="cloud_upload" />
@@ -45,10 +59,11 @@ const yotubeChange=()=>{
           </q-file>
         </q-card-section>
       </q-card>
-    </q-step>
+    </q-step> 
 
-    <q-step :name="3" title="PERGUNTAS" icon="add_comment" :done="done == 3"> PERGUNTAS
-      <Player :src="srcVideo" :format="formatURL"/>
+    <q-step :name="3" title="PERGUNTAS" icon="add_comment" :done="done == 3">
+      PERGUNTAS
+      <Player :src="srcVideo" :format="formatURL" />
     </q-step>
   </q-stepper>
 
@@ -76,11 +91,41 @@ const yotubeChange=()=>{
 </template>
 
 <style scoped lang="scss">
+h1 {
+  width: 100%;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+
+// INFORMAÇÕES DA AULA
+.q-field--float .q-field__label {
+    font-size: 2rem;
+    max-width: 133%;
+    transform: translateY(-40%) scale(0.75);
+    transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.396s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.containerInfo{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.containerInfo > .q-field{
+  width: 100%;
+}
+
 .q-app {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .q-stepper {
   width: 100%;
   box-shadow: none;
@@ -118,28 +163,19 @@ const yotubeChange=()=>{
   height: 100%;
 }
 
-/* Força label embaixo do ícone mesmo no contracted */
 .custom-stepper .q-stepper__tab {
   flex-direction: column !important;
   align-items: center;
 }
 
-/* Centraliza e ajusta espaçamento */
 .custom-stepper .q-stepper__title {
   margin-top: 6px;
   white-space: normal;
   text-align: center;
 }
 
-/* Remove hover */
 .custom-stepper .q-stepper__tab:hover {
   background: none !important;
-}
-
-.q-stepper__step-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .cardVideo {
@@ -149,18 +185,17 @@ const yotubeChange=()=>{
 }
 
 .q-card__section {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 10px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.inputYoutube{
-    width: 100%;
+.inputYoutube {
+  width: 100%;
 }
-
 </style>

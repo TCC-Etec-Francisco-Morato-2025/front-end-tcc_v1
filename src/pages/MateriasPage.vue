@@ -18,7 +18,7 @@ class Materia{
   }
 }
 
-const gerarMateria = (quant:number)=>{
+const gerarMateria = (quant:number) => {
   for(let i=1;i<=quant;i++){
     const nome = 'Matematica'
     const mat = new Materia(i,nome);
