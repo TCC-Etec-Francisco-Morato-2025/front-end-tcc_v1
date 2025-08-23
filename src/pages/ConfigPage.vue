@@ -4,7 +4,7 @@ import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import useLoginStore from 'src/stores/loginStore';
 import useConfig from 'src/stores/configStore';
-import { ref, watch } from 'vue';
+import {  ref, watch } from 'vue';
 
 const userStore = useUserStore();
 const loginStore = useLoginStore();
@@ -27,10 +27,10 @@ watch(
 
 <template>
   <q-layout>
-    <header>
+    <q-header class="center">
       <h1>Ajustes</h1>
-    </header>
-    <main>
+    </q-header>
+    <q-main class="main">
       <section class="config-perfil">
         <q-avatar size="150px">
           <img :src="userStore.perfil" alt="" v-if="userStore.logado"/>
@@ -58,11 +58,11 @@ watch(
         </div>
       </section>
       <q-btn no-caps label="Sair da conta" icon="logout" rounded class="btn-logout" @click="userStore.logout" v-if="userStore.logado"/>
-    </main>
-    <footer>
-      <a href="#" class="opcao">Ajuda</a>
-      <a href="#" class="opcao">Termos de uso e políticas de privacidade</a>
-    </footer>
+      <section class="center">
+        <a href="#" class="opcao">Ajuda</a>
+        <a href="#" class="opcao">Termos de uso e políticas de privacidade</a>
+      </section>
+    </q-main>
   </q-layout>
 </template>
 
@@ -72,14 +72,14 @@ watch(
   grid-template-areas:
     'header'
     'main'
-    'footer';
-  grid-template-rows: 125px auto 160px;
+    'section';
+  grid-template-rows: 125px;
 }
 
 header {
   grid-area: header;
-  display: flex;
-  justify-content: center;
+  position: static;
+  background-color: transparent;
   align-items: flex-end;
 
   background-image: linear-gradient(
@@ -98,11 +98,12 @@ header {
   /* margin-bottom: 100px; */
 }
 header h1 {
+  color: var(--color-text-1);
   font-size: 50px;
   margin-bottom: 15px;
 }
 
-main {
+.main {
   grid-area: main;
   display: flex;
   align-items: center;
@@ -172,18 +173,18 @@ main {
 }
 
 .btn-logout{
+  color: var(--color-text-3);
   background-color: rgb(236, 57, 57);
 }
 
-footer {
-  grid-area: footer;
-  display: flex;
-  align-items: center;
+section {
+  grid-area: section;
+  height: fit-content;
   justify-content: flex-end;
   flex-direction: column;
 }
 
-footer .opcao {
+section .opcao {
   color: var(--cor-principal-1);
   font-size: 14px;
 }

@@ -5,7 +5,6 @@ const iconSeta = ref<HTMLElement | null>(null);
 const icon = ref<HTMLElement | null>(null);
 
 interface props{
-  tamanho: number,
   ativado?: boolean,
   cor?: string,
   direcao?:number
@@ -33,8 +32,8 @@ watch(() => props.ativado, (ativado) => {
   <svg ref="icon"
     version="1.0"
     xmlns="http://www.w3.org/2000/svg"
-    :width="props.tamanho + 'px'"
-    :height="props.tamanho + 'px'"
+    width="100%"
+    height="100%"
     :transform="`rotate(${props.direcao})`"
     viewBox="0 0 512.000000 512.000000"
     preserveAspectRatio="xMidYMid meet"
@@ -65,6 +64,6 @@ svg{
   fill: var(--color-text-3) !important;
 }
 .rodar{
-  transform: rotate(-180deg);
+  transform: rotate(180deg);
 }
 </style>

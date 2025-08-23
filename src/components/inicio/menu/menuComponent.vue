@@ -27,7 +27,7 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
     <q-card>
       <q-card-section class="topo">
         <q-btn flat round dense @click="menuStore.toggleMenu" class="sair">
-          <sair-icon/>
+          <sair-icon :color="'var(--cor-principal-1)'"/>
         </q-btn>
         <q-avatar size="100px">
           <img :src="userStore.perfil" alt="" v-if="userStore.logado"/>

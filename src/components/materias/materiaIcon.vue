@@ -4,14 +4,12 @@
 import { defineProps } from 'vue';
 import useMateriaStore from 'stores/materiaStore';
 import { useRouter } from 'vue-router';
+
 const router = useRouter()
 const store = useMateriaStore();
 
 const ativarMaterias = ()=>{
-  store.toggleMeteria();
-  store.$patch({
-    nome: props.nomeMateria,
-  });
+  store.mudarMateria('matemática','img:/public/icons/icon-materia.png','rgb(0, 68, 136)','./public/icons/icon-materia.png');
   if(store.nome==undefined)return;
   router.push(`/materias/${props.nomeMateria.toLocaleLowerCase()}`)
   .catch(error => { // Adicione um .catch() aqui

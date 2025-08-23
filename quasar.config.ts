@@ -2,6 +2,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers';
+import { Lang } from 'quasar';
 
 export default defineConfig((/* ctx */) => {
   return {
@@ -91,14 +92,14 @@ export default defineConfig((/* ctx */) => {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {
-        loadingBar: {
-          color: 'primary',
-          size: '3px',
-        },
-        dark: 'auto'
+        // loadingBar: {
+        //   color: 'primary',
+        //   size: '3px',
+        // },
+        dark: 'auto',
       },
       // iconSet: 'material-icons', // Quasar icon set
-      // lang: 'en-US', // Quasar language pack
+      lang: 'pt-BR', // Quasar language pack
 
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),

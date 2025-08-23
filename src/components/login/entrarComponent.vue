@@ -18,7 +18,6 @@ const loginWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    console.log(user.photoURL);
     useStore.login(
       user.uid,
       user.displayName,
@@ -59,7 +58,7 @@ const loginWithFacebook = async () => {
     <q-card-section class="login-topo">
       <h1>Login</h1>
       <q-btn flat class="sair" @click="router.push('/config')">
-        <sair-icon />
+        <sair-icon :color="'var(--cor-principal-1)'"/>
       </q-btn>
     </q-card-section>
     <q-card-section>

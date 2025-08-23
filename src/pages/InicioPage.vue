@@ -1,48 +1,51 @@
 <script setup lang="ts">
-
+import { useRouter } from 'vue-router';
 import perfilComponent from 'components/inicio/perfilComponent.vue';
 import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
 import setaDuplaIcon from 'src/components/icons/setaDuplaIcon.vue';
 // import useMenuStore from 'src/stores/menuStore';
 import menuComponent from 'components/inicio/menu/menuComponent.vue';
-import carrocelComponent from 'src/components/inicio/carrocelComponent.vue';
+import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent.vue';
+import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
+import { ref } from 'vue';
+
+const router = ref(useRouter());
 </script>
 
 <template>
   <q-layout>
     <menu-component />
-    <header>
+    <q-header>
       <div class="perfil">
         <perfilComponent />
       </div>
       <btnMenuComponent />
-    </header>
-    <main>
+    </q-header>
+    <q-main>
+      <section class="secao-evento-carrocel">
+        <carrocel-evento/>
+      </section>
       <section class="secao-para-voce">
-        <div class="titulo-secao">Para você <seta-dupla-icon /></div>
+        <div class="titulo-secao" @click="router.push('para-voce')">Para você <seta-dupla-icon /></div>
         <carrocel-component :quant="5"/>
       </section>
 
       <section class="secao-continuar">
-        <div class="titulo-secao">Continuar <seta-dupla-icon /></div>
+        <div class="titulo-secao" @click="router.push('continuar')">Continuar <seta-dupla-icon /></div>
         <carrocel-component :quant="7"/>
       </section>
 
       <section class="secao-eventos"></section>
-    </main>
+    </q-main>
   </q-layout>
 </template>
 
 
 <style scoped>
-#inicioPage {
-  display: grid;
-  position: relative;
-  grid-template-areas:
-    'header'
-    'main';
-  grid-template-rows: 100px auto 50px;
-  min-height: 100%;
+.q-layout{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 header {
@@ -51,18 +54,16 @@ header {
   position: sticky;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 10px;
   background-color: var(--color-background);
 }
 
 main {
   grid-area: main;
-  display: flex;
+  display: contents;
   align-items: center;
   justify-content: flex-start;
-  flex-direction: column;
   width: 100%;
-  margin-top: 60px;
   gap: 50px;
 }
 
@@ -77,7 +78,7 @@ main {
   justify-content: center;
   gap: 10px;
   width: fit-content;
-  font-size: 24px;
+  font-size: 20px;
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
   background-color: var(--color-background-3);

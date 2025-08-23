@@ -19,15 +19,15 @@ const modules = [Navigation];
 const router = useRouter();
 
 class CarrocelItens {
-  icon: string;
+  img: string;
   name: string;
   cor: string;
   id: number;
   path: string;
 
-  constructor(icon: string, name: string, cor: string, id: number, path: string) {
+  constructor(img: string, name: string, cor: string, id: number, path: string) {
     this.id = id;
-    this.icon = icon;
+    this.img = img;
     this.name = name;
     this.cor = cor;
     this.path = path;
@@ -36,11 +36,11 @@ class CarrocelItens {
 
 for (let i = 0; i < props.quant; i++) {
   const newMateria = new CarrocelItens(
-    materiaStore.icon,
+    materiaStore.img,
     materiaStore.nome,
     materiaStore.cor,
     i,
-    'matematica'
+    materiaStore.nome
   );
   slides.value.push(newMateria);
 }
@@ -72,7 +72,7 @@ const irParaMateria = (path: string) => {
       >
         <div class="slide-pai" @click="irParaMateria(slide.path)">
           <div class="nome-slide" :style="`color: ${slide.cor};`">{{ slide.name }}</div>
-          <q-img :src="slide.icon" :ratio="16 / 9" class="icon-slide" />
+          <q-img :src="slide.img" :radio="16/9" class="img-slide"/>
         </div>
       </swiper-slide>
     </swiper>
@@ -100,13 +100,13 @@ const irParaMateria = (path: string) => {
   width: 100%;
   height: 100%;
 }
-
-.slide-pai .icon-slide {
+.img-slide {
+  display: contents;
   position: absolute;
 }
 
 .slide-pai .nome-slide {
-  text-shadow: 5px 2px 10px rgb(0, 0, 0);
+  text-shadow: 5px 2px 10px rgb(61, 45, 45);
   font-size: 40px;
   font-family: 'Jua';
   z-index: 1;

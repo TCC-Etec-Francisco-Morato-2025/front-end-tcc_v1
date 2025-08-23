@@ -3,9 +3,10 @@ import { defineStore } from 'pinia';
 const useMateriaStore = defineStore('materia', {
   state: () => ({
     ativo: false,
-    nome: 'Matemática',
-    icon: '/public/icons/icon-materia.png',
-    cor: 'rgb(0,68,136)',
+    nome: 'matemática',
+    icon: 'img:/public/icons/icon-materia.png',
+    cor: 'rgb(0, 68, 136)',
+    img: './public/icons/icon-materia.png',
   }),
 
   getters: {
@@ -13,12 +14,13 @@ const useMateriaStore = defineStore('materia', {
   },
 
   actions: {
-    toggleMeteria() {
-      this.ativo = !this.ativo;
-    },
-    mudarNome(novoNome: string) {
-      this.nome = novoNome;
-    },
+    mudarMateria(nome:string, icon:string, cor:string, img:string){
+      this.ativo=true
+      this.nome = nome
+      this.icon = icon
+      this.cor = cor
+      this.img = img
+    }
   },
   persist: {
     // 1. Armazenamento: por padrão é localStorage, mas pode ser sessionStorage

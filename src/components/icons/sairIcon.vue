@@ -1,3 +1,10 @@
+<script setup lang="ts">
+interface props {
+  color: string;
+}
+const props = defineProps<props>();
+</script>
+
 <template>
   <svg
     version="1.0"
@@ -9,7 +16,7 @@
   >
     <g
       transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-      fill="var(--cor-principal-1)"
+      :fill="props.color"
       stroke="none"
     >
       <path

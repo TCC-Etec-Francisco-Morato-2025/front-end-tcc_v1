@@ -30,7 +30,6 @@ const navigateToTab = (tabName: string, path: string) => {
   <q-tabs
     v-model="tabAtual"
     narrow-indicator
-    dense
     align="justify"
   >
     <q-tab name="inicio" @click="navigateToTab('inicio', '/')">
@@ -47,16 +46,15 @@ const navigateToTab = (tabName: string, path: string) => {
   </q-tabs>
 </template>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.q-tab--active{
+    color: var(--cor-principal-1);
+}
 .q-tab--active .q-icon {
   animation: subir 0.3s ease-in-out forwards;
-  color: var(--cor-principal-1);
 }
 
 .q-tabs {
-  height: 50px;
-  margin-bottom: 4px;
   color: var(--color-text-2);
   background-color: var(--color-background);
 }

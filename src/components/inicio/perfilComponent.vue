@@ -17,7 +17,7 @@ const logar = () => {
 
 <template>
   <q-btn align="left" no-caps flat id="perfil" @click="logar" class="nLogado">
-    <q-avatar size="70px">
+    <q-avatar size="60px">
       <img :src="userStore.perfil" alt="" v-if="userStore.logado" />
       <perfil-icon v-else />
     </q-avatar>
@@ -30,11 +30,11 @@ const logar = () => {
 #nomeUser {
   margin-left: 10px;
   font-size: 16px;
+  color: var(--color-text-1);
 }
 
 .nLogado{
   box-shadow: none;
-
   width: 250px;
 }
 </style>

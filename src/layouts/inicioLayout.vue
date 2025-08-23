@@ -3,19 +3,18 @@ import navBottomComponent from 'src/components/navBottomComponent.vue';
 </script>
 <template>
   <q-layout>
-    <q-page-container style=" margin-bottom: 60px;">
+    <q-page-container>
       <router-view/>
     </q-page-container>
-    <nav>
+    <q-footer>
       <navBottomComponent />
-    </nav>
+    </q-footer>
   </q-layout>
 </template>
 
 
 <style scoped>
-nav {
-  grid-area: nav;
+footer {
   position: fixed;
   bottom: 0;
   width: 100%;
