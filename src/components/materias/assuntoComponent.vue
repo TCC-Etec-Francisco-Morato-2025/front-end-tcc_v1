@@ -112,7 +112,7 @@ const descidirAnimacao = (quant_estrela:number)=>{
               v-for="atividade in atividades"
               :key="atividade.id"
               :transition="descidirAnimacao(atividade.estrelas)"
-              
+              once
             >
               <q-btn
                 class="atividade"

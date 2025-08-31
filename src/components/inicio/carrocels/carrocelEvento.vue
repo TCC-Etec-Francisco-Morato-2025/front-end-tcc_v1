@@ -62,7 +62,6 @@ const irParaMateria = (path: string) => {
         :style="`background-color: ${slide.cor};`"
       >
         <div class="slide-pai" @click="irParaMateria(slide.path)">
-          <div class="nome-slide" :style="`color: ${slide.cor};`">{{ slide.name }}</div>
           <!-- <q-img :src="slide.img" :radio="16 / 9" class="img-slide" /> -->
         </div>
       </swiper-slide>

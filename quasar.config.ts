@@ -2,7 +2,6 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers';
-import { Lang } from 'quasar';
 
 export default defineConfig((/* ctx */) => {
   return {
@@ -31,7 +30,11 @@ export default defineConfig((/* ctx */) => {
       'material-icons', // optional, you are not bound to it
     ],
     metaVariables: {
-      font: 'Fredoka One', // ou 'Poppins', 'Open Sans', etc.
+      font: [
+        'Fredoka One',
+        'Pixelify Sans',
+        'Baloo 2'
+      ] // ou 'Poppins', 'Open Sans', etc.
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build

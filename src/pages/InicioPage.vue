@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import tutorialInicio from 'src/components/tutorial/tutorialInicio.vue';
+import popUpApresentacao from 'src/components/apresentação/popUpApresentacao.vue';
 import perfilComponent from 'components/inicio/perfilComponent.vue';
 import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
 import setaDuplaIcon from 'src/components/icons/setaDuplaIcon.vue';
@@ -7,13 +11,14 @@ import setaDuplaIcon from 'src/components/icons/setaDuplaIcon.vue';
 import menuComponent from 'components/inicio/menu/menuComponent.vue';
 import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent.vue';
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
-import { ref } from 'vue';
 
 const router = ref(useRouter());
 </script>
 
 <template>
   <q-layout>
+    <tutorial-inicio />
+    <pop-up-apresentacao />
     <menu-component />
     <q-header>
       <div class="perfil">
