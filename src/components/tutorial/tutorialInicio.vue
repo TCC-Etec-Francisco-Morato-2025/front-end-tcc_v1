@@ -6,6 +6,6 @@ const showTutorial = ref(true);
 
 <template>
   <q-dialog v-model="showTutorial" :maximized="showTutorial" persistent>
-    
+    test
   </q-dialog>
 </template>
