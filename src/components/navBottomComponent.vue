@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect , onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { gsap } from 'gsap';
 
 // Inicialize tabAtual com 'inicio' como valor padrão.
 const tabAtual = ref('inicio');
@@ -23,6 +24,16 @@ const navigateToTab = (tabName: string, path: string) => {
   router.push(path).catch(error => {
     console.error('Erro ao navegar:', error);
   });
+};
+
+onMounted(()=>{
+  animacaoEntrada();
+})
+
+const animacaoEntrada = () => {
+  const tml = gsap.timeline();
+
+  tml.from('.q-tabs', { y: 200 , duration: 1 });
 };
 </script>
 

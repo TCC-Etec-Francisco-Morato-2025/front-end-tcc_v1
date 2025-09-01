@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { gsap } from 'gsap';
 
 import tutorialInicio from 'src/components/tutorial/tutorialInicio.vue';
 import popUpApresentacao from 'src/components/apresentação/popUpApresentacao.vue';
@@ -12,6 +13,16 @@ import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
 
 const router = ref(useRouter());
+
+onMounted(()=>{
+  animacaoEntrada();
+})
+
+const animacaoEntrada = () => {
+  const tml = gsap.timeline();
+
+  tml.from('.titulo-secao', { x: -300 , duration: 0.8 , ease: 'bounce.out' });
+};
 </script>
 
 <template>
@@ -64,7 +75,7 @@ const router = ref(useRouter());
   display: flex;
   flex-direction: column;
 
-  background: linear-gradient(-20deg, var(--color-background-4) 20%, var(--color-background) 100%);
+  background: linear-gradient(-20deg, var(--color-background-4) 20%, var(--color-background) 80%);
 }
 
 header {
@@ -98,7 +109,17 @@ main {
   font-size: 20px;
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
-  background: linear-gradient(80deg, var(--cor-principal-2) 10%, var(--cor-principal-3) 100%);
-  color: var(--color-background);
+  color: var(--color-text-3);
+  background: linear-gradient(80deg, var(--cor-principal-2) 50%, var(--cor-principal-3)80%,var(--cor-principal-2)100%);
+  background-size: 400% 100%;
+  animation: gradientShift 4s  ease infinite;
+}
+@keyframes gradientShift {
+  from {
+    background-position: 0% 0%; /* Começa com o gradiente totalmente à esquerda */
+  }
+  to {
+    background-position: -100% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
+  }
 }
 </style>

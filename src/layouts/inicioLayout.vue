@@ -15,6 +15,7 @@ import navBottomComponent from 'src/components/navBottomComponent.vue';
 
 <style scoped>
 footer {
+  background: var(--color-background-4) !important;
   position: fixed;
   bottom: 0;
   width: 100%;

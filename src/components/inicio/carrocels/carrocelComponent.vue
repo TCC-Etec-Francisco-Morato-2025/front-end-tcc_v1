@@ -67,7 +67,6 @@ const irParaMateria = (path: string) => {
       <swiper-slide
         v-for="slide in slides"
         :key="slide.id"
-        class="slide"
         :style="`background-color: ${slide.cor};`"
       >
         <div class="slide-pai" @click="irParaMateria(slide.path)">
@@ -86,10 +85,18 @@ const irParaMateria = (path: string) => {
   height: 200px;
   padding: 30px 0;
 }
-.slide {
-  width: 220px; /* largura fixa para mostrar parciais */
+
+.swiper-slide{
+  width: 230px;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.swiper-slide-active{
+  width: 230px;
+  transform: translateY(-5px);
+  box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.747);
+  transition: all 500ms ease-in-out;
 }
 
 .slide .slide-pai {
