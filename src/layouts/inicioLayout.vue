@@ -18,7 +18,6 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: var(--color-background);
   z-index: 10;
 }
 </style>

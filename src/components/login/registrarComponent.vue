@@ -2,7 +2,6 @@
 import { auth } from 'boot/firebase';
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
-import useLoginStore from 'src/stores/loginStore';
 import useUserStore from 'src/stores/userStore';
 import sairIcon from 'src/components/icons/sairIcon.vue';
 import { ref } from 'vue';
@@ -13,7 +12,6 @@ const txtEmail = ref('');
 const txtSenha = ref('');
 const txtSenhaConfirm = ref('');
 const router = useRouter();
-const loginStore = useLoginStore();
 
 const loginWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
@@ -55,23 +53,25 @@ const loginWithFacebook = async () => {
     }
   }
 };
+
+const emit = defineEmits(['entrar']);
 </script>
 
 <template>
     <q-card-section class="login-topo">
       <h1>Registrar-se</h1>
       <q-btn flat class="sair" @click="router.push('/config')">
-        <sair-icon :color="'var(--cor-principal-1)'"/>
+        <sair-icon :color="'var(--color-text-1)'"/>
       </q-btn>
     </q-card-section>
     <q-card-section>
       <q-form>
-        <q-input class="input" label="Nome" type="text" v-model="txtNome" autofocus />
+        <q-input class="input" label="Nome" type="text" v-model="txtNome" autofocus/>
         <q-input class="input" label="Email" type="email" v-model="txtEmail" />
         <q-input class="input" label="Senha" type="password" v-model="txtSenha" />
         <q-input class="input" label="Confirme a senha" type="password" v-model="txtSenhaConfirm" />
         <div class="area-btn center">
-          <q-btn id="btn-entrar" label="Entrar" flat no-caps @click="loginStore.slide='entrar'"/>
+          <q-btn id="btn-entrar" label="Entrar" flat no-caps @click="emit('entrar')"/>
           <q-btn id="btn-registrar" type="submit" label="Registrar-se" no-caps />
         </div>
       </q-form>
@@ -96,9 +96,6 @@ const loginWithFacebook = async () => {
         no-caps
       />
     </q-card-section>
-    <q-card-actions align="center">
-      <q-btn flat label="Esqueci minha senha" no-caps color="blue-8" />
-    </q-card-actions>
 </template>
 
 <style scoped>
@@ -109,7 +106,7 @@ const loginWithFacebook = async () => {
   justify-content: center;
 }
 .login-topo h1 {
-  color: var(--cor-principal-1);
+  color: var(--color-text-1);
   text-align: center;
   font-size: 40px;
 }
@@ -138,9 +135,9 @@ const loginWithFacebook = async () => {
 }
 .area-btn #btn-entrar{
   padding: auto 0;
-  color: var(--color-text-2);
+  color: var(--color-text-1);
   border-radius: 0;
-  border-bottom: 2px solid var(--color-text-2);
+  border-bottom: 2px solid var(--color-text-1);
 }
 
 .login-rapido {

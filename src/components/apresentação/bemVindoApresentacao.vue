@@ -92,7 +92,6 @@ const saidaText = () => {
 
 .slide {
   flex-direction: column;
-  background-color: #008dda;
   background: linear-gradient(160deg, #008dda 40%, #ac96f3 95%);
   height: 100%;
   width: 100%;

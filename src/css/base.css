@@ -1,9 +1,9 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   /* cores principais */
-  --cor-principal-1: rgb(30, 143, 225);
-  --cor-principal-2: rgb(0, 68, 136);
-  --cor-principal-2-1: rgb(0, 63, 126);
+  --cor-principal-1: rgb(0, 142, 218);
+  --cor-principal-2: rgb(227,132,255);
+  --cor-principal-3: rgb(172,150,243);
 }
 
 :root {
@@ -11,6 +11,7 @@
   --cor-backgroud-1: rgb(235, 235, 235);
   --cor-backgroud-2: rgb(223, 222, 222);
   --cor-backgroud-3: rgb(209, 207, 207);
+  --cor-backgroud-4: #ecc8ff;
 
   --cor-texto-1: rgb(0, 0, 0);
   --cor-texto-2: rgb(150, 150, 150);
@@ -22,6 +23,7 @@
   --cor-backgroud-1-dark: rgb(30, 30, 30);
   --cor-backgroud-2-dark: rgb(56, 56, 56);
   --cor-backgroud-3-dark: rgb(83, 83, 83);
+  --cor-backgroud-4-dark: #100435;
 
   --cor-texto-1-dark: rgb(245, 245, 245);
 }
@@ -32,6 +34,7 @@
   --color-background: var(--cor-backgroud-1);
   --color-background-2: var(--cor-backgroud-2);
   --color-background-3: var(--cor-backgroud-3);
+  --color-background-4: var(--cor-backgroud-4);
 
   --color-text-1: var(--cor-texto-1);
   --color-text-2: var(--cor-texto-2);
@@ -43,6 +46,7 @@ body.body--dark {
   --color-background: var(--cor-backgroud-1-dark);
   --color-background-2: var(--cor-backgroud-2-dark);
   --color-background-3: var(--cor-backgroud-3-dark);
+  --color-background-4: var(--cor-backgroud-4-dark);
 
   --color-text-1: var(--cor-texto-1-dark);
 }
@@ -59,7 +63,7 @@ body.body--dark {
 body {
   /* overflow-x: hidden; */
   color: var(--color-text-1);
-  background: var(--color-background) !important;
+  background: var(--color-background-4) !important;
   transition:
     color 0.5s,
     background-color 0.5s;

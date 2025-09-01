@@ -55,8 +55,9 @@ const navigateToTab = (tabName: string, path: string) => {
 }
 
 .q-tabs {
-  color: var(--color-text-2);
-  background-color: var(--color-background);
+  color: var(--color-text-1);
+  background-color: var(--color-background-4);
+
 }
 
 @keyframes subir {

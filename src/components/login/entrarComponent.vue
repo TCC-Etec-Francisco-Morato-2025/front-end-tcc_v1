@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import useLoginStore from 'src/stores/loginStore';
 import { auth } from 'boot/firebase';
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import useUserStore from 'src/stores/userStore';
 import sairIcon from 'src/components/icons/sairIcon.vue';
-import { ref } from 'vue';
+import { ref,defineEmits } from 'vue';
 
 const useStore = useUserStore();
 const txtEmail = ref('');
 const txtSenha = ref('');
 const router = useRouter();
-const loginStore = useLoginStore();
 
 const loginWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
@@ -52,13 +50,15 @@ const loginWithFacebook = async () => {
     }
   }
 };
+
+const emit = defineEmits(['registrar']);
 </script>
 
 <template>
     <q-card-section class="login-topo">
       <h1>Login</h1>
       <q-btn flat class="sair" @click="router.push('/config')">
-        <sair-icon :color="'var(--cor-principal-1)'"/>
+        <sair-icon :color="'var(--color-text-1)'"/>
       </q-btn>
     </q-card-section>
     <q-card-section>
@@ -66,7 +66,7 @@ const loginWithFacebook = async () => {
         <q-input label="Email" type="email" v-model="txtEmail" autofocus />
         <q-input label="Senha" type="password" v-model="txtSenha" />
         <div class="area-btn center">
-          <q-btn label="Registrar-se" no-caps @click="loginStore.slide='registrar'" id="btn-registrar" flat/>
+          <q-btn label="Registrar-se" no-caps @click="emit('registrar')" id="btn-registrar" flat/>
           <q-btn type="submit" label="Entrar" no-caps id="btn-entrar"/>
         </div>
       </q-form>
@@ -92,7 +92,7 @@ const loginWithFacebook = async () => {
       />
     </q-card-section>
     <q-card-actions align="center">
-      <q-btn flat label="Esqueci minha senha" no-caps color="blue-8" />
+      <q-btn flat label="Esqueci minha senha" no-caps />
     </q-card-actions>
 </template>
 
@@ -104,7 +104,7 @@ const loginWithFacebook = async () => {
   justify-content: center;
 }
 .login-topo h1 {
-  color: var(--cor-principal-1);
+  color: var(--color-text-3);
   text-align: center;
   font-size: 40px;
 }
@@ -132,9 +132,9 @@ const loginWithFacebook = async () => {
 }
 .area-btn #btn-registrar{
   padding: 0 10px;
-  color: var(--color-text-2);
+  color: var(--color-text-1);
   border-radius: 0;
-  border-bottom: 2px solid var(--color-text-2);
+  border-bottom: 2px solid var(--color-text-1);
 }
 
 .login-rapido {

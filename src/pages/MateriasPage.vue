@@ -32,26 +32,26 @@ onMounted(() => {
 
 
 <template>
-  <header class="center">
-    <h1>Matérias</h1>
-  </header>
-  <ul class="lista-materias">
-    <materia-icon v-for="materia in materias" :nome-materia="materia.nome" :key="materia.id" />
-  </ul>
+  <q-page>
+    <header class="center">
+      <h1>Matérias</h1>
+    </header>
+    <ul class="lista-materias">
+      <materia-icon v-for="materia in materias" :nome-materia="materia.nome" :key="materia.id" />
+    </ul>
+  </q-page>
 </template>
 
 <style scoped>
-header {
-  background-image: linear-gradient(
+.q-page{
+    background: linear-gradient(
     to bottom,
-    rgba(var(--color-text-1), 0.2) 0%,
-    /* Sombra preta sutil (10% opacidade) no topo */ rgba(var(--color-text-1), 0.15) 20%,
-    /* Transparente 10% abaixo do topo */ rgba(var(--color-text-1), 0.12) 30%,
-    rgba(var(--color-text-1), 0.1) 50%,
-    /* Continua transparente até 10% antes da base */ rgba(var(--color-text-1), 0.05) 70%,
-    /* Continua transparente até 10% antes da base */ rgba(var(--color-text-1), 0) 100%
-      /* Sombra preta sutil (10% opacidade) na base */
+    var(--color-background)20%,
+    var(--color-background-4)100%
   );
+}
+
+header {
   height: 120px;
   margin-bottom: 20px;
 }

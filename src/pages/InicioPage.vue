@@ -6,7 +6,6 @@ import tutorialInicio from 'src/components/tutorial/tutorialInicio.vue';
 import popUpApresentacao from 'src/components/apresentação/popUpApresentacao.vue';
 import perfilComponent from 'components/inicio/perfilComponent.vue';
 import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
-import setaDuplaIcon from 'src/components/icons/setaDuplaIcon.vue';
 // import useMenuStore from 'src/stores/menuStore';
 import menuComponent from 'components/inicio/menu/menuComponent.vue';
 import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent.vue';
@@ -28,16 +27,30 @@ const router = ref(useRouter());
     </q-header>
     <q-main>
       <section class="secao-evento-carrocel">
-        <carrocel-evento/>
+        <carrocel-evento />
       </section>
       <section class="secao-para-voce">
-        <div class="titulo-secao" @click="router.push('para-voce')">Para você <seta-dupla-icon /></div>
-        <carrocel-component :quant="5"/>
+        <q-btn
+          class="titulo-secao"
+          @click="router.push('para-voce')"
+          no-caps
+          icon-right="chevron_right"
+          label="Para você"
+          dense
+        />
+        <carrocel-component :quant="5" />
       </section>
 
       <section class="secao-continuar">
-        <div class="titulo-secao" @click="router.push('continuar')">Continuar <seta-dupla-icon /></div>
-        <carrocel-component :quant="7"/>
+        <q-btn
+          class="titulo-secao"
+          @click="router.push('continuar')"
+          no-caps
+          icon-right="chevron_right"
+          label="Continuar"
+          dense
+        />
+        <carrocel-component :quant="7" />
       </section>
 
       <section class="secao-eventos"></section>
@@ -47,10 +60,11 @@ const router = ref(useRouter());
 
 
 <style scoped>
-.q-layout{
+.q-layout {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+
+  background: linear-gradient(-20deg, var(--color-background-4) 20%, var(--color-background) 100%);
 }
 
 header {
@@ -81,12 +95,10 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: fit-content;
   font-size: 20px;
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
-  background-color: var(--color-background-3);
-  color: var(--color-text-1);
+  background: linear-gradient(80deg, var(--cor-principal-2) 10%, var(--cor-principal-3) 100%);
+  color: var(--color-background);
 }
 </style>

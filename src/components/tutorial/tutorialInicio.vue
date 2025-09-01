@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const showTutorial = ref(true);
+const showTutorial = ref(false);
 </script>
 
 <template>

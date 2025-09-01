@@ -72,7 +72,7 @@ const irParaMateria = (path: string) => {
 <style scoped>
 .carrocel {
   width: 100dvw;
-  height: 450px;
+  height: 540px;
   padding: 30px 0;
 }
 .slide {
@@ -81,32 +81,8 @@ const irParaMateria = (path: string) => {
 .slide-pai {
   position: relative;
   width: 100%;
-  background-image: linear-gradient(
-    to bottom,
-    rgba(30, 30, 30, 1) 0%,
-    /* Sombra preta sutil (10% opacidade) no topo */ rgba(30, 30, 30, 0.7) 30%,
-    /* Transparente 10% abaixo do topo */ rgba(30, 30, 30, 0.5) 40%,
-    rgba(30, 30, 30, 0.3) 50%,
-    /* Continua transparente até 10% antes da base */ rgba(30, 30, 30, 0.1) 60%,
-    rgba(30, 30, 30, 0.05) 70%,
-    rgba(30, 30, 30, 0.03) 80%,
-    /* Continua transparente até 10% antes da base */ rgba(30, 30, 30, 0) 100%
-      /* Sombra preta sutil (10% opacidade) na base */
-  );
 }
 .img-slide {
   position: absolute;
-  background-image: linear-gradient(
-    to bottom,
-    rgba(30, 30, 30, 1) 0%,
-    /* Sombra preta sutil (10% opacidade) no topo */ rgba(30, 30, 30, 0.7) 30%,
-    /* Transparente 10% abaixo do topo */ rgba(30, 30, 30, 0.5) 40%,
-    rgba(30, 30, 30, 0.3) 50%,
-    /* Continua transparente até 10% antes da base */ rgba(30, 30, 30, 0.1) 60%,
-    rgba(30, 30, 30, 0.05) 70%,
-    rgba(30, 30, 30, 0.03) 80%,
-    /* Continua transparente até 10% antes da base */ rgba(30, 30, 30, 0) 100%
-      /* Sombra preta sutil (10% opacidade) na base */
-  );
 }
 </style>
