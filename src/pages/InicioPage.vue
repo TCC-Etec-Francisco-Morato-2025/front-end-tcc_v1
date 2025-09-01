@@ -110,9 +110,9 @@ main {
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
   color: var(--color-text-3);
-  background: linear-gradient(80deg, var(--cor-principal-2) 50%, var(--cor-principal-3)80%,var(--cor-principal-2)100%);
+  background: linear-gradient(80deg, var(--cor-principal-1) 40%, var(--cor-principal-2)80%,var(--cor-principal-1)100%);
   background-size: 400% 100%;
-  animation: gradientShift 4s  ease infinite;
+  animation: gradientShift 3s  ease infinite;
 }
 @keyframes gradientShift {
   from {

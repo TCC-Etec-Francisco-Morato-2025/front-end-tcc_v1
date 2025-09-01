@@ -37,28 +37,28 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
       <div class="navMenu center">
         <q-btn name="materias" @click="mudarRota('/materias')">
           <div class="grid-button">
-            <q-icon name="home" />
+            <q-icon name="menu_book" />
             <q-item-label class="label">Matérias</q-item-label>
           </div>
         </q-btn>
 
         <q-btn name="favorito" @click="mudarRota('/favorito')">
           <div class="grid-button">
-            <q-icon name="home" />
+            <q-icon name="favorite" />
             <q-item-label class="label">Favoritos</q-item-label>
           </div>
         </q-btn>
 
         <q-btn name="historico" @click="mudarRota('/historico')">
           <div class="grid-button">
-            <q-icon name="home" />
+            <q-icon name="history" />
             <q-item-label class="label">Histórico</q-item-label>
           </div>
         </q-btn>
 
         <q-btn name="config" @click="mudarRota('/config')">
           <div class="grid-button">
-            <q-icon name="home" />
+            <q-icon name="settings" />
             <q-item-label class="label">Configuração</q-item-label>
           </div>
         </q-btn>
@@ -114,7 +114,7 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
   }
   to {
     background-color: var(--cor-principal-1);
-    box-shadow: 0 6px 6px 1px var(--cor-principal-2);
+    box-shadow: 0 6px 3px 3px black;
     color: var(--color-text-3);
     transform: translatey(-5px);
   }
