@@ -1,49 +1,39 @@
 <script setup lang="ts">
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import useMateriaStore from 'src/stores/materiaStore';
 import { useRouter } from 'vue-router';
 import 'swiper/css';
+import useMateriasStore from 'src/stores/materias/materiasStore';
 
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 
-interface propCarrocel {
-  quant: number;
-}
-
-const props = defineProps<propCarrocel>();
-
-const materiaStore = useMateriaStore();
 const slides = ref<CarrocelItens[]>([]);
 const modules = [Navigation];
 const router = useRouter();
+const materiasStore = useMateriasStore();
 
 class CarrocelItens {
-  img: string;
+  id: number;
+  icon: string;
   name: string;
   cor: string;
-  id: number;
   path: string;
+  textColor: string;
 
-  constructor(img: string, name: string, cor: string, id: number, path: string) {
+  constructor(icon: string, name: string, cor: string, id: number, path: string, textColor:string) {
     this.id = id;
-    this.img = img;
+    this.icon = icon;
     this.name = name;
     this.cor = cor;
     this.path = path;
+    this.textColor = textColor
   }
 }
 
-for (let i = 0; i < props.quant; i++) {
-  const newMateria = new CarrocelItens(
-    materiaStore.img,
-    materiaStore.nome,
-    materiaStore.cor,
-    i,
-    materiaStore.nome
-  );
+materiasStore.materias.map((el) => {
+  const newMateria = new CarrocelItens(el.icon, el.nome, el.cor, el.id, el.path, el.textColor);
   slides.value.push(newMateria);
-}
+});
 
 const irParaMateria = (path: string) => {
   router.push(`/materias/${path.toLocaleLowerCase()}`).catch((error) => {
@@ -51,6 +41,10 @@ const irParaMateria = (path: string) => {
     console.error('Erro ao navegar:', error);
     // Lidar com o erro, talvez mostrar uma mensagem para o usuário
   });
+};
+
+const iconMateria = (icon: string) => {
+  return defineAsyncComponent(() => import(`../../icons-materias/${icon}.vue`));
 };
 </script>
 
@@ -68,11 +62,14 @@ const irParaMateria = (path: string) => {
         v-for="slide in slides"
         :key="slide.id"
         :style="`background-color: ${slide.cor};`"
+        @click="irParaMateria(slide.path)"
       >
-        <div class="slide-pai" @click="irParaMateria(slide.path)">
-          <div class="nome-slide" :style="`color: ${slide.cor};`">{{ slide.name }}</div>
-          <q-img :src="slide.img" :radio="16/9" class="img-slide"/>
+        <div class="nome-slide" :style="`color: ${slide.textColor} !important`">{{ slide.name }}</div>
+        <div class="img-slide">
+          <component :is="iconMateria(slide.icon)" />
         </div>
+        <!-- <q-img :src="slide.img" :radio="16/9" class="img-slide"/> -->
+        <!-- <q-icon name="science" size="100px"/> -->
       </swiper-slide>
     </swiper>
   </div>
@@ -86,36 +83,54 @@ const irParaMateria = (path: string) => {
   padding: 30px 0;
 }
 
-.swiper-slide{
+.swiper-slide {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 230px;
   border-radius: 10px;
   cursor: pointer;
-}
-
-.swiper-slide-active{
-  width: 230px;
-  transform: translateY(-5px);
-  box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.747);
   transition: all 500ms ease-in-out;
 }
 
-.slide .slide-pai {
-  position: relative;
+.swiper-slide::before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.699);
+  transition: all 400ms ease-in-out;
+  border-radius: 10px;
+}
+
+.swiper-slide-active {
+  width: 230px;
+  transform: translateY(-5px);
+  box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.747);
+}
+.swiper-slide-active::before{
+  background-color: rgba(0, 0, 0, 0.253);
+}
+.swiper-slide-active .nome-slide{
+  z-index: 1;
+}
+
+.img-slide {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-.img-slide {
-  display: contents;
   position: absolute;
+  border-radius: 10px;
+  width: 230px;
+  height: 140px;
+  z-index: -1;
 }
 
-.slide-pai .nome-slide {
-  text-shadow: 5px 2px 10px rgb(61, 45, 45);
+.nome-slide {
+  color: white;
+  text-shadow: 5px 2px 2px rgb(0, 0, 0);
   font-size: 40px;
   font-family: 'Jua';
-  z-index: 1;
 }
 </style>

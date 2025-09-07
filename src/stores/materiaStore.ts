@@ -3,10 +3,10 @@ import { defineStore } from 'pinia';
 const useMateriaStore = defineStore('materia', {
   state: () => ({
     ativo: false,
-    nome: 'matemática',
-    icon: 'img:/public/icons/icon-materia.png',
-    cor: 'rgb(0, 68, 136)',
-    img: './public/icons/icon-materia.png',
+    nome: '',
+    icon: '',
+    cor: '',
+    img: 'img:/src/assets/icons-materias/fisica.svg',
   }),
 
   getters: {

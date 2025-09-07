@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import assuntoComponent from '../components/materias/assuntoComponent.vue';
 import popupAtividade from 'src/components/materias/popupAtividade.vue';
-import useMateriaStore from 'stores/materiaStore';
+import useMateriaStore from 'src/stores/materiaStore';
 import setaIcon from 'components/icons/setaIcon.vue';
 
 const store = useMateriaStore();
@@ -13,7 +13,7 @@ const txtPesquisa = ref('');
 const assuntos = ref<Assunto[]>([]);
 const quant = 4;
 
-const voltar = () => {
+const voltar = () => { 
   router.push('/materias').catch((error) => {
     // Adicione um .catch() aqui
     console.error('Erro ao navegar:', error);
@@ -32,7 +32,7 @@ class Assunto {
 
 const gerarAssunto = (quant: number) => {
   for (let i = 1; i <= quant; i++) {
-    const nome = 'Logarítimo';
+    const nome = 'Química Orgânica';
     const assunto = new Assunto(i, nome);
     assuntos.value.push(assunto);
   }
@@ -44,12 +44,12 @@ gerarAssunto(quant);
 <template>
   <q-page id="pg-materia-conteudo">
     <header>
-      <q-btn class="titulo" @click="voltar" no-caps push>
+      <q-btn ref="titulo" class="titulo" @click="voltar" no-caps push>
         <div class="titulo-seta">
           <seta-icon :direcao="90" :cor="'var(--color-text-3)'" />
         </div>
         <div class="titulo-nome center">
-          <q-icon size="50px" name="img:/public/icons/icon-materia.png" />
+          <q-icon size="50px" :name="store.icon" />
           <h1>{{ store.nome }}</h1>
         </div>
       </q-btn>
@@ -80,6 +80,7 @@ gerarAssunto(quant);
   flex-direction: column;
   padding: 40px 25px 0 25px;
   gap: 40px;
+  background: linear-gradient(-20deg, var(--color-background-4) 10%, var(--color-background) 70%);
 }
 
 header {
@@ -91,7 +92,7 @@ header {
 }
 
 .titulo {
-  background-color: var(--cor-principal-2);
+  background-color: #962adf;
   width: 100%;
   height: 100px;
   border-radius: 20px;

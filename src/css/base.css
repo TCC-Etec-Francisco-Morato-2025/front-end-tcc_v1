@@ -9,9 +9,9 @@
 :root {
   /* cores modo claro */
   --cor-backgroud-1: rgb(235, 235, 235);
-  --cor-backgroud-2: rgb(223, 222, 222);
-  --cor-backgroud-3: rgb(209, 207, 207);
-  --cor-backgroud-4: #ecc8ff;
+  --cor-backgroud-2: #e5e0e9;
+  --cor-backgroud-3: #f3edf7;
+  --cor-backgroud-4: #edd6fa;
 
   --cor-texto-1: rgb(0, 0, 0);
   --cor-texto-2: rgb(150, 150, 150);
@@ -21,9 +21,9 @@
 :root {
   /* cores modo escuro */
   --cor-backgroud-1-dark: rgb(30, 30, 30);
-  --cor-backgroud-2-dark: rgb(56, 56, 56);
+  --cor-backgroud-2-dark: rgb(53, 49, 56);
   --cor-backgroud-3-dark: rgb(83, 83, 83);
-  --cor-backgroud-4-dark: #100435;
+  --cor-backgroud-4-dark: #070214;
 
   --cor-texto-1-dark: rgb(245, 245, 245);
 }

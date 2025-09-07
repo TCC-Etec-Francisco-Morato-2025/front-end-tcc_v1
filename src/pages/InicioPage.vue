@@ -2,9 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
+import useUserStore from 'src/stores/userStore';
 
-import tutorialInicio from 'src/components/tutorial/tutorialInicio.vue';
-import popUpApresentacao from 'src/components/apresentação/popUpApresentacao.vue';
 import perfilComponent from 'components/inicio/perfilComponent.vue';
 import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
 // import useMenuStore from 'src/stores/menuStore';
@@ -13,8 +12,12 @@ import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
 
 const router = ref(useRouter());
+const userStore = useUserStore();
 
 onMounted(()=>{
+  if(userStore.primeiraVez){
+    void router.value.push('/tour/apresentacao')
+  }
   animacaoEntrada();
 })
 
@@ -27,8 +30,6 @@ const animacaoEntrada = () => {
 
 <template>
   <q-layout>
-    <tutorial-inicio />
-    <pop-up-apresentacao />
     <menu-component />
     <q-header>
       <div class="perfil">
@@ -49,7 +50,7 @@ const animacaoEntrada = () => {
           label="Para você"
           dense
         />
-        <carrocel-component :quant="5" />
+        <carrocel-component />
       </section>
 
       <section class="secao-continuar">
@@ -61,7 +62,7 @@ const animacaoEntrada = () => {
           label="Continuar"
           dense
         />
-        <carrocel-component :quant="7" />
+        <carrocel-component />
       </section>
 
       <section class="secao-eventos"></section>
@@ -75,7 +76,7 @@ const animacaoEntrada = () => {
   display: flex;
   flex-direction: column;
 
-  background: linear-gradient(-20deg, var(--color-background-4) 20%, var(--color-background) 80%);
+  background: linear-gradient(-30deg, var(--color-background-4) 10%, var(--color-background) 100%);
 }
 
 header {
@@ -109,17 +110,18 @@ main {
   font-size: 20px;
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
-  color: var(--color-text-3);
-  background: linear-gradient(80deg, var(--cor-principal-1) 40%, var(--cor-principal-2)80%,var(--cor-principal-1)100%);
+  color: var(--color-text-1);
+  background: linear-gradient(80deg, var(--color-background-4) 20%, var(--cor-principal-1)85%,var(--color-background)100%);
   background-size: 400% 100%;
-  animation: gradientShift 3s  ease infinite;
+  box-shadow: 0 5px 5px 0px rgb(0, 0, 0);
+  animation: gradientShift 2s  ease infinite;
 }
 @keyframes gradientShift {
   from {
     background-position: 0% 0%; /* Começa com o gradiente totalmente à esquerda */
   }
   to {
-    background-position: -100% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
+    background-position: -130% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
   }
 }
 </style>

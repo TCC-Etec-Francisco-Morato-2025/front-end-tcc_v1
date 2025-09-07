@@ -57,7 +57,7 @@ const geraratividade = (quant: number) => {
     if (i <= 3) {
       estrela = Math.floor(Math.random() * 3) + 1;
     }
-    const nome = 'Multiplicação ' + i;
+    const nome = 'Cadeias Carbônicas ' + i;
     const loren =
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo enim voluptatem quis officia illo';
     const exc = new Atividade(i, nome, loren, estrela, proxima);
@@ -179,7 +179,7 @@ const descidirAnimacao = (quant_estrela:number)=>{
   border-radius: 0 0 5px 5px;
 }
 .ativo.q-btn {
-  background-color: var(--cor-principal-2) !important;
+  background-color: #962adf !important;
   color: var(--color-text-3) !important;
   transition: 100ms ease-out;
   border-radius: 7px 7px 0px 0px;

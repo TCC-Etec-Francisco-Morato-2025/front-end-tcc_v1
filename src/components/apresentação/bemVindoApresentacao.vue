@@ -100,9 +100,11 @@ const saidaText = () => {
 }
 
 .mascote {
+  left: 50%;
+  transform: translateX(-50%);
   position: absolute;
   bottom: 15%;
-  width: 100%;
+  width: 90%;
 }
 
 h1 {

@@ -1,0 +1,12 @@
+import { defineStore } from 'pinia';
+
+const useMateriasStore = defineStore('materias', {
+  state: () => ({
+    materias: [
+      { id: 1, nome: 'Fisíca', icon: 'fisicaIcon', cor: 'rgba(0, 128, 255, 1)', path: 'fisica', textColor: 'white'},
+      { id: 2, nome: 'Química', icon: 'quimicaIcon', cor: '#9cdd82', path: 'quimica', textColor: 'white'},
+      { id: 3, nome: 'Inglês', icon: 'inglesIcon', cor: '#ffffff', path: 'ingles', textColor: 'white'},
+    ],
+  }),
+});
+export default useMateriasStore;

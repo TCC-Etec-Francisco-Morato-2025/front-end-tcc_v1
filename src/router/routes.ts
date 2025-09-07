@@ -76,6 +76,19 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
+    // path: `:nomeMateria/:nomeConteudo/:nomeAtividade`,
+    path: '/tour',
+    name: 'tour',
+    component: () => import('src/layouts/tourLayout.vue'),
+    children:[
+      {
+        path: `/tour/apresentacao`,
+        name: 'apresentacao',
+        component: () => import('pages/apresentacaoPage.vue')
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('pages/LoginPage.vue'),
   },

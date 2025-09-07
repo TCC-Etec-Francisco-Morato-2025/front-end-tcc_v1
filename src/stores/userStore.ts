@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 const useUserStore = defineStore('user', {
   state: ()=>({
+    primeiraVez: true,
     logado: false,
     uid:'',
     nome:'',
@@ -32,6 +33,9 @@ const useUserStore = defineStore('user', {
         this.senha=''
         this.token=''
         this.logado=false
+    },
+    jaAcessou(){
+      this.primeiraVez = !this.primeiraVez;
     }
   },
   persist:{

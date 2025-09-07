@@ -8,18 +8,17 @@ const menuStore = useMenuStore();
 const router = useRouter();
 const userStore = useUserStore();
 
-const mudarRota = (path:string)=>{
+const mudarRota = (path: string) => {
   menuStore.toggleMenu();
-  router.push(path)
-  .catch(error => { // Adicione um .catch() aqui
-      console.error('Erro ao navegar:', error);
-      // Lidar com o erro, talvez mostrar uma mensagem para o usuário
-    });
-}
+  router.push(path).catch((error) => {
+    // Adicione um .catch() aqui
+    console.error('Erro ao navegar:', error);
+    // Lidar com o erro, talvez mostrar uma mensagem para o usuário
+  });
+};
 
 // import perfilComponent from '../perfilComponent.vue';
 import sairIcon from 'src/components/icons/sairIcon.vue';
-
 </script>
 
 <template>
@@ -27,11 +26,11 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
     <q-card>
       <q-card-section class="topo">
         <q-btn flat round dense @click="menuStore.toggleMenu" class="sair">
-          <sair-icon :color="'var(--cor-principal-1)'"/>
+          <sair-icon :color="'var(--cor-principal-1)'" />
         </q-btn>
         <q-avatar size="100px">
-          <img :src="userStore.perfil" alt="" v-if="userStore.logado"/>
-          <perfil-icon/>
+          <img :src="userStore.perfil" alt="" v-if="userStore.logado" />
+          <perfil-icon />
         </q-avatar>
       </q-card-section>
       <div class="navMenu center">
@@ -72,7 +71,11 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
   padding: 10px 10px 0 10px;
   width: 100vw;
   height: 100vh;
-  background-color: var(--color-background);
+  background: linear-gradient(
+    120deg,
+    var(--color-background) 20%,
+    var(--color-background-4) 100%,
+  );
 }
 
 .q-btn.sair {

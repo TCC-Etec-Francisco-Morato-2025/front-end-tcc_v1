@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { gsap } from 'gsap';
 import { onMounted } from 'vue';
+import useUserStore from 'src/stores/userStore';
+
+const userStore = useUserStore();
 
 const emit = defineEmits<{
   (e: 'proximo', mensagem: string): void;
@@ -12,6 +15,7 @@ const proximo = () =>{
 
 onMounted(() => {
   animacaoEntrada();
+  userStore.jaAcessou();
 });
 
 // animações
@@ -51,7 +55,7 @@ const animacaoSaida = () => {
       <q-img src="/src/assets/logo/10757403.png" />
     </q-card-section>
     <q-card-actions align="right">
-      <q-btn flat no-caps icon-right="chevron_right" @click="proximo">
+      <q-btn flat no-caps icon-right="chevron_right" to="/" @click="proximo">
         <q-item-label>Próximo</q-item-label>
       </q-btn>
     </q-card-actions>

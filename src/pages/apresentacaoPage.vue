@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import bemVindoApresentacao from './bemVindoApresentacao.vue';
-import sobreApresentacao from './sobreApresentacao.vue';
+import bemVindoApresentacao from '../components/apresentação/bemVindoApresentacao.vue';
+import sobreApresentacao from '../components/apresentação/sobreApresentacao.vue';
 import { ref } from 'vue';
 import { gsap } from 'gsap';
 
-const showDialog = ref(false);
+const showDialog = ref(true);
 const transitionDuration = ref(2000);
 const slide = ref('bemVindo');
 
@@ -19,9 +19,14 @@ const iniciarTutorial = () => {
 const animacaoSaida = () => {
   const tml = gsap.timeline();
 
-  tml.to('.popUp', { opacity:0 , scale: 0 , borderRadius: '100% !importante' , duration: 1 , onComplete: () => {
-    showDialog.value = false;
-  }});
+  tml.to('.popUp', {
+    opacity: 0,
+    borderRadius: '100% !importante',
+    duration: 1,
+    onComplete: () => {
+      showDialog.value = false;
+    },
+  });
 };
 </script>
 
