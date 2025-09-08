@@ -25,9 +25,10 @@ const icon_materia = defineAsyncComponent(()=>import(`../icons-materias/${props.
 const ativarMaterias = () => {
   materiaStore.mudarMateria(
     props.nome,
-    'img:/src/assets/icon-materias/quimica.png',
-    '#962adf',
-    './src/assets/icon-materias/quimica.png'
+    props.icon,
+    props.cor,
+    props.textColor,
+    props.id
   );
   if (materiaStore.nome == undefined) return;
   router.push(`/materias/${props.path}`).catch((error) => {

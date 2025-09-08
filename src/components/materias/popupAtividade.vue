@@ -13,11 +13,11 @@ const especItemStore = useEspecItemStore();
 
 const popUpStore = usePopUpAtividade();
 
-const comecarAtividade = ()=>{
-    router.push('/atividade/introducao').catch((error) => {
+const comecarAtividade = () => {
+  router.push('/atividade/introducao').catch((error) => {
     console.error('Erro ao navegar:', error);
   });
-}
+};
 </script>
 
 <template>
@@ -27,7 +27,9 @@ const comecarAtividade = ()=>{
     </q-card> -->
     <q-card class="corpo-card">
       <q-card-section class="center">
-        {{ popUpStore.nome }}
+        <q-item-label class="titulo">
+          {{ popUpStore.nome }}
+        </q-item-label>
         <q-btn class="btn-sair" @click="popUpStore.ativo = false" push>
           <sair-icon :color="'white'" />
         </q-btn>
@@ -39,8 +41,8 @@ const comecarAtividade = ()=>{
           class="estrela"
           size="70px"
           color="grey"
-          icon="star"
-          color-selected="amber-9"
+          icon="img:src/assets/icons-pixel/star.svg"
+          icon-selected="img:src/assets/icons-pixel/star-solid.svg"
           disable
         />
       </q-card-section>
@@ -109,7 +111,7 @@ const comecarAtividade = ()=>{
         </q-fab>
       </q-card-section>
       <q-card-section class="center">
-        <q-btn class="btn-Jogar" color="green" @click="comecarAtividade">
+        <q-btn class="btn-Jogar" @click="comecarAtividade" flat>
           <q-item-label> {{ popUpStore.estrelas > 0 ? 'jogar de novo' : 'Começar' }} </q-item-label>
         </q-btn>
       </q-card-section>
@@ -118,9 +120,15 @@ const comecarAtividade = ()=>{
 </template>
 
 <style scoped>
+.q-item__label.titulo {
+  font-family: 'Pixelify Sans';
+  text-align: center;
+  width: 230px;
+}
+
 .btn-sair {
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   position: absolute;
   background-color: red;
   width: 35px;
@@ -137,7 +145,9 @@ const comecarAtividade = ()=>{
     'btn';
   /* grid-template-rows: 1fr 5fr auto; */
   width: 300px;
-  background-color: var(--color-background);
+  background-color: var(--fundo-card);
+  color: var(--color-text-1);
+  border-radius: 20px;
 }
 
 .top-card {
@@ -161,17 +171,22 @@ const comecarAtividade = ()=>{
 }
 
 .descricao {
-  font-size: 14px;
+  text-align: center;
+  font-family: 'Handjet';
+  font-size: 16px;
 }
 
 .itens {
   display: flex;
   justify-content: center;
-  gap: 18px;
+  gap: 15px;
 }
 .itens-select {
-  color: var(--color-text-2);
-  background-color: var(--color-background-2) !important;
+  color: #d77f17;
+  background-color: #ffda92 !important;
+  border: 3px solid #d77f17;
+  border-radius: 100%;
+  box-shadow: 0 4px 5px 0px rgba(0, 0, 0, 0.466);
 }
 .itens-select .item {
   width: 50px;
@@ -180,7 +195,11 @@ const comecarAtividade = ()=>{
 
 .btn-Jogar {
   grid: btn;
+  font-family: 'Pixelify Sans' !important;
   width: 80%;
   margin-bottom: 15px;
+  color: rgb(0, 0, 0) !important;
+  border: 2px solid #f7c92e;
+  background-color: #fff0b1 !important;
 }
 </style>

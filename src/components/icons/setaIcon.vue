@@ -7,13 +7,13 @@ const icon = ref<HTMLElement | null>(null);
 interface props{
   ativado?: boolean,
   cor?: string,
-  direcao?:number
+  direcao?:number,
 }
 
 const props = withDefaults(defineProps<props>(), {
   ativado: false,   // Default to false if not provided
   cor: 'currentColor', // Default to current text color if not provided
-  direcao: 0        // Default to 0 if not provided
+  direcao: 0, // Default to 0 if not provided
 })
 
 const updateClasses = (isActive: boolean) => {
@@ -61,7 +61,6 @@ svg{
 }
 .ativado {
   transition: 0.3s linear;
-  fill: var(--color-text-3) !important;
 }
 .rodar{
   transform: rotate(180deg);

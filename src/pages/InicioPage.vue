@@ -111,17 +111,17 @@ main {
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
   color: var(--color-text-1);
-  background: linear-gradient(80deg, var(--color-background-4) 20%, var(--cor-principal-1)85%,var(--color-background)100%);
+  background: linear-gradient(80deg, transparent 20%, var(--cor-principal-1)85%, transparent 100%);
   background-size: 400% 100%;
   box-shadow: 0 5px 5px 0px rgb(0, 0, 0);
-  animation: gradientShift 2s  ease infinite;
+  animation: gradientShift 3s  ease infinite;
 }
 @keyframes gradientShift {
   from {
     background-position: 0% 0%; /* Começa com o gradiente totalmente à esquerda */
   }
   to {
-    background-position: -130% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
+    background-position: -134% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
   }
 }
 </style>

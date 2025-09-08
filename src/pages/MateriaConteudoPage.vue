@@ -1,56 +1,61 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import assuntoComponent from '../components/materias/assuntoComponent.vue';
 import popupAtividade from 'src/components/materias/popupAtividade.vue';
 import useMateriaStore from 'src/stores/materiaStore';
+import useAssuntosStore from 'src/stores/materias/assuntosStore';
 import setaIcon from 'components/icons/setaIcon.vue';
 
-const store = useMateriaStore();
+interface Assunto{
+  id: number,
+  nome: string,
+  materia: number
+}
+
+const materiaStore = useMateriaStore();
+const assuntosStore = useAssuntosStore();
+const assuntos = ref<Assunto[]>([]);
 const router = useRouter();
 const txtPesquisa = ref('');
 
-const assuntos = ref<Assunto[]>([]);
-const quant = 4;
-
-const voltar = () => { 
+const voltar = () => {
   router.push('/materias').catch((error) => {
     // Adicione um .catch() aqui
     console.error('Erro ao navegar:', error);
   });
 };
 
-class Assunto {
-  id: number;
-  nome: string;
-
-  constructor(num: number, nomeMateria: string) {
-    this.id = num;
-    this.nome = nomeMateria;
+// laço de repção feito para encontrar o assunto que se encaixe nessa matéria
+assuntosStore.assuntos.forEach((el) => {
+  if (el.materia == materiaStore.id) {
+    assuntos.value.push(el);
   }
-}
+});
 
-const gerarAssunto = (quant: number) => {
-  for (let i = 1; i <= quant; i++) {
-    const nome = 'Química Orgânica';
-    const assunto = new Assunto(i, nome);
-    assuntos.value.push(assunto);
-  }
-};
-
-gerarAssunto(quant);
+const icone_materia = defineAsyncComponent(
+  () => import(`components/icons-materias/${materiaStore.icon}.vue`)
+);
 </script>
 
 <template>
   <q-page id="pg-materia-conteudo">
     <header>
-      <q-btn ref="titulo" class="titulo" @click="voltar" no-caps push>
+      <q-btn
+        :style="`background-color: ${materiaStore.cor}; color: ${materiaStore.textColor};`"
+        class="titulo"
+        @click="voltar"
+        no-caps
+        push
+      >
         <div class="titulo-seta">
-          <seta-icon :direcao="90" :cor="'var(--color-text-3)'" />
+          <seta-icon :direcao="90" :cor="materiaStore.textColor" />
         </div>
         <div class="titulo-nome center">
-          <q-icon size="50px" :name="store.icon" />
-          <h1>{{ store.nome }}</h1>
+          <div class="icon">
+            <component :is="icone_materia" />
+          </div>
+          <h1>{{ materiaStore.nome }}</h1>
         </div>
       </q-btn>
       <div class="pesquisa">
@@ -67,7 +72,7 @@ gerarAssunto(quant);
       <popup-atividade />
       <q-list>
         <q-intersection transition="scale" v-for="assunto in assuntos" :key="assunto.id" once>
-          <assunto-component :nome="assunto.nome" :id="assunto.id" />
+          <assunto-component :id="assunto.id" :cor="materiaStore.cor" :nome="assunto.nome" :textColor="materiaStore.textColor" />
         </q-intersection>
       </q-list>
     </q-main>
@@ -92,7 +97,6 @@ header {
 }
 
 .titulo {
-  background-color: #962adf;
   width: 100%;
   height: 100px;
   border-radius: 20px;
@@ -101,15 +105,18 @@ header {
 }
 
 .titulo .titulo-nome {
-  margin-right: 15px;
+  margin-right: 35px;
+  gap: 10px;
   flex-grow: 1;
-  color: var(--color-text-3);
 }
 .titulo div h1 {
   font-size: 40px;
 }
 .titulo .titulo-seta {
   height: 20px;
+}
+.titulo .icon {
+  width: 70px;
 }
 
 .pesquisa {

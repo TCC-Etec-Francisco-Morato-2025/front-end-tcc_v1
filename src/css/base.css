@@ -8,9 +8,9 @@
 
 :root {
   /* cores modo claro */
-  --cor-backgroud-1: rgb(235, 235, 235);
-  --cor-backgroud-2: #e5e0e9;
-  --cor-backgroud-3: #f3edf7;
+  --cor-backgroud-1: rgb(224, 224, 224);
+  --cor-backgroud-2: #f6f2f8;
+  --cor-backgroud-3: #f9f1ff;
   --cor-backgroud-4: #edd6fa;
 
   --cor-texto-1: rgb(0, 0, 0);
@@ -39,6 +39,8 @@
   --color-text-1: var(--cor-texto-1);
   --color-text-2: var(--cor-texto-2);
   --color-text-3: var(--cor-texto-3);
+
+  --fundo-card: #fffdca;
 }
 
 /* adicionar as cores do modo dark */
@@ -49,6 +51,8 @@ body.body--dark {
   --color-background-4: var(--cor-backgroud-4-dark);
 
   --color-text-1: var(--cor-texto-1-dark);
+
+  --fundo-card: #2c2755;
 }
 
 *,

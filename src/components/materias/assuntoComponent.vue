@@ -2,10 +2,35 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
+import useAtividadesStore from 'src/stores/materias/atividadesStore';
+import useMateriaStore from 'src/stores/materiaStore';
 import usePopUpAtividade from 'src/stores/popUpAtividadeStore';
 import setaIcon from '../icons/setaIcon.vue';
 
+class Atividade{
+  id: number;
+  nome: string;
+  estrelas: number;
+  descricao: string;
+  assunto: number;
+  materia: number;
+  proxima: boolean;
+
+  constructor( id:number, nome:string, estrelas:number, descricao:string, assunto:number, materia:number, proxima:boolean ){
+    this.id = id
+    this.nome = nome
+    this.estrelas = estrelas
+    this.descricao = descricao
+    this.assunto = assunto
+    this.materia = materia
+    this.proxima = proxima
+  }
+}
+
 const popUpStore = usePopUpAtividade();
+const atividadesStore = useAtividadesStore();
+const materiaStore = useMateriaStore();
+const atividades = ref<Atividade[]>([]);
 const estadoLista = ref(false);
 const btn = ref<HTMLElement | null>(null);
 
@@ -20,51 +45,26 @@ const mutEstadoLista = () => {
   button?.classList.toggle('ativo');
 };
 
-const props = defineProps({
-  nome: String,
-  id: Number,
-});
-
-const atividades = ref<Atividade[]>([]);
-const quant = 10;
-
-class Atividade {
+interface props {
   id: number;
-  nome: string;
-  descricao: string;
-  estrelas: number;
-  proxima: boolean;
-
-  constructor(
-    num: number,
-    nomeMateria: string,
-    descricao: string,
-    estrela: number,
-    proxima: boolean
-  ) {
-    this.id = num;
-    this.nome = nomeMateria;
-    this.descricao = descricao;
-    this.estrelas = estrela;
-    this.proxima = proxima;
-  }
+  nome:string;
+  cor: string;
+  textColor: string;
 }
 
-const geraratividade = (quant: number) => {
-  for (let i = 1; i <= quant; i++) {
-    let estrela: number = 0;
-    const proxima: boolean = false;
-    if (i <= 3) {
-      estrela = Math.floor(Math.random() * 3) + 1;
-    }
-    const nome = 'Cadeias Carbônicas ' + i;
-    const loren =
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo enim voluptatem quis officia illo';
-    const exc = new Atividade(i, nome, loren, estrela, proxima);
-    atividades.value.push(exc);
+const props = defineProps<props>();
+
+const corAtivo = ref(props.cor);
+const corTextAtivo = ref(props.textColor);
+
+// achar as ativiades dessa matéria em especifico, caso a pessoa já tenha entrado em outras matérias
+atividadesStore.atividades.forEach((el) => {
+  if (el.assunto === props.id && el.materia === materiaStore.id) {
+    const atividade = new Atividade(el.id,el.nome,el.estrelas,el.descricao,el.assunto,el.materia,false)
+    atividades.value.push(atividade);
   }
-};
-geraratividade(quant);
+});
+
 
 for (let i = 0; i < atividades.value.length; i++) {
   const atividade = atividades.value[i];
@@ -78,14 +78,13 @@ for (let i = 0; i < atividades.value.length; i++) {
   }
 }
 
-const descidirAnimacao = (quant_estrela:number)=>{
-  let animacao = 'scale'
-  if(quant_estrela==0){
-    animacao = 'jump-right'
+const descidirAnimacao = (quant_estrela: number) => {
+  let animacao = 'scale';
+  if (quant_estrela == 0) {
+    animacao = 'jump-right';
   }
   return animacao;
-}
-
+};
 </script>
 
 <template>
@@ -179,8 +178,8 @@ const descidirAnimacao = (quant_estrela:number)=>{
   border-radius: 0 0 5px 5px;
 }
 .ativo.q-btn {
-  background-color: #962adf !important;
-  color: var(--color-text-3) !important;
+  background-color: v-bind(corAtivo) !important;
+  color: v-bind(corTextAtivo) !important;
   transition: 100ms ease-out;
   border-radius: 7px 7px 0px 0px;
 }

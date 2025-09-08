@@ -11,15 +11,13 @@ const quant = 3;
 const router = useRouter();
 
 class CarrocelItens {
-  img: string;
   name: string;
   cor: string;
   id: number;
   path: string;
 
-  constructor(img: string, name: string, cor: string, id: number, path: string) {
+  constructor( name: string, cor: string, id: number, path: string) {
     this.id = id;
-    this.img = img;
     this.name = name;
     this.cor = cor;
     this.path = path;
@@ -28,7 +26,6 @@ class CarrocelItens {
 
 for (let i = 0; i < quant; i++) {
   const newMateria = new CarrocelItens(
-    materiaStore.img,
     materiaStore.nome,
     materiaStore.cor,
     i,

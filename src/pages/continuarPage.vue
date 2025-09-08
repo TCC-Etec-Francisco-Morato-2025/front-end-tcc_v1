@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import setaIcon from 'src/components/icons/setaIcon.vue';
-import listComponent from 'src/components/materias/assuntoComponent.vue';
+import assuntoComponent from 'src/components/materias/assuntoComponent.vue';
 
 const router = useRouter();
 
@@ -46,10 +46,11 @@ gerarExercicio(quant);
     </header>
     <main>
           <q-list>
-            <list-component
+            <assunto-component
               :nome="exercicio.nome"
-              :descricao="exercicio.descricao"
               :id="exercicio.id"
+              :cor="'red'"
+              :text-color="'black'"
               v-for="exercicio in exercicios"
               :key="exercicio.id"
             />

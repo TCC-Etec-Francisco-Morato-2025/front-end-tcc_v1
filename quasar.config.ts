@@ -33,7 +33,8 @@ export default defineConfig((/* ctx */) => {
       font: [
         'Fredoka One',
         'Pixelify Sans',
-        'Baloo 2'
+        'Baloo 2',
+        'Handjet'
       ] // ou 'Poppins', 'Open Sans', etc.
     },
 

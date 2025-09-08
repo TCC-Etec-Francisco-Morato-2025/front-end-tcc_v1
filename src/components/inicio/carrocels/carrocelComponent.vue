@@ -64,7 +64,7 @@ const iconMateria = (icon: string) => {
         :style="`background-color: ${slide.cor};`"
         @click="irParaMateria(slide.path)"
       >
-        <div class="nome-slide" :style="`color: ${slide.textColor} !important`">{{ slide.name }}</div>
+        <div class="nome-slide">{{ slide.name }}</div>
         <div class="img-slide">
           <component :is="iconMateria(slide.icon)" />
         </div>

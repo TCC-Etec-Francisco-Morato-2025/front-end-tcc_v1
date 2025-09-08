@@ -3,10 +3,11 @@ import { defineStore } from 'pinia';
 const useMateriaStore = defineStore('materia', {
   state: () => ({
     ativo: false,
+    id: 0,
     nome: '',
     icon: '',
     cor: '',
-    img: 'img:/src/assets/icons-materias/fisica.svg',
+    textColor: ''
   }),
 
   getters: {
@@ -14,12 +15,13 @@ const useMateriaStore = defineStore('materia', {
   },
 
   actions: {
-    mudarMateria(nome:string, icon:string, cor:string, img:string){
+    mudarMateria(nome:string, icon:string, cor:string, textColor:string, id:number){
       this.ativo=true
+      this.id = id
       this.nome = nome
       this.icon = icon
       this.cor = cor
-      this.img = img
+      this.textColor = textColor
     }
   },
   persist: {
