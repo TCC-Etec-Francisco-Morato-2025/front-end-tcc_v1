@@ -9,6 +9,5 @@
   </q-layout>
 </template>
 
-
 <style scoped>
 </style>

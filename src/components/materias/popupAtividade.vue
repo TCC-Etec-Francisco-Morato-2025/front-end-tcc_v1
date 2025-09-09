@@ -14,6 +14,9 @@ const especItemStore = useEspecItemStore();
 const popUpStore = usePopUpAtividade();
 
 const comecarAtividade = () => {
+  document.body.requestFullscreen().catch(()=>{
+    return;
+  })
   router.push('/atividade/introducao').catch((error) => {
     console.error('Erro ao navegar:', error);
   });

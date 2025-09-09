@@ -242,7 +242,7 @@ const descidirAnimacao = (quant_estrela: number) => {
 }
 .atividade-titulo {
   color: var(--color-text-2);
-  font-size: 20px;
+  font-size: 4dvw;
 }
 .atividade-concluida {
   background-color: var(--color-background-2) !important;
