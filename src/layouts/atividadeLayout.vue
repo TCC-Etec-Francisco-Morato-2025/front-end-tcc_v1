@@ -4,10 +4,13 @@
 <template>
   <q-layout>
     <q-page-container>
-      <router-view/>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <style scoped>
+.q-layout {
+  position: relative;
+}
 </style>

@@ -28,7 +28,8 @@ const ativarMaterias = () => {
     props.icon,
     props.cor,
     props.textColor,
-    props.id
+    props.id,
+    props.path
   );
   if (materiaStore.nome == undefined) return;
   router.push(`/materias/${props.path}`).catch((error) => {

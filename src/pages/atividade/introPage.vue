@@ -2,6 +2,9 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import useFalasPersonagensStore from 'src/stores/materias/atividades/falasPersonagensStore';
 import usePersonagensStore from 'src/stores/materias/atividades/personagensStore';
+import usePopUp from 'src/stores/popUp';
+// import useAtividadesStore from 'src/stores/materias/atividadesStore';
+import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import Typed from 'typed.js';
 
 interface Personagem {
@@ -21,6 +24,8 @@ interface Fala {
 
 const ordem = ref(1);
 const atividade = 1;
+const popUpStore = usePopUp();
+// const atividadesStore = useAtividadesStore();
 const falaStore = useFalasPersonagensStore();
 const personagensStore = usePersonagensStore();
 const personagemAtual = ref<Personagem>();
@@ -48,9 +53,8 @@ onUnmounted(() => {
   }
 });
 
-const voltarFala = () =>{
-  if(ordem.value>1)
-  ordem.value--;
+const voltarFala = () => {
+  if (ordem.value > 1) ordem.value--;
   escolherFala(ordem.value, atividade);
   if (typedInstance) {
     typedInstance.destroy();
@@ -63,7 +67,7 @@ const voltarFala = () =>{
       });
     }
   }
-}
+};
 
 const proximaFala = () => {
   ordem.value++;
@@ -99,11 +103,37 @@ const escolherPersonagem = (id: number) => {
     }
   });
 };
+
+const pausar = ()=>{
+  popUpStore.togglePause();
+}
+
+const reiniciar = ()=>{
+  ordem.value=1;
+  escolherFala(ordem.value, atividade);
+  if (typedElement.value && falaAtual.value) {
+    typedInstance = new Typed(typedElement.value, {
+      strings: [falaAtual.value.fala],
+      typeSpeed: 50,
+      loop: false,
+      showCursor: false,
+    });
+  }
+}
 </script>
 
 <template>
+  <q-btn icon="pause" class="btn-pause" size="15px" flat @click="pausar" />
+  <pause-component @reiniciar="reiniciar"/>
   <q-page>
-    <q-btn class="btn-voltar" icon="arrow_back" size="30" rounded @click="voltarFala" v-if="ordem>1"/>
+    <q-btn
+      class="btn-voltar"
+      icon="arrow_back"
+      size="30"
+      rounded
+      @click="voltarFala"
+      v-if="ordem > 1"
+    />
     <main>
       <q-img :src="`src/assets/personagens/${personagemAtual?.personagem}.png`" />
       <q-card class="caixa-fala center">
@@ -166,5 +196,46 @@ main {
   width: fit-content;
   padding: 0 50px !important;
   height: 40px !important;
+}
+
+/* area de jogo pausado */
+.btn-pause {
+  color: rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.507);
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  z-index: 1;
+}
+
+.q-dialog .q-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 90%;
+  height: 60%;
+  background-color: rgba(255, 255, 255, 0.473);
+  border-radius: 20px !important;
+}
+
+.q-item__label {
+  flex-direction: column;
+  margin: 0;
+  font-size: 10dvw;
+}
+.q-item__label span {
+  font-size: 5dvw;
+}
+.q-dialog .btns {
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+.btns .q-btn {
+  font-size: 1rem;
+  width: 80%;
+  height: 65px;
+  border-radius: 20px;
 }
 </style>

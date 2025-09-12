@@ -23,7 +23,7 @@ onMounted(() => {
 const animacaoEntrada = () => {
   const tml = gsap.timeline();
 
-  tml.from('p', { opacity: 0, y: -100, duration: 1})
+  tml.from('p', { opacity: 0, y: -100, duration: 1, ease:''})
   .from('.q-img', { opacity: 0, y: 100, duration: 1}, "-=0.5")
   .from('.q-btn', { opacity: 0, x: '-100%', duration: 0.5}, "-=0.25");
 };

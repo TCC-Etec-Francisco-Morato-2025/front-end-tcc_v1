@@ -7,7 +7,8 @@ const useMateriaStore = defineStore('materia', {
     nome: '',
     icon: '',
     cor: '',
-    textColor: ''
+    textColor: '',
+    path: ''
   }),
 
   getters: {
@@ -15,13 +16,14 @@ const useMateriaStore = defineStore('materia', {
   },
 
   actions: {
-    mudarMateria(nome:string, icon:string, cor:string, textColor:string, id:number){
+    mudarMateria(nome:string, icon:string, cor:string, textColor:string, id:number, path:string){
       this.ativo=true
       this.id = id
       this.nome = nome
       this.icon = icon
       this.cor = cor
       this.textColor = textColor
+      this.path = path
     }
   },
   persist: {

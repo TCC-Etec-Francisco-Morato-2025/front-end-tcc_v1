@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRouter } from 'vue-router';
 import 'swiper/css';
 import useMateriasStore from 'src/stores/materias/materiasStore';
+import useMateriaStore from 'src/stores/materiaStore';
 
 import { ref, defineAsyncComponent } from 'vue';
 
@@ -11,19 +12,20 @@ const slides = ref<CarrocelItens[]>([]);
 const modules = [Navigation];
 const router = useRouter();
 const materiasStore = useMateriasStore();
+const materiaStore = useMateriaStore();
 
 class CarrocelItens {
   id: number;
   icon: string;
-  name: string;
+  nome: string;
   cor: string;
   path: string;
   textColor: string;
 
-  constructor(icon: string, name: string, cor: string, id: number, path: string, textColor:string) {
+  constructor(icon: string, nome: string, cor: string, id: number, path: string, textColor:string) {
     this.id = id;
     this.icon = icon;
-    this.name = name;
+    this.nome = nome;
     this.cor = cor;
     this.path = path;
     this.textColor = textColor
@@ -35,8 +37,11 @@ materiasStore.materias.map((el) => {
   slides.value.push(newMateria);
 });
 
-const irParaMateria = (path: string) => {
-  router.push(`/materias/${path.toLocaleLowerCase()}`).catch((error) => {
+const irParaMateria = (slide:CarrocelItens) => {
+
+  materiaStore.mudarMateria(slide.nome, slide.icon, slide.cor, slide.textColor, slide.id, slide.path)
+
+  router.push(`/materias/${slide.path}`).catch((error) => {
     // Adicione um .catch() aqui
     console.error('Erro ao navegar:', error);
     // Lidar com o erro, talvez mostrar uma mensagem para o usuário
@@ -62,14 +67,14 @@ const iconMateria = (icon: string) => {
         v-for="slide in slides"
         :key="slide.id"
         :style="`background-color: ${slide.cor};`"
-        @click="irParaMateria(slide.path)"
+        @click="irParaMateria(slide)"
       >
-        <div class="nome-slide">{{ slide.name }}</div>
+        <div class="nome-slide">{{ slide.nome }}</div>
         <div class="img-slide">
           <component :is="iconMateria(slide.icon)" />
         </div>
         <!-- <q-img :src="slide.img" :radio="16/9" class="img-slide"/> -->
-        <!-- <q-icon name="science" size="100px"/> -->
+        <!-- <q-icon nome="science" size="100px"/> -->
       </swiper-slide>
     </swiper>
   </div>
