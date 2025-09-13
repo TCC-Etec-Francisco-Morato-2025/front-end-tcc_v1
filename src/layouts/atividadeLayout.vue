@@ -1,8 +1,55 @@
 <script setup lang="ts">
+import usePopUp from 'src/stores/popUp';
+
+const popUpStore = usePopUp();
+
+const pausar = () => {
+  popUpStore.togglePause();
+}
+
+const autorizar = () => {
+  popUpStore.toggleNotFullScreen(false);
+  void document.body.requestFullscreen();
+}
+
+const bloquear = ()=>{
+  popUpStore.toggleNotFullScreen(true);
+}
+
+if (!document.fullscreenElement) {
+  bloquear();
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) {
+    bloquear();
+  } else {
+    autorizar()
+  }
+})
 </script>
 
 <template>
   <q-layout>
+    <q-dialog v-model="popUpStore.notFullScreen" backdrop-filter="blur(20px)" persistent>
+      <q-card class="bg-red text-white" style="width: 300px">
+        <q-card-section>
+          <div class="text-h6">
+            <q-icon name="warning" />
+            Atenção
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Para acessar a atividade é necessário estar em tela cheia
+        </q-card-section>
+
+        <q-card-actions align="right" class="bg-red-2 text-red">
+          <q-btn flat label="OK" @click="autorizar" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-btn icon="pause" class="btn-pause" size="15px" flat @click="pausar" />
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -12,5 +59,14 @@
 <style scoped>
 .q-layout {
   position: relative;
+}
+
+.btn-pause {
+  color: rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.507);
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  z-index: 1;
 }
 </style>

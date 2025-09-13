@@ -88,9 +88,15 @@ export default defineConfig((/* ctx */) => {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
+      port: 80,
       // https: true,
-      // open: true, // opens browser window automatically
-      allowedHosts: ['tcc-test.projetos-ezequiel.site'],
+      open: false, // opens browser window automatically,
+      // https: {
+      //   key: 'ssl/server.key',
+      //   cert: 'ssl/server.crt',
+      //   // ca: ..., // Opcional: se você tiver um certificado CA
+      // },
+      allowedHosts: ['enkie.com.br'],
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
@@ -209,7 +215,7 @@ export default defineConfig((/* ctx */) => {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'test',
+        appId: 'Enkie',
       },
     },
 

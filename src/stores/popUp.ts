@@ -3,6 +3,7 @@ import {defineStore} from 'pinia';
 const usePopUpStore = defineStore('popup', {
   state: () => ({
     pause: false,
+    notFullScreen: false,
   }),
 
   getters: {
@@ -13,6 +14,9 @@ const usePopUpStore = defineStore('popup', {
     togglePause() {
       this.pause = !this.pause;
     },
+    toggleNotFullScreen(isFullscreen:boolean){
+      this.notFullScreen=isFullscreen
+    }
   },
 });
 
