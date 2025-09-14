@@ -2,14 +2,13 @@ import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBfngPPQUo48B5_14a55kqvZzonOxSB3yw",
-  authDomain: "tcc-etec-5bef3.firebaseapp.com",
-  projectId: "tcc-etec-5bef3",
-  storageBucket: "tcc-etec-5bef3.firebasestorage.app",
-  messagingSenderId: "436415628677",
-  appId: "1:436415628677:web:4c7df57c1cfbab91cbb0ec"
-}
-
+  apiKey: "AIzaSyAeYrKkG4o663quZUFnHs3qGgGZS0Y6dVU",
+  authDomain: "enkie-ad852.firebaseapp.com",
+  projectId: "enkie-ad852",
+  storageBucket: "enkie-ad852.firebasestorage.app",
+  messagingSenderId: "539087221037",
+  appId: "1:539087221037:web:ca3b2e541f6a1850a6e3a4"
+};
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp)
 

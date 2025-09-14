@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import useFalasPersonagensStore from 'src/stores/materias/atividades/falasPersonagensStore';
 import usePersonagensStore from 'src/stores/materias/atividades/personagensStore';
 // import useAtividadesStore from 'src/stores/materias/atividadesStore';
@@ -21,6 +22,7 @@ interface Fala {
   fala: string;
 }
 
+const router = useRouter();
 const ordem = ref(1);
 const atividade = 1;
 // const atividadesStore = useAtividadesStore();
@@ -68,19 +70,22 @@ const voltarFala = () => {
 };
 
 const proximaFala = () => {
-  if(ordem.value < falaStore.falas.length)
-  ordem.value++;
-  escolherFala(ordem.value, atividade);
-  if (typedInstance) {
-    typedInstance.destroy();
-    if (typedElement.value && falaAtual.value) {
-      typedInstance = new Typed(typedElement.value, {
-        strings: [falaAtual.value.fala],
-        typeSpeed: 50,
-        loop: false,
-        showCursor: false,
-      });
+  if(ordem.value < falaStore.falas.length){
+    ordem.value++;
+    escolherFala(ordem.value, atividade);
+    if (typedInstance) {
+      typedInstance.destroy();
+      if (typedElement.value && falaAtual.value) {
+        typedInstance = new Typed(typedElement.value, {
+          strings: [falaAtual.value.fala],
+          typeSpeed: 50,
+          loop: false,
+          showCursor: false,
+        });
+      }
     }
+  }else{
+    void router.push('/atividade/video')
   }
 };
 

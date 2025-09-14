@@ -67,11 +67,16 @@ const routes: RouteRecordRaw[] = [
     path: '/atividade',
     name: 'atividade',
     component: () => import('layouts/atividadeLayout.vue'),
-    children:[
+    children: [
       {
         path: `/atividade/introducao`,
         name: 'introducao-atividade',
         component: () => import('pages/atividade/introPage.vue')
+      },
+      {
+        path: `/atividade/video`,
+        name: 'video-atividade',
+        component: () => import('pages/atividade/videoPage.vue')
       }
     ]
   },
@@ -80,7 +85,7 @@ const routes: RouteRecordRaw[] = [
     path: '/tour',
     name: 'tour',
     component: () => import('src/layouts/tourLayout.vue'),
-    children:[
+    children: [
       {
         path: `/tour/apresentacao`,
         name: 'apresentacao',
