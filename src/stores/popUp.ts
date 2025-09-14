@@ -32,11 +32,19 @@ const usePopUpStore = defineStore('popup', {
       if (naoAparecerNovamente) {
         this.confirmar.naoAparecerNovamente = naoAparecerNovamente
       }
+    },
+    toggleFullScreen(naoAparecerNovamente?: boolean) {
+      if (!naoAparecerNovamente)
+        this.fullScreen.estado = !this.fullScreen.estado
+
+      if (naoAparecerNovamente) {
+        this.fullScreen.naoAparecerNovamente = naoAparecerNovamente
+      }
     }
   },
   persist: {
     storage: localStorage,
-    pick: ['confirmar.naoAparecerNovamente']
+    pick: ['confirmar.naoAparecerNovamente','fullScreen.naoAparecerNovamente']
   }
 });
 
