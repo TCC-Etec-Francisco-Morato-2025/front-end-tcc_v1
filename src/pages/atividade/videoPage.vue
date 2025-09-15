@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted } from 'vue';
+// import { onMounted } from 'vue';
 import usePopUpStore from 'src/stores/popUp';
 import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import confirmarFullScreenComponent from 'src/components/atividade/video/confirmarFullScreenComponent.vue';
@@ -8,16 +8,15 @@ import confirmarFullScreenComponent from 'src/components/atividade/video/confirm
 
 const popUpStore = usePopUpStore();
 
-onUnmounted(() => {
-  if (!popUpStore.fullScreen.naoAparecerNovamente) {
-    popUpStore.toggleFullScreen()
-  }
-})
+if (!popUpStore.fullScreen.naoAparecerNovamente) {
+  popUpStore.toggleFullScreen()
+}
+
 </script>
 
 <template>
-  <pause-component/>
+  <pause-component />
   <q-page>
-    <confirmarFullScreenComponent/>
+    <confirmarFullScreenComponent />
   </q-page>
 </template>

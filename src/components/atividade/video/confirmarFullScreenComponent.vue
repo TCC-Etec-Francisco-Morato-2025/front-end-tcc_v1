@@ -9,7 +9,7 @@ const popUpStore = usePopUpStore();
     <q-card class="bg-black text-white" style="width: 300px">
 
       <q-card-section class="center">
-        <q-icon name="mobile_rotate"/>
+        <q-img src="/src/assets/"/>
         <div></div>
         <p>
           Para ter uma melhor experiência
