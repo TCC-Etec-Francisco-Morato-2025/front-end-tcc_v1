@@ -1,29 +1,59 @@
 <script setup lang="ts">
-import usePopUpStore from 'src/stores/popUp';
+import { gsap } from 'gsap';
+import { onMounted } from 'vue';
 
-const popUpStore = usePopUpStore();
+onMounted(() => {
+  animacao()
+})
+
+const animacao = () => {
+  const tml = gsap.timeline();
+
+  tml
+  .from('#linha', { rotate: 90, duration: 1 })
+}
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.fullScreen.estado" persistent transition-show="scale" transition-hide="scale">
-    <q-card class="bg-black text-white" style="width: 300px">
+  <q-card class="bg-black text-white" style="width: 300px" flat>
 
-      <q-card-section class="center">
-        <q-img src="/src/assets/"/>
-        <div></div>
-        <p>
-          Para ter uma melhor experiência
-          <br>
-          Rode o celular
-        </p>
-      </q-card-section>
-
-      <q-card-actions>
-        <div class="flex items-center">
-          <q-checkbox v-model="popUpStore.fullScreen.naoAparecerNovamente" />
-          <span>Não aparcer novamente.</span>
-        </div>
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+    <q-card-section class="animacao center">
+      <q-icon name="screen_rotation" size="80px" />
+      <div id="linha"></div>
+      <p>
+        Para ter uma melhor experiência
+        <br>
+        Rode o celular
+      </p>
+    </q-card-section>
+  </q-card>
 </template>
+
+<style scoped>
+.q-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.animacao {
+  position: relative;
+}
+
+.animacao #linha {
+  background-color: white;
+  height: 270px;
+  width: 10px;
+}
+
+.animacao .q-icon {
+  position: absolute;
+}
+
+.animacao p {
+  position: absolute;
+  font-family: 'Baloo 2';
+  width: 150px;
+}
+</style>
