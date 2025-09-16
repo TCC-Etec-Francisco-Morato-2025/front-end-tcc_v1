@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import sairIcon from '../icons/sairIcon.vue';
 import usePopUpAtividade from 'src/stores/popUpAtividadeStore';
@@ -6,6 +7,7 @@ import useAtacItemStore from 'src/stores/itens/atacStore';
 import useDefeItemStore from 'src/stores/itens/defeStore';
 import useEspecItemStore from 'src/stores/itens/especStore';
 
+const $q = useQuasar();
 const router = useRouter();
 const atacItemStore = useAtacItemStore();
 const defeItemStore = useDefeItemStore();
@@ -14,9 +16,7 @@ const especItemStore = useEspecItemStore();
 const popUpStore = usePopUpAtividade();
 
 const comecarAtividade = () => {
-  document.body.requestFullscreen().catch(()=>{
-    return;
-  })
+  void $q.fullscreen.request();
   router.push('/atividade/introducao').catch((error) => {
     console.error('Erro ao navegar:', error);
   });

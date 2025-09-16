@@ -8,10 +8,6 @@ const usePopUpStore = defineStore('popup', {
       estado: false,
       naoAparecerNovamente: false,
     },
-    fullScreen: {
-      estado: false,
-      naoAparecerNovamente: false,
-    }
   }),
 
   getters: {
@@ -32,19 +28,11 @@ const usePopUpStore = defineStore('popup', {
       if (naoAparecerNovamente) {
         this.confirmar.naoAparecerNovamente = naoAparecerNovamente
       }
-    },
-    toggleFullScreen(naoAparecerNovamente?: boolean) {
-      if (!naoAparecerNovamente)
-        this.fullScreen.estado = !this.fullScreen.estado
-
-      if (naoAparecerNovamente) {
-        this.fullScreen.naoAparecerNovamente = naoAparecerNovamente
-      }
     }
   },
   persist: {
     storage: localStorage,
-    pick: ['confirmar.naoAparecerNovamente','fullScreen.naoAparecerNovamente']
+    pick: ['confirmar.naoAparecerNovamente']
   }
 });
 

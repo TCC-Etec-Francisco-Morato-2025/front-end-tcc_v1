@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import usePopUp from 'src/stores/popUp';
 
+const $q = useQuasar();
 const popUpStore = usePopUp();
 
 const pausar = () => {
@@ -9,19 +11,19 @@ const pausar = () => {
 
 const autorizar = () => {
   popUpStore.toggleNotFullScreen(false);
-  void document.body.requestFullscreen();
+  void $q.fullscreen.request();
 }
 
 const bloquear = ()=>{
   popUpStore.toggleNotFullScreen(true);
 }
 
-if (!document.fullscreenElement) {
+if (!$q.fullscreen.isActive) {
   bloquear();
 }
 
 document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) {
+  if (!$q.fullscreen.isActive) {
     bloquear();
   } else {
     autorizar()
@@ -67,6 +69,6 @@ document.addEventListener('fullscreenchange', () => {
   top: 10px;
   right: 10px;
   position: absolute;
-  z-index: 1;
+  z-index: 100;
 }
 </style>
