@@ -17,6 +17,7 @@
   "dependencies": {
     "@quasar/cli": "^2.5.0",
     "@quasar/extras": "^1.16.4",
+    "@vimeo/player": "^2.29.6",
     "axios": "^1.2.1",
     "firebase": "^12.1.0",
     "gsap": "^3.13.0",

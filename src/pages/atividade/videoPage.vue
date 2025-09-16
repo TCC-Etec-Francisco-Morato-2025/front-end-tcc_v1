@@ -6,6 +6,12 @@ import useMateriaStore from 'src/stores/materiaStore';
 
 const materiaStore = useMateriaStore();
 const corFundo = ref(materiaStore.cor);
+
+const video = ref<HTMLElement|null>(null)
+
+if(video.value){
+  console.log(video.value)
+}
 </script>
 
 <template>
@@ -14,7 +20,8 @@ const corFundo = ref(materiaStore.cor);
   <q-page>
     <main>
       <div class="box-video">
-        <q-video :ratio="16/9" src="/src/assets/"/>
+        <q-video ref="video" :ratio="16/9" src="https://www.youtube.com/embed/LXb3EKWsInQ?controls=0&modestbranding=1&rel=0&autoplay=1"/>
+        <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/LXb3EKWsInQ?si=M607DeOFOj1o8XT5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
       </div>
     </main>
   </q-page>
