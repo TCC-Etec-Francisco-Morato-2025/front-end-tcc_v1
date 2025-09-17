@@ -96,7 +96,7 @@ export default defineConfig((/* ctx */) => {
       //   cert: 'ssl/server.crt',
       //   // ca: ..., // Opcional: se você tiver um certificado CA
       // },
-      allowedHosts: ['enkie.com.br'],
+      allowedHosts: ['enkie.com.br', 'tcc-test.projetos-ezequiel.site'],
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
