@@ -1,48 +1,76 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import {gsap} from 'gsap';
 import usePopUpStore from 'src/stores/popUp';
+import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import screenRotateComponent from 'src/components/atividade/video/screenRotateComponent.vue';
+import questoesComponent from 'src/components/atividade/video/questoesComponent.vue';
 // import useMateriaStore from 'src/stores/materiaStore';
 import videojs from 'video.js'
 
 const popUpStore = usePopUpStore();
+const questoesStore = useQuestoesStore();
 // const materiaStore = useMateriaStore();
 // const corFundo = ref(materiaStore.cor);
-
+const questaoAtual = ref(0)
+const sec = ref(0)
 const videoPlayer = ref<HTMLVideoElement | null>(null)
-let player: ReturnType<typeof videojs> | null = null
+let player: ReturnType<typeof videojs> | null = null;
 
 
 onMounted(() => {
+  // configuração do player
   if (videoPlayer.value) {
     player = videojs(videoPlayer.value, {
       aspectRatio: '16:9',
       controls: false,
-      autoplay: true,
-      preload: 'auto',
+      autoplay:true,
       fluid: true, // responsivo
     })
-    if (pergunta.value) {
-      player.pause();
-    }
+    // verifica a cada segundo o tempo do video
+    player.on('timeupdate',()=>{
+      if(player && player.currentTime()!=undefined){
+        // transforma em numero para depois arredondar
+        const currentTime = player.currentTime();
+        if (typeof currentTime === 'number') {
+          sec.value = Math.floor(currentTime);
+          // vasculha o store de questões para achar correspondente
+          questoesStore.questoes.forEach((el)=>{
+            // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
+            if(el.tempo===sec.value && questaoAtual.value != el.id){
+              questaoAtual.value = el.id;
+              animacaoQuestaoIntro();
+              popUpStore.toggleQuestoes();
+              popUpStore.questoes.playVideo=false;
+              player?.pause();
+            };
+          });
+        };
+      };
+    });
+    watch(()=>popUpStore.questoes.playVideo,()=>{
+      if(popUpStore.questoes.playVideo){
+        animacaoQuestaoLeave();
+        void player?.play();
+      }else{
+        void player?.pause();
+      }
+    });
   }
-  popUpStore.togglePerguntas();
 })
 
 onBeforeUnmount(() => {
   if (player) player.dispose()
 })
 
+const animacaoQuestaoIntro = ()=>{
+  gsap.to(videoPlayer.value,{width:'50dvw', scale: 0.8, duration: 0.5})
+}
 
-// controle das perguntas
-const pergunta = ref(true);
-const value = ref(30);
-
-setInterval(() => {
-  value.value--
-}, 1000)
-
+const animacaoQuestaoLeave = ()=>{
+  gsap.killTweensOf(videoPlayer.value)
+}
 </script>
 
 <template>
@@ -51,74 +79,18 @@ setInterval(() => {
     <screen-rotate-component />
     <main class="center">
       <div class="box-video">
-        <video ref="videoPlayer" class="video-js vjs-big-play-centered" loop>
+        <video ref="videoPlayer" class="video-js vjs-big-play-centered">
           <source src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4" type="video/mp4" />
         </video>
-        <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/LXb3EKWsInQ?si=M607DeOFOj1o8XT5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
       </div>
-      <q-card class="questoes">
-        <q-card-section class="pergunta">
-          <q-avatar>
-            <q-knob readonly show-value font-size="12px" v-model="value" size="50px" :max="30" :thickness="0.22"
-              color="teal" track-color="grey-3" class="q-ma-md">
-              {{ value }}
-            </q-knob>
-          </q-avatar>
-          <p>Qual a equação mais se adequal para essa situação?</p>
-        </q-card-section>
-        <q-card-actions class="resposta">
-          <q-list>
-            <q-item dense clickable v-ripple>
-              <q-item-section avatar class="center">
-                <div class="numero-resposta center">
-                  A
-                </div>
-              </q-item-section>
-
-              <q-item-section class="label-resposta">Lorem ipsum dolor sit amet consectetur adipisicing elit.</q-item-section>
-            </q-item>
-            <q-item dense clickable v-ripple>
-              <q-item-section avatar class="center">
-                <div class="numero-resposta center">
-                  B
-                </div>
-              </q-item-section>
-
-              <q-item-section class="label-resposta">Lorem ipsum</q-item-section>
-            </q-item>
-            <q-item dense clickable v-ripple>
-              <q-item-section avatar class="center">
-                <div class="numero-resposta center">
-                  C
-                </div>
-              </q-item-section>
-
-              <q-item-section class="label-resposta">Lorem ipsum dolor sit</q-item-section>
-            </q-item>
-            <q-item dense clickable v-ripple>
-              <q-item-section avatar class="center">
-                <div class="numero-resposta center">
-                  D
-                </div>
-              </q-item-section>
-
-              <q-item-section class="label-resposta">Lorem ipsum dolor sit amet consectetur adipisicing elit. fdnjism smjd msdkolasn fjdjsn</q-item-section>
-            </q-item>
-          </q-list>
-        </q-card-actions>
-        <q-card-section>
-
-        </q-card-section>
-      </q-card>
+      <div class="box-questoes" v-if="popUpStore.questoes.estado">
+        <questoes-component :questao-id="questaoAtual"/>
+      </div>
     </main>
   </q-page>
 </template>
 
 <style scoped>
-* {
-  padding: 0;
-  margin: 0;
-}
 
 main {
   width: 100dvw;
@@ -128,11 +100,6 @@ main {
   /* background-color: v-bind(corFundo); */
 }
 
-.q-card.perguntas {
-  width: 300px;
-  height: auto;
-}
-
 @media (orientation: portrait) {
   .video-js {
     width: 100dvw !important;
@@ -140,53 +107,13 @@ main {
 }
 
 .video-js {
-  /* width: 80dvw; */
-  width: 50dvw;
+  width: 80dvw;
   height: auto;
   scale: 0.8;
 }
 
 /* config questões */
-.questoes {
-  height: 350px;
-  width: 400px;
-  margin-right: 20px;
-}
-
-.pergunta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 20px 0 20px;
-  font-size: 120%;
-  gap: 10px;
-}
-
-.resposta {
-  flex-direction: column;
-}
-
-.resposta .q-list {
-  width: 80%;
-}
-
-.q-item{
-  min-height: 40px;
-  margin: 20px 0;
-  width: 100%;
-  border-radius: 20px;
-  background-color: var(--cor-principal-1) !important;
-}
-
-.numero-resposta {
-  width: 30px;
-  height: 30px;
-  border: 2px solid white;
-  border-radius: 100%;
-}
-
-.label-resposta{
-  font-size: 80%;
-  padding-right: 5px;
+.box-questoes{
+  position: relative;
 }
 </style>

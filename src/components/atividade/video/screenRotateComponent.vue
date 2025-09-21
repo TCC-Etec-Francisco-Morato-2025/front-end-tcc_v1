@@ -2,9 +2,11 @@
 import { useQuasar } from 'quasar';
 import { gsap } from 'gsap';
 import { onMounted, ref } from 'vue';
+import usePopUpStore from 'src/stores/popUp';
 
 const $q = useQuasar();
-const aparecer_orientacao = ref(false)
+const aparecer_orientacao = ref(false);
+const popUpStore = usePopUpStore();
 
 onMounted(() => {
   if ($q.screen.width < $q.screen.height) {
@@ -26,6 +28,7 @@ const animacao = () => {
     .to('.texto_screen_rotation', { opacity: 0, x: 0, duration: 0.4 }, '-=0.4')
     .to('#linha', {
       width: 0, duration: 1, onComplete: () => {
+        popUpStore.questoes.playVideo=true;
         aparecer_orientacao.value = false;
       }
     }, '-=0.4')

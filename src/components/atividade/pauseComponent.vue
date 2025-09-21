@@ -13,11 +13,13 @@ const materiaStore = useMateriaStore();
 const router = useRouter();
 
 const continuar = () => {
+  popUpStore.questoes.playVideo = true;
   popUpStore.togglePause()
 }
 
 const confirmar = () => {
   popUpStore.togglePause()
+  popUpStore.questoes.estado = false;
   popUpStore.toggleConfirmar()
   void router.push(`/materias/${materiaStore.path}`);
   document.exitFullscreen().catch(() => {
@@ -30,6 +32,7 @@ const sair = () => {
     popUpStore.toggleConfirmar();
   } else {
     popUpStore.togglePause();
+    popUpStore.questoes.estado = false;
     void router.push(`/materias/${materiaStore.path}`);
     document.exitFullscreen().catch(() => {
       return;

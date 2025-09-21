@@ -6,6 +6,7 @@ const $q = useQuasar();
 const popUpStore = usePopUp();
 
 const pausar = () => {
+  popUpStore.questoes.playVideo=false;
   popUpStore.togglePause();
 }
 

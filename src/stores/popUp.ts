@@ -8,7 +8,10 @@ const usePopUpStore = defineStore('popup', {
       estado: false,
       naoAparecerNovamente: false,
     },
-    perguntas: false
+    questoes: {
+      estado:false,
+      playVideo:false
+    }
   }),
 
   getters: {
@@ -30,8 +33,8 @@ const usePopUpStore = defineStore('popup', {
         this.confirmar.naoAparecerNovamente = naoAparecerNovamente
       }
     },
-    togglePerguntas() {
-      this.perguntas = !this.perguntas;
+    toggleQuestoes() {
+      this.questoes.estado = !this.questoes.estado;
     }
   },
   persist: {
