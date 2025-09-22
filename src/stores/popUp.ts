@@ -10,7 +10,7 @@ const usePopUpStore = defineStore('popup', {
     },
     questoes: {
       estado:false,
-      playVideo:false
+      playVideo:true
     }
   }),
 

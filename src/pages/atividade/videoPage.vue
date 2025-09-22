@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import {gsap} from 'gsap';
+import { gsap } from 'gsap';
 import usePopUpStore from 'src/stores/popUp';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 import pauseComponent from 'src/components/atividade/pauseComponent.vue';
@@ -15,6 +15,7 @@ const questoesStore = useQuestoesStore();
 // const corFundo = ref(materiaStore.cor);
 const questaoAtual = ref(0)
 const sec = ref(0)
+const boxQuestoes = ref<HTMLElement | null>(null)
 const videoPlayer = ref<HTMLVideoElement | null>(null)
 let player: ReturnType<typeof videojs> | null = null;
 
@@ -25,35 +26,41 @@ onMounted(() => {
     player = videojs(videoPlayer.value, {
       aspectRatio: '16:9',
       controls: false,
-      autoplay:true,
+      autoplay: true,
       fluid: true, // responsivo
     })
     // verifica a cada segundo o tempo do video
-    player.on('timeupdate',()=>{
-      if(player && player.currentTime()!=undefined){
+    player.on('timeupdate', () => {
+      if (player && player.currentTime() != undefined) {
         // transforma em numero para depois arredondar
         const currentTime = player.currentTime();
         if (typeof currentTime === 'number') {
           sec.value = Math.floor(currentTime);
           // vasculha o store de questões para achar correspondente
-          questoesStore.questoes.forEach((el)=>{
+          questoesStore.questoes.forEach((el) => {
             // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
-            if(el.tempo===sec.value && questaoAtual.value != el.id){
+            if (el.tempo === sec.value && questaoAtual.value != el.id) {
               questaoAtual.value = el.id;
-              animacaoQuestaoIntro();
+              // função para ativar o popup
               popUpStore.toggleQuestoes();
-              popUpStore.questoes.playVideo=false;
+              // garante que a variavel que controla o video sempre esteja false quando ele for pausado
+              popUpStore.questoes.playVideo = false;
               player?.pause();
+              void animacaoQuestao();
             };
           });
         };
       };
     });
-    watch(()=>popUpStore.questoes.playVideo,()=>{
-      if(popUpStore.questoes.playVideo){
-        animacaoQuestaoLeave();
+    watch(() => popUpStore.questoes.playVideo, async () => {
+      if (popUpStore.questoes.playVideo) {
+        // esperar animação de voltar
+        if(popUpStore.questoes.estado){
+          await animacaoQuestao();
+          popUpStore.toggleQuestoes();
+        }
         void player?.play();
-      }else{
+      } else {
         void player?.pause();
       }
     });
@@ -64,13 +71,25 @@ onBeforeUnmount(() => {
   if (player) player.dispose()
 })
 
-const animacaoQuestaoIntro = ()=>{
-  gsap.to(videoPlayer.value,{width:'50dvw', scale: 0.8, duration: 0.5})
-}
+// animação
+const tml = gsap.timeline({ paused: true });
 
-const animacaoQuestaoLeave = ()=>{
-  gsap.killTweensOf(videoPlayer.value)
-}
+const animacaoQuestao = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    if (!popUpStore.questoes.playVideo) {
+      // constrói animação se ainda não foi montada
+      tml.clear();
+      tml.fromTo(videoPlayer.value, { x: 0 }, { x: -250, scale: 0.5, duration: 1 })
+         .fromTo(boxQuestoes.value, { x: 700 }, { x: 200, duration: 1 }, "-=0.8");
+
+      tml.eventCallback("onComplete", () => resolve(true));
+      tml.play();
+    } else {
+      tml.reverse();
+      tml.eventCallback("onReverseComplete", () => resolve(true));
+    }
+  });
+};
 </script>
 
 <template>
@@ -83,16 +102,17 @@ const animacaoQuestaoLeave = ()=>{
           <source src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4" type="video/mp4" />
         </video>
       </div>
-      <div class="box-questoes" v-if="popUpStore.questoes.estado">
-        <questoes-component :questao-id="questaoAtual"/>
+      <div ref="boxQuestoes" class="box-questoes">
+        <questoes-component :questao-id="questaoAtual" v-if="popUpStore.questoes.estado" />
       </div>
     </main>
   </q-page>
 </template>
 
 <style scoped>
-
 main {
+  overflow: hidden;
+  position: relative;
   width: 100dvw;
   height: 100dvh;
   background-color: black;
@@ -102,18 +122,21 @@ main {
 
 @media (orientation: portrait) {
   .video-js {
-    width: 100dvw !important;
+    scale: 1;
   }
 }
 
-.video-js {
-  width: 80dvw;
-  height: auto;
-  scale: 0.8;
+@media (orientation: landscape) {
+  .video-js {
+    width: 100dvw;
+    height: auto;
+    scale: 0.8;
+  }
 }
 
 /* config questões */
-.box-questoes{
-  position: relative;
+.box-questoes {
+  position: absolute;
+  z-index: 1;
 }
 </style>

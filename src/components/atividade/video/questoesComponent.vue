@@ -52,7 +52,6 @@ watch(() => props.questaoId, async() => {
 // criar respostas
 const criarRespostas = (): Promise<boolean> => {
   return new Promise((resolve) => {
-    respostas.value = [];
     questoesStore.resposta.forEach((el) => {
       if (el.perguntaId === props.questaoId) {
         respostas.value.push(el);
@@ -110,7 +109,7 @@ const animacaoResultado = async (resposta: boolean) => {
 
       setTimeout(() => {
         encerrar()
-      }, 4000);
+      }, 2000);
     },100)
   }
 }
@@ -134,18 +133,12 @@ const tempoEsgotado = async () => {
 
     setTimeout(() => {
       encerrar()
-    }, 4000);
+    }, 2000);
   }
 }
 
 const encerrar = () => {
-  respostas.value = [];
-  showTempoEsgotado.value = false;
-  showItensTempoEsgotado.value = false;
-  showResultado.value = false;
-  showItensResultado.value = false;
   popUpStore.questoes.playVideo = true;
-  popUpStore.toggleQuestoes();
 }
 </script>
 

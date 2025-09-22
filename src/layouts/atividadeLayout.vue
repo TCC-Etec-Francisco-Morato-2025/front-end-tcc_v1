@@ -52,7 +52,7 @@ document.addEventListener('fullscreenchange', () => {
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-btn icon="pause" class="btn-pause" size="15px" flat @click="pausar" />
+    <q-btn icon="pause" class="btn-pause" size="15px" flat @click="pausar" v-show="!popUpStore.questoes.estado"/>
     <q-page-container>
       <router-view />
     </q-page-container>
