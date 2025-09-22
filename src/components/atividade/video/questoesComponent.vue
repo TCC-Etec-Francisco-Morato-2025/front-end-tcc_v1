@@ -63,7 +63,7 @@ const criarRespostas = (): Promise<boolean> => {
 
 // conta o time
 const contar = () => {
-    time.value = questoesStore.questoes[props.questaoId]?.conometro ?? 15;
+    time.value = questoesStore.questoes[props.questaoId]?.cronometro ?? 15;
     setInterval(() => {
       time.value--
       if (time.value == 0 && !showResultado.value) {
@@ -159,7 +159,7 @@ const encerrar = () => {
     <q-card-section class="pergunta">
 
       <q-avatar>
-        <q-knob readonly :max="questoesStore.questoes[props.questaoId]?.conometro" v-model="time" show-value size="50px" :thickness="0.22" track-color="grey-3"
+        <q-knob readonly :max="questoesStore.questoes[props.questaoId]?.cronometro" v-model="time" show-value size="50px" :thickness="0.22" track-color="grey-3"
           class="q-ma-md" />
       </q-avatar>
 

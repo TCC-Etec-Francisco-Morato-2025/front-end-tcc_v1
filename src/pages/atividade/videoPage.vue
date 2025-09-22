@@ -7,18 +7,29 @@ import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import screenRotateComponent from 'src/components/atividade/video/screenRotateComponent.vue';
 import questoesComponent from 'src/components/atividade/video/questoesComponent.vue';
 // import useMateriaStore from 'src/stores/materiaStore';
-import videojs from 'video.js'
+import videojs from 'video.js';
+import "node_modules/video.js/dist/video-js.css";
+
+interface VideoJsOptions {
+  autoplay?: boolean;
+  controls?: boolean;
+  responsive?: boolean;
+  fluid?: boolean;
+  sources: {
+    src: string;
+    type: string;
+  }[];
+}
 
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
 // const materiaStore = useMateriaStore();
 // const corFundo = ref(materiaStore.cor);
-const questaoAtual = ref(0)
-const sec = ref(0)
-const boxQuestoes = ref<HTMLElement | null>(null)
-const videoPlayer = ref<HTMLVideoElement | null>(null)
+const questaoAtual = ref(0);
+const sec = ref(0);
+const boxQuestoes = ref<HTMLElement | null>(null);
+const videoPlayer = ref<HTMLVideoElement | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
-
 
 onMounted(() => {
   // configuração do player
@@ -27,14 +38,14 @@ onMounted(() => {
       aspectRatio: '16:9',
       controls: false,
       autoplay: true,
-      fluid: true, // responsivo
-    })
+      preload:'metadata',// responsivo
+      playsinline: true,
+    });
     // verifica a cada segundo o tempo do video
     player.on('timeupdate', () => {
-      if (player && player.currentTime() != undefined) {
         // transforma em numero para depois arredondar
-        const currentTime = player.currentTime();
-        if (typeof currentTime === 'number') {
+        const currentTime = player?.currentTime();
+        if (currentTime !== undefined) {
           sec.value = Math.floor(currentTime);
           // vasculha o store de questões para achar correspondente
           questoesStore.questoes.forEach((el) => {
@@ -47,29 +58,31 @@ onMounted(() => {
               popUpStore.questoes.playVideo = false;
               player?.pause();
               void animacaoQuestao();
-            };
+            }
           });
-        };
-      };
-    });
-    watch(() => popUpStore.questoes.playVideo, async () => {
-      if (popUpStore.questoes.playVideo) {
-        // esperar animação de voltar
-        if(popUpStore.questoes.estado){
-          await animacaoQuestao();
-          popUpStore.toggleQuestoes();
         }
-        void player?.play();
-      } else {
-        void player?.pause();
-      }
     });
+    watch(
+      () => popUpStore.questoes.playVideo,
+      async () => {
+        if (popUpStore.questoes.playVideo) {
+          // esperar animação de voltar
+          if (popUpStore.questoes.estado) {
+            await animacaoQuestao();
+            popUpStore.toggleQuestoes();
+          }
+          void player?.play();
+        } else {
+          void player?.pause();
+        }
+      }
+    );
   }
-})
+});
 
 onBeforeUnmount(() => {
-  if (player) player.dispose()
-})
+  if (player) player.dispose();
+});
 
 // animação
 const tml = gsap.timeline({ paused: true });
@@ -79,14 +92,15 @@ const animacaoQuestao = (): Promise<boolean> => {
     if (!popUpStore.questoes.playVideo) {
       // constrói animação se ainda não foi montada
       tml.clear();
-      tml.fromTo(videoPlayer.value, { x: 0 }, { x: -250, scale: 0.5, duration: 1 })
-         .fromTo(boxQuestoes.value, { x: 700 }, { x: 200, duration: 1 }, "-=0.8");
+      tml
+        .fromTo(videoPlayer.value, { x: 0 }, { x: -250, scale: 0.5, duration: 1 })
+        .fromTo(boxQuestoes.value, { x: 700 }, { x: '10dvw', duration: 1 }, '-=0.8');
 
-      tml.eventCallback("onComplete", () => resolve(true));
+      tml.eventCallback('onComplete', () => resolve(true));
       tml.play();
     } else {
       tml.reverse();
-      tml.eventCallback("onReverseComplete", () => resolve(true));
+      tml.eventCallback('onReverseComplete', () => resolve(true));
     }
   });
 };
@@ -97,11 +111,14 @@ const animacaoQuestao = (): Promise<boolean> => {
   <q-page>
     <screen-rotate-component />
     <main class="center">
-      <div class="box-video">
+      <q-responsive :ratio="16/9" class="w-100 h-100">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
-          <source src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4" type="video/mp4" />
+          <source
+            src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4"
+            type="video/mp4"
+          />
         </video>
-      </div>
+      </q-responsive>
       <div ref="boxQuestoes" class="box-questoes">
         <questoes-component :questao-id="questaoAtual" v-if="popUpStore.questoes.estado" />
       </div>
@@ -120,17 +137,18 @@ main {
   /* background-color: v-bind(corFundo); */
 }
 
-@media (orientation: portrait) {
+/* celular em pé */
+/* @media (orientation: portrait) {
   .video-js {
     scale: 1;
   }
-}
+} */
 
 @media (orientation: landscape) {
   .video-js {
-    width: 100dvw;
-    height: auto;
-    scale: 0.8;
+    max-width: 90dvw;
+    max-height: 100dvh !important;
+    scale: 1;
   }
 }
 
