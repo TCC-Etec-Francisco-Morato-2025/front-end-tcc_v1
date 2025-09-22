@@ -14,7 +14,7 @@ export default defineConfig((/* ctx */) => {
     boot: ['axios','config','firebase','vue3-tour'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
-    css: ['main.css'],
+    css: ['main.css','../../node_modules/video.js/dist/video-js.css'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [

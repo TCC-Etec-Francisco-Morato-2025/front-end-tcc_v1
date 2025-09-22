@@ -8,18 +8,6 @@ import screenRotateComponent from 'src/components/atividade/video/screenRotateCo
 import questoesComponent from 'src/components/atividade/video/questoesComponent.vue';
 // import useMateriaStore from 'src/stores/materiaStore';
 import videojs from 'video.js';
-import "node_modules/video.js/dist/video-js.css";
-
-interface VideoJsOptions {
-  autoplay?: boolean;
-  controls?: boolean;
-  responsive?: boolean;
-  fluid?: boolean;
-  sources: {
-    src: string;
-    type: string;
-  }[];
-}
 
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
@@ -35,10 +23,9 @@ onMounted(() => {
   // configuração do player
   if (videoPlayer.value) {
     player = videojs(videoPlayer.value, {
-      aspectRatio: '16:9',
       controls: false,
       autoplay: true,
-      preload:'metadata',// responsivo
+      preload:'auto',
       playsinline: true,
     });
     // verifica a cada segundo o tempo do video
@@ -93,8 +80,8 @@ const animacaoQuestao = (): Promise<boolean> => {
       // constrói animação se ainda não foi montada
       tml.clear();
       tml
-        .fromTo(videoPlayer.value, { x: 0 }, { x: -250, scale: 0.5, duration: 1 })
-        .fromTo(boxQuestoes.value, { x: 700 }, { x: '10dvw', duration: 1 }, '-=0.8');
+        .fromTo(videoPlayer.value, { x: 0 }, { x: '-24dvw', scale: '0.4', duration: 1 })
+        .fromTo(boxQuestoes.value, { x: 700 }, { x: '24dvw', duration: 1 }, '-=0.8');
 
       tml.eventCallback('onComplete', () => resolve(true));
       tml.play();
@@ -111,7 +98,7 @@ const animacaoQuestao = (): Promise<boolean> => {
   <q-page>
     <screen-rotate-component />
     <main class="center">
-      <q-responsive :ratio="16/9" class="w-100 h-100">
+      <q-responsive ref="boxPlayer" :ratio="16/9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
           <source
             src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4"
@@ -145,9 +132,9 @@ main {
 } */
 
 @media (orientation: landscape) {
-  .video-js {
-    max-width: 90dvw;
-    max-height: 100dvh !important;
+  .q-responsive {
+    width: 100dvw;
+    height: auto;
     scale: 1;
   }
 }
