@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { gsap } from 'gsap';
 import usePopUpStore from 'src/stores/popUp';
@@ -9,6 +10,7 @@ import questoesComponent from 'src/components/atividade/video/questoesComponent.
 // import useMateriaStore from 'src/stores/materiaStore';
 import videojs from 'video.js';
 
+const $q = useQuasar();
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
 // const materiaStore = useMateriaStore();
@@ -24,10 +26,13 @@ onMounted(() => {
   if (videoPlayer.value) {
     player = videojs(videoPlayer.value, {
       controls: false,
-      autoplay: true,
       preload:'auto',
       playsinline: true,
     });
+
+    if($q.screen.height<$q.screen.width){
+      player.autoplay(true);
+    }
     // verifica a cada segundo o tempo do video
     player.on('timeupdate', () => {
         // transforma em numero para depois arredondar
@@ -71,6 +76,11 @@ onBeforeUnmount(() => {
   if (player) player.dispose();
 });
 
+const resetarVideo = () =>{
+  player?.currentTime(0);
+  void player?.play();
+}
+
 // animação
 const tml = gsap.timeline({ paused: true });
 
@@ -94,7 +104,7 @@ const animacaoQuestao = (): Promise<boolean> => {
 </script>
 
 <template>
-  <pause-component />
+  <pause-component @reiniciar="resetarVideo"/>
   <q-page>
     <screen-rotate-component />
     <main class="center">
@@ -131,12 +141,12 @@ main {
   }
 } */
 
+.q-responsive {
+  width: 100dvw;
+  height: auto;
+  scale: 1;
+}
 @media (orientation: landscape) {
-  .q-responsive {
-    width: 100dvw;
-    height: auto;
-    scale: 1;
-  }
 }
 
 /* config questões */

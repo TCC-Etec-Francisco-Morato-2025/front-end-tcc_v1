@@ -10,6 +10,7 @@ const popUpStore = usePopUpStore();
 
 onMounted(() => {
   if ($q.screen.width < $q.screen.height) {
+    popUpStore.questoes.playVideo=false;
     aparecer_orientacao.value = true;
     animacao();
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue';
+import { defineEmits , watch } from 'vue';
 import { useRouter } from 'vue-router';
 import usePopUpStore from 'src/stores/popUp';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
@@ -44,6 +44,12 @@ const reiniciar = () => {
   emits('reiniciar')
   popUpStore.togglePause()
 };
+
+watch(()=>popUpStore.pause,()=>{
+  if(popUpStore.pause==false){
+    popUpStore.questoes.playVideo=true
+  }
+})
 </script>
 
 <template>
