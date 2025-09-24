@@ -89,9 +89,16 @@ const animacaoQuestao = (): Promise<boolean> => {
     if (!popUpStore.questoes.playVideo) {
       // constrói animação se ainda não foi montada
       tml.clear();
-      tml
-        .fromTo(videoPlayer.value, { x: 0 }, { x: '-24dvw', scale: '0.4', duration: 1 })
-        .fromTo(boxQuestoes.value, { x: 700 }, { x: '24dvw', duration: 1 }, '-=0.8');
+
+      if($q.screen.height<$q.screen.width){
+        tml
+          .fromTo(videoPlayer.value, { x: 0 }, { x: '-24dvw', scale: '0.4', duration: 1 })
+          .fromTo(boxQuestoes.value, { x: 700 }, { x: '24dvw', duration: 1 }, '-=0.8');
+      }else{
+        tml
+          .fromTo(videoPlayer.value, { y: 0 }, { y: '-22dvh', duration: 1 })
+          .fromTo(boxQuestoes.value, { y: '100dvh' }, { y: '30dvh', duration: 1 }, '-=0.8');
+      }
 
       tml.eventCallback('onComplete', () => resolve(true));
       tml.play();

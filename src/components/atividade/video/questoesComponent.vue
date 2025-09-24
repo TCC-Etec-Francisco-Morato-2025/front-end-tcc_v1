@@ -1,53 +1,54 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, onMounted } from 'vue';
 import { gsap } from 'gsap';
-import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
+import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 import usePopUpStore from 'src/stores/popUp';
 
 interface props {
-  questaoId: number
+  questaoId: number;
 }
 
 interface Respostas {
-  perguntaId: number,
-  resposta: string,
-  certa: boolean
+  perguntaId: number;
+  resposta: string;
+  certa: boolean;
 }
 
 // variaveis pinia
-const popUpStore = usePopUpStore()
+const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
 
-
 // variaveis que faz o tempo esgotado funcionar
-const boxTempoEsgotado = ref<HTMLElement | null>(null)
-const showTempoEsgotado = ref(false)
-const showItensTempoEsgotado = ref(false)
+const boxTempoEsgotado = ref<HTMLElement | null>(null);
+const showTempoEsgotado = ref(false);
+const showItensTempoEsgotado = ref(false);
 
 // variaveis que faz o resultado da resposta funcionar
-const boxResultado = ref<HTMLElement | null>(null)
-const isCorreta = ref('')
-const corResultado = ref('')
-const iconeResultado = ref('')
-const showItensResultado = ref(false)
-const showResultado = ref(false)
-
+const boxResultado = ref<HTMLElement | null>(null);
+const isCorreta = ref('');
+const corResultado = ref('');
+const iconeResultado = ref('');
+const showItensResultado = ref(false);
+const showResultado = ref(false);
 
 const props = defineProps<props>();
 const time = ref(0);
-const respostas = ref<Respostas[]>([])
+const respostas = ref<Respostas[]>([]);
 
-
-onMounted(async()=>{
+onMounted(async () => {
   await criarRespostas();
   contar();
-})
+});
 
 // verifica se tem alguma pergunta nova a ser feita
-watch(() => props.questaoId, async() => {
-  await criarRespostas();
-}, { deep: true })
+watch(
+  () => props.questaoId,
+  async () => {
+    await criarRespostas();
+  },
+  { deep: true }
+);
 
 // criar respostas
 const criarRespostas = (): Promise<boolean> => {
@@ -63,31 +64,32 @@ const criarRespostas = (): Promise<boolean> => {
 
 // conta o time
 const contar = () => {
-    time.value = questoesStore.questoes[props.questaoId]?.cronometro ?? 15;
-    setInterval(() => {
-      time.value--
-      if (time.value == 0 && !showResultado.value) {
-        void tempoEsgotado();
-      }
-    }, 1000)
-}
+  time.value = questoesStore.questoes[props.questaoId]?.cronometro ?? 15;
+  setInterval(() => {
+    time.value--;
+    if (time.value == 0 && !showResultado.value) {
+      void tempoEsgotado();
+    }
+  }, 1000);
+};
 
 // função que checa que ele foi certas ou errada
 const resultado = (resposta: boolean) => {
   if (resposta) {
-    isCorreta.value = 'correta!!'
-    corResultado.value = 'rgb(2, 136, 2)'
-    iconeResultado.value = 'https://lottie.host/5767d6f6-6489-49b8-92cf-ab0eb36664fb/9ekbGq8RxN.json'
+    isCorreta.value = 'correta!!';
+    corResultado.value = 'rgb(2, 136, 2)';
+    iconeResultado.value =
+      'https://lottie.host/5767d6f6-6489-49b8-92cf-ab0eb36664fb/9ekbGq8RxN.json';
   } else {
-    isCorreta.value = 'errada'
-    corResultado.value = 'rgb(153, 3, 3)'
-    iconeResultado.value = 'https://lottie.host/0dc1f535-5b39-4df8-8772-5484b4a6119c/FknvN5XfBL.json'
+    isCorreta.value = 'errada';
+    corResultado.value = 'rgb(153, 3, 3)';
+    iconeResultado.value =
+      'https://lottie.host/0dc1f535-5b39-4df8-8772-5484b4a6119c/FknvN5XfBL.json';
   }
-}
+};
 
 // função para animação da resposta
 const animacaoResultado = async (resposta: boolean) => {
-
   resultado(resposta);
 
   showResultado.value = true;
@@ -103,16 +105,16 @@ const animacaoResultado = async (resposta: boolean) => {
       ease: 'back.out',
     });
 
-    setTimeout(()=>{
+    setTimeout(() => {
       // fazer os itens aparecerem
       showItensResultado.value = true;
 
       setTimeout(() => {
-        encerrar()
+        encerrar();
       }, 2000);
-    },100)
+    }, 100);
   }
-}
+};
 
 const tempoEsgotado = async () => {
   showTempoEsgotado.value = true;
@@ -132,21 +134,25 @@ const tempoEsgotado = async () => {
     showItensTempoEsgotado.value = true;
 
     setTimeout(() => {
-      encerrar()
+      encerrar();
     }, 2000);
   }
-}
+};
 
 const encerrar = () => {
   popUpStore.questoes.playVideo = true;
-}
+};
 </script>
 
 <template>
   <div ref="boxTempoEsgotado" class="resultado center" v-if="showTempoEsgotado">
     <span v-if="showItensTempoEsgotado">Tempo Esgotado</span>
-    <DotLottieVue style="scale: 2;" autoplay
-      src="https://lottie.host/74136ad9-98d0-4d7e-9e0d-a3e7e02cc37d/BM6BH5mW56.json" v-if="showItensTempoEsgotado" />
+    <DotLottieVue
+      style="scale: 2"
+      autoplay
+      src="https://lottie.host/74136ad9-98d0-4d7e-9e0d-a3e7e02cc37d/BM6BH5mW56.json"
+      v-if="showItensTempoEsgotado"
+    />
   </div>
 
   <div ref="boxResultado" class="resultado center" v-if="showResultado">
@@ -155,24 +161,33 @@ const encerrar = () => {
   </div>
 
   <q-card class="questoes" flat>
-
     <q-card-section class="pergunta">
-
       <q-avatar>
-        <q-knob readonly :max="questoesStore.questoes[props.questaoId]?.cronometro" v-model="time" show-value size="50px" :thickness="0.22" track-color="grey-3"
-          class="q-ma-md" />
+        <q-knob
+          readonly
+          :max="questoesStore.questoes[props.questaoId]?.cronometro"
+          v-model="time"
+          show-value
+          size="50px"
+          :thickness="0.22"
+          track-color="grey-3"
+          class="q-ma-md"
+        />
       </q-avatar>
 
       <span>{{ questoesStore.questoes[props.questaoId]?.pergunta }}</span>
-
     </q-card-section>
 
     <q-card-actions class="resposta">
       <q-list>
-
-        <q-item dense clickable v-ripple v-for="(resposta, indexOf) in respostas" :key="indexOf"
-          @click="animacaoResultado(resposta.certa)">
-
+        <q-item
+          dense
+          clickable
+          v-ripple
+          v-for="(resposta, indexOf) in respostas"
+          :key="indexOf"
+          @click="animacaoResultado(resposta.certa)"
+        >
           <q-item-section class="label-resposta">{{ resposta.resposta }}</q-item-section>
         </q-item>
       </q-list>
@@ -181,6 +196,21 @@ const encerrar = () => {
 </template>
 
 <style scoped>
+@media (orientation: portrait) {
+  .questoes {
+    border-radius: 0;
+    height: 30dvh;
+    width: 100dvw;
+    margin-right: 0;
+  }
+
+  .pergunta {
+    padding: 20px 20px 0 20px;
+    font-size: 120%;
+    gap: 10px;
+  }
+}
+
 * {
   overflow: hidden;
 }
