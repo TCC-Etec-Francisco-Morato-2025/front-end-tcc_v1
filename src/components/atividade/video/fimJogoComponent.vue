@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePopUpStore } from 'src/stores/popUp';
+import usePopUpStore  from 'src/stores/popUp';
 
 const popUpStore = usePopUpStore();
 

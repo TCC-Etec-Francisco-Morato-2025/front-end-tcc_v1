@@ -4,6 +4,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { gsap } from 'gsap';
 import usePopUpStore from 'src/stores/popUp';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
+import fimJogoComponent from 'src/components/atividade/video/fimJogoComponent.vue';
 import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import screenRotateComponent from 'src/components/atividade/video/screenRotateComponent.vue';
 import questoesComponent from 'src/components/atividade/video/questoesComponent.vue';
@@ -113,6 +114,7 @@ const animacaoQuestao = (): Promise<boolean> => {
 </script>
 
 <template>
+  <fim-jogo-component />
   <pause-component @reiniciar="resetarVideo"/>
   <q-page>
     <screen-rotate-component />
