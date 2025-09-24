@@ -2,13 +2,13 @@
 import { defineEmits , watch } from 'vue';
 import { useRouter } from 'vue-router';
 import usePopUpStore from 'src/stores/popUp';
-import useAtividadesStore from 'src/stores/materias/atividadesStore';
+import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import useMateriaStore from 'src/stores/materiaStore';
 
 const emits = defineEmits(['reiniciar'])
 
 const popUpStore = usePopUpStore();
-const atividadesStore = useAtividadesStore();
+const atividadeStore = useAtividadeStore();
 const materiaStore = useMateriaStore();
 const router = useRouter();
 
@@ -57,7 +57,7 @@ watch(()=>popUpStore.pause,()=>{
     <q-card class="center">
       <q-card-section class="titulo">
         <h2 class="center">
-          {{ atividadesStore.atividades[0]?.nome }}
+          {{ atividadeStore.titulo }}<br />
           <span>Introdução</span>
         </h2>
       </q-card-section>

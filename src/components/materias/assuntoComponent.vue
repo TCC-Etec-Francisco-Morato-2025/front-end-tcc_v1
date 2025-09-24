@@ -4,10 +4,11 @@
 import { defineProps, ref } from 'vue';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useMateriaStore from 'src/stores/materiaStore';
-import usePopUpAtividade from 'src/stores/popUpAtividadeStore';
+import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
+import usePopUpStore from 'src/stores/popUp';
 import setaIcon from '../icons/setaIcon.vue';
 
-class Atividade{
+class Atividade {
   id: number;
   nome: string;
   estrelas: number;
@@ -16,26 +17,36 @@ class Atividade{
   materia: number;
   proxima: boolean;
 
-  constructor( id:number, nome:string, estrelas:number, descricao:string, assunto:number, materia:number, proxima:boolean ){
-    this.id = id
-    this.nome = nome
-    this.estrelas = estrelas
-    this.descricao = descricao
-    this.assunto = assunto
-    this.materia = materia
-    this.proxima = proxima
+  constructor(
+    id: number,
+    nome: string,
+    estrelas: number,
+    descricao: string,
+    assunto: number,
+    materia: number,
+    proxima: boolean
+  ) {
+    this.id = id;
+    this.nome = nome;
+    this.estrelas = estrelas;
+    this.descricao = descricao;
+    this.assunto = assunto;
+    this.materia = materia;
+    this.proxima = proxima;
   }
 }
 
-const popUpStore = usePopUpAtividade();
+const popUpStore = usePopUpStore();
+const atividadeStore = useAtividadeStore();
 const atividadesStore = useAtividadesStore();
 const materiaStore = useMateriaStore();
 const atividades = ref<Atividade[]>([]);
 const estadoLista = ref(false);
 const btn = ref<HTMLElement | null>(null);
 
-const ativarPopUp = (nome: string, descricao: string, estrelas: number) => {
-  popUpStore.acionarAtiviade(true, estrelas, nome, descricao);
+const ativarPopUp = (id: number, titulo: string, estrelas: number, descricao: string, assunto: number, materia: number) => {
+  atividadeStore.mudarAtividade(id,assunto,materia,titulo,estrelas,descricao);
+  popUpStore.toggleAtividade();
 };
 
 const mutEstadoLista = () => {
@@ -47,7 +58,7 @@ const mutEstadoLista = () => {
 
 interface props {
   id: number;
-  nome:string;
+  nome: string;
   cor: string;
   textColor: string;
 }
@@ -60,11 +71,18 @@ const corTextAtivo = ref(props.textColor);
 // achar as ativiades dessa matéria em especifico, caso a pessoa já tenha entrado em outras matérias
 atividadesStore.atividades.forEach((el) => {
   if (el.assunto === props.id && el.materia === materiaStore.id) {
-    const atividade = new Atividade(el.id,el.nome,el.estrelas,el.descricao,el.assunto,el.materia,false)
+    const atividade = new Atividade(
+      el.id,
+      el.nome,
+      el.estrelas,
+      el.descricao,
+      el.assunto,
+      el.materia,
+      false
+    );
     atividades.value.push(atividade);
   }
 });
-
 
 for (let i = 0; i < atividades.value.length; i++) {
   const atividade = atividades.value[i];
@@ -124,7 +142,7 @@ const descidirAnimacao = (quant_estrela: number) => {
                 :push="atividade.estrelas > 0 || atividade.proxima"
                 :flat="atividade.estrelas == 0 && !atividade.proxima"
                 :disable="atividade.estrelas == 0 && !atividade.proxima"
-                @click="ativarPopUp(atividade.nome, atividade.descricao, atividade.estrelas)"
+                @click="ativarPopUp(atividade.id, atividade.nome, atividade.estrelas, atividade.descricao, atividade.assunto, atividade.materia)"
               >
                 <!-- ativiades de verdade organizadas em lista -->
                 <q-item>

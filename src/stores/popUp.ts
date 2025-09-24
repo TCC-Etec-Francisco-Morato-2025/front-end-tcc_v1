@@ -11,7 +11,9 @@ const usePopUpStore = defineStore('popup', {
     questoes: {
       estado:false,
       playVideo:true
-    }
+    },
+    fimJogo: false,
+    atividade: false
   }),
 
   getters: {
@@ -35,6 +37,12 @@ const usePopUpStore = defineStore('popup', {
     },
     toggleQuestoes() {
       this.questoes.estado = !this.questoes.estado;
+    },
+    toggleFimJogo(){
+      this.fimJogo = !this.fimJogo;
+    },
+    toggleAtividade(){
+      this.atividade = !this.atividade;
     }
   },
   persist: {

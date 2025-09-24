@@ -25,7 +25,7 @@ const animacao = () => {
     .to('.screen_rotation', { opacity: 1, x: -70, duration: 0.4 })
     .to('.texto_screen_rotation', { opacity: 1, x: 100, duration: 0.4 }, '-=0.4')
     .to('.screen_rotation', { rotate: -50, duration: 1 }, '-=0.2')
-    .to('.screen_rotation', { opacity: 0, x: 0, duration: 0.4 }, '+=0.5')
+    .to('.screen_rotation', { opacity: 0, x: 0, duration: 0.4 }, '+=1')
     .to('.texto_screen_rotation', { opacity: 0, x: 0, duration: 0.4 }, '-=0.4')
     .to('#linha', {
       width: 0, duration: 1, onComplete: () => {

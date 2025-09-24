@@ -78,7 +78,9 @@ onBeforeUnmount(() => {
 
 const resetarVideo = () =>{
   player?.currentTime(0);
+  questaoAtual.value = 0;
   void player?.play();
+  popUpStore.questoes.playVideo = true;
 }
 
 // animação
@@ -92,12 +94,12 @@ const animacaoQuestao = (): Promise<boolean> => {
 
       if($q.screen.height<$q.screen.width){
         tml
-          .fromTo(videoPlayer.value, { x: 0 }, { x: '-24dvw', scale: '0.4', duration: 1 })
+          .fromTo('.q-responsive', { x: 0 }, { x: '-24dvw', scale: '0.4', duration: 1 })
           .fromTo(boxQuestoes.value, { x: 700 }, { x: '24dvw', duration: 1 }, '-=0.8');
       }else{
         tml
-          .fromTo(videoPlayer.value, { y: 0 }, { y: '-22dvh', duration: 1 })
-          .fromTo(boxQuestoes.value, { y: '100dvh' }, { y: '30dvh', duration: 1 }, '-=0.8');
+          .fromTo('.q-responsive', { y: 0 }, { y: '-15dvh', duration: 1 })
+          .fromTo(boxQuestoes.value, { y: '100dvh' }, { y: '30dvh', duration: 1 }, '-=1');
       }
 
       tml.eventCallback('onComplete', () => resolve(true));

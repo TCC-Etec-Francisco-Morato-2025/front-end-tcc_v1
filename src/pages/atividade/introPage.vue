@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import useFalasPersonagensStore from 'src/stores/materias/atividades/falasPersonagensStore';
 import usePersonagensStore from 'src/stores/materias/atividades/personagensStore';
 // import useAtividadesStore from 'src/stores/materias/atividadesStore';
@@ -24,7 +25,7 @@ interface Fala {
 
 const router = useRouter();
 const ordem = ref(1);
-const atividade = 1;
+const atividadeStore = useAtividadeStore();
 // const atividadesStore = useAtividadesStore();
 const falaStore = useFalasPersonagensStore();
 const personagensStore = usePersonagensStore();
@@ -36,7 +37,7 @@ let typedInstance: Typed | null = null;
 
 // Executa quando o componente é montado
 onMounted(() => {
-  escolherFala(ordem.value, atividade);
+  escolherFala(ordem.value, atividadeStore.id);
   if (typedElement.value && falaAtual.value) {
     typedInstance = new Typed(typedElement.value, {
       strings: [falaAtual.value.fala],
@@ -55,7 +56,7 @@ onUnmounted(() => {
 
 const voltarFala = () => {
   if (ordem.value > 1) ordem.value--;
-  escolherFala(ordem.value, atividade);
+  escolherFala(ordem.value, atividadeStore.id);
   if (typedInstance) {
     typedInstance.destroy();
     if (typedElement.value && falaAtual.value) {
@@ -72,7 +73,7 @@ const voltarFala = () => {
 const proximaFala = () => {
   if(ordem.value < falaStore.falas.length){
     ordem.value++;
-    escolherFala(ordem.value, atividade);
+    escolherFala(ordem.value, atividadeStore.id);
     if (typedInstance) {
       typedInstance.destroy();
       if (typedElement.value && falaAtual.value) {
@@ -111,7 +112,7 @@ const escolherPersonagem = (id: number) => {
 
 const reiniciar = ()=>{
   ordem.value=1;
-  escolherFala(ordem.value, atividade);
+  escolherFala(ordem.value, atividadeStore.id);
   if (typedElement.value && falaAtual.value) {
     typedInstance = new Typed(typedElement.value, {
       strings: [falaAtual.value.fala],

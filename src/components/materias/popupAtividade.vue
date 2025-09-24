@@ -2,18 +2,20 @@
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import sairIcon from '../icons/sairIcon.vue';
-import usePopUpAtividade from 'src/stores/popUpAtividadeStore';
+import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
+import usePopUpStore from 'src/stores/popUp';
 import useAtacItemStore from 'src/stores/itens/atacStore';
 import useDefeItemStore from 'src/stores/itens/defeStore';
 import useEspecItemStore from 'src/stores/itens/especStore';
 
+
 const $q = useQuasar();
 const router = useRouter();
+const popUpStore = usePopUpStore();
+const atividadeStore = useAtividadeStore();
 const atacItemStore = useAtacItemStore();
 const defeItemStore = useDefeItemStore();
 const especItemStore = useEspecItemStore();
-
-const popUpStore = usePopUpAtividade();
 
 const comecarAtividade = () => {
   void $q.fullscreen.request();
@@ -24,22 +26,22 @@ const comecarAtividade = () => {
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.ativo" persistent v-if="popUpStore.ativo">
+  <q-dialog v-model="popUpStore.atividade" persistent v-if="popUpStore.atividade">
     <!-- <q-card class="top-card">
       <span> LOGARITIMO </span>
     </q-card> -->
     <q-card class="corpo-card">
       <q-card-section class="center">
         <q-item-label class="titulo">
-          {{ popUpStore.nome }}
+          {{ atividadeStore.titulo }}
         </q-item-label>
-        <q-btn class="btn-sair" @click="popUpStore.ativo = false" push>
+        <q-btn class="btn-sair" @click="popUpStore.toggleAtividade()" push>
           <sair-icon :color="'white'" />
         </q-btn>
       </q-card-section>
       <q-card-section class="center estrelas">
         <q-rating
-          v-model="popUpStore.estrelas"
+          v-model="atividadeStore.estrelas"
           :max="3"
           class="estrela"
           size="70px"
@@ -51,7 +53,7 @@ const comecarAtividade = () => {
       </q-card-section>
       <q-card-section class="descricao">
         <p>
-          {{ popUpStore.descricao }}
+          {{ atividadeStore.descricao }}
         </p>
       </q-card-section>
 
@@ -115,7 +117,7 @@ const comecarAtividade = () => {
       </q-card-section>
       <q-card-section class="center">
         <q-btn class="btn-Jogar" @click="comecarAtividade" flat>
-          <q-item-label> {{ popUpStore.estrelas > 0 ? 'jogar de novo' : 'Começar' }} </q-item-label>
+          <q-item-label> {{ atividadeStore.estrelas > 0 ? 'jogar de novo' : 'Começar' }} </q-item-label>
         </q-btn>
       </q-card-section>
     </q-card>

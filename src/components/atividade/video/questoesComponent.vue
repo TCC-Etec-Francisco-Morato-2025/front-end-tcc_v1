@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import { ref, watch, nextTick, onMounted } from 'vue';
 import { gsap } from 'gsap';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
@@ -32,6 +33,7 @@ const iconeResultado = ref('');
 const showItensResultado = ref(false);
 const showResultado = ref(false);
 
+const $q = useQuasar();
 const props = defineProps<props>();
 const time = ref(0);
 const respostas = ref<Respostas[]>([]);
@@ -122,13 +124,23 @@ const tempoEsgotado = async () => {
   await nextTick(); // garante que boxResultado existe no DOM
 
   if (boxTempoEsgotado.value) {
-    gsap.to(boxTempoEsgotado.value, {
-      backgroundColor: '#fb8c00',
-      scale: 1,
-      borderRadius: '10px',
-      duration: 0.6,
-      ease: 'back.out',
-    });
+    if ($q.screen.height < $q.screen.width) {
+      gsap.to(boxTempoEsgotado.value, {
+        backgroundColor: '#fb8c00',
+        scale: 1,
+        borderRadius: '10px',
+        duration: 0.6,
+        ease: 'back.out',
+      });
+    } else {
+      gsap.to(boxTempoEsgotado.value, {
+        backgroundColor: '#fb8c00',
+        scale: 1,
+        borderRadius: '0px',
+        duration: 0.6,
+        ease: 'back.out',
+      });
+    }
 
     // fazer os itens aparecerem
     showItensTempoEsgotado.value = true;
@@ -198,16 +210,23 @@ const encerrar = () => {
 <style scoped>
 @media (orientation: portrait) {
   .questoes {
-    border-radius: 0;
-    height: 30dvh;
-    width: 100dvw;
-    margin-right: 0;
+    border-radius: 0 !important;
+    height: 40dvh!important;
+    width: 100dvw !important;
+    margin-right: 0 !important;
   }
 
   .pergunta {
     padding: 20px 20px 0 20px;
     font-size: 120%;
     gap: 10px;
+  }
+
+  .resultado {
+    border-radius: 0 !important;
+    height: 40dvh !important;
+    width: 100dvw !important;
+    margin-right: 0 !important;
   }
 }
 
