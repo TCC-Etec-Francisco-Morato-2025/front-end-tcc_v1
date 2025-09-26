@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import useMateriaStore from 'src/stores/materiaStore';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/css';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
 const materiaStore = useMateriaStore();
 const slides = ref<CarrocelItens[]>([]);
 const quant = 3;
-const router = useRouter();
+// const router = useRouter();
 
 class CarrocelItens {
   name: string;
@@ -34,13 +33,13 @@ for (let i = 0; i < quant; i++) {
   slides.value.push(newMateria);
 }
 
-const irParaMateria = (path: string) => {
-  router.push(`/materias/${path.toLocaleLowerCase()}`).catch((error) => {
-    // Adicione um .catch() aqui
-    console.error('Erro ao navegar:', error);
-    // Lidar com o erro, talvez mostrar uma mensagem para o usuário
-  });
-};
+// const irParaMateria = (path: string) => {
+//   router.push(`/materias/${path.toLocaleLowerCase()}`).catch((error) => {
+//     // Adicione um .catch() aqui
+//     console.error('Erro ao navegar:', error);
+//     // Lidar com o erro, talvez mostrar uma mensagem para o usuário
+//   });
+// };
 </script>
 
 <template>
@@ -53,13 +52,14 @@ const irParaMateria = (path: string) => {
       class="carrocel"
     >
       <swiper-slide
-        v-for="slide in slides"
-        :key="slide.id"
         class="slide"
-        :style="`background-color: ${slide.cor};`"
       >
-        <div class="slide-pai" @click="irParaMateria(slide.path)">
-          <!-- <q-img :src="slide.img" :radio="16 / 9" class="img-slide" /> -->
+        <div class="slide-pai">
+          <div class="efeito"></div>
+          <q-img
+            src="/src/assets/eventos/boosSazonal.jpeg"
+            alt="Imagem da matéria"
+          />
         </div>
       </swiper-slide>
     </swiper>
@@ -68,18 +68,26 @@ const irParaMateria = (path: string) => {
 
 <style scoped>
 .carrocel {
-  width: 100dvw;
+  width: auto;
   height: 540px;
   padding: 30px 0;
 }
 .slide {
-  width: 355px;
+  width: 100dvw !important;
+
 }
 .slide-pai {
   position: relative;
+  height: 100%;
+}
+.efeito{
+  position: absolute;
   width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, black 60%);
 }
 .img-slide {
-  position: absolute;
+  /* position: absolute; */
 }
 </style>

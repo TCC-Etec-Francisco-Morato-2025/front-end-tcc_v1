@@ -40,7 +40,7 @@ const useUserStore = defineStore('user', {
   },
   persist:{
     storage:localStorage,
-    pick:['token']
+    pick:['token','primeiraVez']
   }
 })
 

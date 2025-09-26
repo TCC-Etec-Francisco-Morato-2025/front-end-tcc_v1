@@ -11,7 +11,7 @@ export default defineConfig((/* ctx */) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['axios','config','firebase','vue3-tour'],
+    boot: ['axios','config','firebase','vue3-tour','swiper'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['main.css','../../node_modules/video.js/dist/video-js.css'],
