@@ -20,6 +20,9 @@ const useAtividadeStore = defineStore('atividade', {
       this.estrelas = estrelas;
     },
   },
+  persist:{
+    storage: localStorage,
+  }
 });
 
 export default useAtividadeStore;

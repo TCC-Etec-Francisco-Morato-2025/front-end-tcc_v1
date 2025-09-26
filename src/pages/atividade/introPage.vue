@@ -37,7 +37,7 @@ let typedInstance: Typed | null = null;
 
 // Executa quando o componente é montado
 onMounted(() => {
-  escolherFala(ordem.value, atividadeStore.id);
+  escolherFala(ordem.value, 1); // substituir o 1 per atividade.id
   if (typedElement.value && falaAtual.value) {
     typedInstance = new Typed(typedElement.value, {
       strings: [falaAtual.value.fala],
@@ -56,7 +56,7 @@ onUnmounted(() => {
 
 const voltarFala = () => {
   if (ordem.value > 1) ordem.value--;
-  escolherFala(ordem.value, atividadeStore.id);
+  escolherFala(ordem.value, 1);
   if (typedInstance) {
     typedInstance.destroy();
     if (typedElement.value && falaAtual.value) {
@@ -73,7 +73,7 @@ const voltarFala = () => {
 const proximaFala = () => {
   if(ordem.value < falaStore.falas.length){
     ordem.value++;
-    escolherFala(ordem.value, atividadeStore.id);
+    escolherFala(ordem.value, 1);
     if (typedInstance) {
       typedInstance.destroy();
       if (typedElement.value && falaAtual.value) {

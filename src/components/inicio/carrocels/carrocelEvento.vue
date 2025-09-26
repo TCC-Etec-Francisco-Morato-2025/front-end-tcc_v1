@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import usePopUpStore from 'src/stores/popUp';
 import useMateriaStore from 'src/stores/materiaStore';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 // import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-import 
+import popUpBossComponent from './popUpBossComponent.vue';
 
+const popUpStore = usePopUpStore();
 const materiaStore = useMateriaStore();
 const slides = ref<CarrocelItens[]>([]);
 const quant = 3;
@@ -40,23 +42,24 @@ for (let i = 0; i < quant; i++) {
 
 <template>
   <swiper :slides-per-view="'auto'" :centered-slides="true" :loop="true" class="carrocel">
-    <swiper-slide class="slide">
+    <swiper-slide class="slide" @click="popUpStore.toggleEventoBoss()">
       <div class="slide-pai center">
         <div class="efeito"></div>
-        <q-img src="/src/assets/eventos/boosSazonal.jpeg" alt="Imagem da matéria" />
+        <q-img ref="img" src="/src/assets/eventos/boosSazonal.jpeg" alt="Imagem da matéria" />
         <div class="titulo">Boss Sazonal</div>
       </div>
     </swiper-slide>
   </swiper>
+  <pop-up-boss-component/>
 </template>
 
 <style scoped>
-.carrocel {
+.swiper {
   width: auto;
   height: 540px;
   padding: 30px 0;
 }
-.slide {
+.swiper-slide {
   width: 96dvw !important;
 }
 .slide-pai {

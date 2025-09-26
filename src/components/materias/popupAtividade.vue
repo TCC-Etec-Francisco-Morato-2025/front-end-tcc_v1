@@ -18,7 +18,9 @@ const defeItemStore = useDefeItemStore();
 const especItemStore = useEspecItemStore();
 
 const comecarAtividade = () => {
-  void $q.fullscreen.request();
+  $q.fullscreen.request().catch(()=>{
+    void $q.fullscreen.request();
+  });
   router.push('/atividade/introducao').catch((error) => {
     console.error('Erro ao navegar:', error);
   });
