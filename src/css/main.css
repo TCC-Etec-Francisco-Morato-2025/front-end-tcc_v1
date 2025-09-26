@@ -1,5 +1,6 @@
 @import './base.css';
 @import 'video.js/dist/video-js.css';
+@import './fonts/fonts.css';
 
 
 #q-app{

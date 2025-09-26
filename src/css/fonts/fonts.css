@@ -1,0 +1,8 @@
+@font-face{
+    font-family: 'horror';
+
+    src:url(./Witchwoode/Witchwoode-Regular.woff2) format('woff2'),
+        url(./Witchwoode/Witchwoode-Regular.woff) format('woff');
+    
+    font-display: swap; 
+}

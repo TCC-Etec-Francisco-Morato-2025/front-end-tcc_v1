@@ -13,7 +13,8 @@ const usePopUpStore = defineStore('popup', {
       playVideo:true
     },
     fimJogo: false,
-    atividade: false
+    atividade: false,
+    eventoBoss: true
   }),
 
   getters: {
@@ -43,6 +44,9 @@ const usePopUpStore = defineStore('popup', {
     },
     toggleAtividade(){
       this.atividade = !this.atividade;
+    },
+    toggleEventoBoss(){
+      this.eventoBoss = !this.eventoBoss;
     }
   },
   persist: {
