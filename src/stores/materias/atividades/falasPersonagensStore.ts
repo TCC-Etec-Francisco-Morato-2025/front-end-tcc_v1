@@ -1,7 +1,13 @@
 import { defineStore } from "pinia";
+import type { Fala } from "src/types";
+
+interface FalasState {
+  falas: Fala[];
+}
+
 
 const useFalasPersonagensStore = defineStore('falas',{
-  state:()=>({
+  state:():FalasState=>({
     falas:[
       { id: 1, personagem: 1, atividade: 1, fala: 'Vamos matar um dragão?'},
       { id: 2, personagem: 2, atividade: 1, fala: 'Por quê?'},

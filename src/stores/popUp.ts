@@ -12,7 +12,7 @@ const usePopUpStore = defineStore('popup', {
       estado:false,
       playVideo:true
     },
-    fimJogo: true,
+    fimJogo: false,
     atividade: false,
     eventoBoss: false
   }),

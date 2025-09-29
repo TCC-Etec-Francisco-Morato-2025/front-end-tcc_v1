@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Materia } from 'src/types';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRouter } from 'vue-router';
@@ -8,36 +9,17 @@ import useMateriaStore from 'src/stores/materiaStore';
 
 import { ref, defineAsyncComponent } from 'vue';
 
-const slides = ref<CarrocelItens[]>([]);
+const slides = ref<Materia[]>([]);
 const modules = [Navigation];
 const router = useRouter();
 const materiasStore = useMateriasStore();
 const materiaStore = useMateriaStore();
 
-class CarrocelItens {
-  id: number;
-  icon: string;
-  nome: string;
-  cor: string;
-  path: string;
-  textColor: string;
-
-  constructor(icon: string, nome: string, cor: string, id: number, path: string, textColor:string) {
-    this.id = id;
-    this.icon = icon;
-    this.nome = nome;
-    this.cor = cor;
-    this.path = path;
-    this.textColor = textColor
-  }
-}
-
 materiasStore.materias.map((el) => {
-  const newMateria = new CarrocelItens(el.icon, el.nome, el.cor, el.id, el.path, el.textColor);
-  slides.value.push(newMateria);
+  slides.value.push(el);
 });
 
-const irParaMateria = (slide:CarrocelItens) => {
+const irParaMateria = (slide:Materia) => {
 
   materiaStore.mudarMateria(slide.nome, slide.icon, slide.cor, slide.textColor, slide.id, slide.path)
 

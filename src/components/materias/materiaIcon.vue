@@ -1,6 +1,7 @@
 <!-- icone de todas as matérias que aparece na página matéria -->
 
 <script setup lang="ts">
+import type { Materia } from 'src/types';
 import { defineProps , defineAsyncComponent } from 'vue';
 import useMateriaStore from 'src/stores/materiaStore';
 import { useRouter } from 'vue-router';
@@ -8,17 +9,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const materiaStore = useMateriaStore();
 
-
-const props = defineProps<props>();
-
-interface props {
-  id: number;
-  nome: string;
-  icon: string;
-  cor: string;
-  textColor: string;
-  path: string;
-}
+const props = defineProps<Materia>();
 
 const icon_materia = defineAsyncComponent(()=>import(`../icons-materias/${props.icon}.vue`));
 

@@ -1,24 +1,73 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import sairIcon from '../icons/sairIcon.vue';
+import useUserStore from 'src/stores/userStore';
+import useItensStore from 'src/stores/itens/itensStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUpStore from 'src/stores/popUp';
 import useAtacItemStore from 'src/stores/itens/atacStore';
 import useDefeItemStore from 'src/stores/itens/defeStore';
 import useEspecItemStore from 'src/stores/itens/especStore';
 
+interface Itens {
+  atac: object[];
+  def: object[];
+  espec: object[];
+}
 
+// configurações dá aplicação
 const $q = useQuasar();
 const router = useRouter();
+
+// pinia para todos os itens no geral
 const popUpStore = usePopUpStore();
+const itensStore = useItensStore();
+
+// usuário
+const userStore = useUserStore();
+
+// pinia para as escolhas do usuário
 const atividadeStore = useAtividadeStore();
 const atacItemStore = useAtacItemStore();
 const defeItemStore = useDefeItemStore();
 const especItemStore = useEspecItemStore();
 
+// variaveis para funcionalidade da página
+const itensUser = ref<Itens>();
+
+// função para selecionar quais são os itens do usuário e quais não são
+
+// ataque
+itensStore.atac.findIndex((el) => {
+  userStore.itens.findIndex((el2) => {
+    if (el.id == el2.id && el.tipo == el2.tipo) {
+      itensUser.value?.atac.push(el);
+    }
+  });
+});
+
+// defesa
+itensStore.def.findIndex((el) => {
+  userStore.itens.findIndex((el2) => {
+    if (el.id == el2.id && el.tipo == el2.tipo) {
+      itensUser.value?.def.push(el);
+    }
+  });
+});
+
+// especial
+itensStore.espec.findIndex((el) => {
+  userStore.itens.findIndex((el2) => {
+    if (el.id == el2.id && el.tipo == el2.tipo) {
+      itensUser.value?.espec.push(el);
+    }
+  });
+});
+
 const comecarAtividade = () => {
-  $q.fullscreen.request().catch(()=>{
+  $q.fullscreen.request().catch(() => {
     void $q.fullscreen.request();
   });
   router.push('/atividade/introducao').catch((error) => {
@@ -65,25 +114,15 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="atacItemStore.mudarItem('', 'add')"
+            @click="atacItemStore.mudarItem(0, 'add', '', '')"
           />
           <q-fab-action
+            v-for="atac in itensUser?.atac"
             class="item"
             color="black"
-            icon="img:/src/assets/itens/ataque/machado.png"
+            :icon=""
+            :key="atac.id"
             @click="atacItemStore.mudarItem('machado', 'img:/src/assets/itens/ataque/machado.png')"
-          />
-          <q-fab-action
-            class="item"
-            color="black"
-            icon="img:/src/assets/itens/ataque/martelo.png"
-            @click="atacItemStore.mudarItem('martelo', 'img:/src/assets/itens/ataque/martelo.png')"
-          />
-          <q-fab-action
-            class="item"
-            color="black"
-            icon="img:/src/assets/itens/ataque/espada.png"
-            @click="atacItemStore.mudarItem('espada', 'img:/src/assets/itens/ataque/espada.png')"
           />
         </q-fab>
 
@@ -92,7 +131,7 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="defeItemStore.mudarItem('', 'add')"
+            @click="atacItemStore.mudarItem(0, 'add', '', '')"
           />
           <q-fab-action
             class="item"
@@ -107,7 +146,7 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="especItemStore.mudarItem('', 'add')"
+            @click="atacItemStore.mudarItem(0, 'add', '', '')"
           />
           <q-fab-action
             class="item"
@@ -119,7 +158,9 @@ const comecarAtividade = () => {
       </q-card-section>
       <q-card-section class="center">
         <q-btn class="btn-Jogar" @click="comecarAtividade" flat>
-          <q-item-label> {{ atividadeStore.estrelas > 0 ? 'jogar de novo' : 'Começar' }} </q-item-label>
+          <q-item-label>
+            {{ atividadeStore.estrelas > 0 ? 'jogar de novo' : 'Começar' }}
+          </q-item-label>
         </q-btn>
       </q-card-section>
     </q-card>

@@ -1,40 +1,13 @@
 <!-- lista de todos os assuntos relacionados a matéria que aparece em materiaConteudo -->
 
 <script setup lang="ts">
+import type { Atividade } from 'src/types';
 import { defineProps, ref } from 'vue';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useMateriaStore from 'src/stores/materiaStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUpStore from 'src/stores/popUp';
 import setaIcon from '../icons/setaIcon.vue';
-
-class Atividade {
-  id: number;
-  nome: string;
-  estrelas: number;
-  descricao: string;
-  assunto: number;
-  materia: number;
-  proxima: boolean;
-
-  constructor(
-    id: number,
-    nome: string,
-    estrelas: number,
-    descricao: string,
-    assunto: number,
-    materia: number,
-    proxima: boolean
-  ) {
-    this.id = id;
-    this.nome = nome;
-    this.estrelas = estrelas;
-    this.descricao = descricao;
-    this.assunto = assunto;
-    this.materia = materia;
-    this.proxima = proxima;
-  }
-}
 
 const popUpStore = usePopUpStore();
 const atividadeStore = useAtividadeStore();
@@ -56,14 +29,14 @@ const mutEstadoLista = () => {
   button?.classList.toggle('ativo');
 };
 
-interface props {
+interface Props {
   id: number;
   nome: string;
   cor: string;
   textColor: string;
 }
 
-const props = defineProps<props>();
+const props = defineProps<Props>();
 
 const corAtivo = ref(props.cor);
 const corTextAtivo = ref(props.textColor);
@@ -71,16 +44,7 @@ const corTextAtivo = ref(props.textColor);
 // achar as ativiades dessa matéria em especifico, caso a pessoa já tenha entrado em outras matérias
 atividadesStore.atividades.forEach((el) => {
   if (el.assunto === props.id && el.materia === materiaStore.id) {
-    const atividade = new Atividade(
-      el.id,
-      el.nome,
-      el.estrelas,
-      el.descricao,
-      el.assunto,
-      el.materia,
-      false
-    );
-    atividades.value.push(atividade);
+    atividades.value.push(el);
   }
 });
 

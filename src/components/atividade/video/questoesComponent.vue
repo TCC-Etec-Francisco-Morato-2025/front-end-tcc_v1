@@ -1,22 +1,16 @@
 <script setup lang="ts">
+import type { Resposta } from 'src/types';
 import { useQuasar } from 'quasar';
 import { ref, watch, nextTick, onMounted } from 'vue';
 import { gsap } from 'gsap';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
+import useQuestaoStore from 'src/stores/materias/atividades/questaoStore';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 import usePopUpStore from 'src/stores/popUp';
 
-interface props {
-  questaoId: number;
-}
-
-interface Respostas {
-  perguntaId: number;
-  resposta: string;
-  certa: boolean;
-}
 
 // variaveis pinia
+const questaoStore = useQuestaoStore();
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
 
@@ -34,9 +28,7 @@ const showItensResultado = ref(false);
 const showResultado = ref(false);
 
 const $q = useQuasar();
-const props = defineProps<props>();
-const time = ref(0);
-const respostas = ref<Respostas[]>([]);
+const respostas = ref<Resposta[]>([]);
 
 onMounted(async () => {
   await criarRespostas();
@@ -45,7 +37,7 @@ onMounted(async () => {
 
 // verifica se tem alguma pergunta nova a ser feita
 watch(
-  () => props.questaoId,
+  () => questaoStore.id,
   async () => {
     await criarRespostas();
   },
@@ -55,8 +47,8 @@ watch(
 // criar respostas
 const criarRespostas = (): Promise<boolean> => {
   return new Promise((resolve) => {
-    questoesStore.resposta.forEach((el) => {
-      if (el.perguntaId === props.questaoId) {
+    questoesStore.respostas.forEach((el) => {
+      if (el.perguntaId === questaoStore.id) {
         respostas.value.push(el);
       }
     });
@@ -66,10 +58,9 @@ const criarRespostas = (): Promise<boolean> => {
 
 // conta o time
 const contar = () => {
-  time.value = questoesStore.questoes[props.questaoId]?.cronometro ?? 15;
   setInterval(() => {
-    time.value--;
-    if (time.value == 0 && !showResultado.value) {
+    questaoStore.cronometro--;
+    if (questaoStore.cronometro == 0 && !showResultado.value) {
       void tempoEsgotado();
     }
   }, 1000);
@@ -177,8 +168,8 @@ const encerrar = () => {
       <q-avatar>
         <q-knob
           readonly
-          :max="questoesStore.questoes[props.questaoId]?.cronometro"
-          v-model="time"
+          :max="questaoStore.tempoCronometro"
+          v-model="questaoStore.cronometro"
           show-value
           size="50px"
           :thickness="0.22"
@@ -187,7 +178,7 @@ const encerrar = () => {
         />
       </q-avatar>
 
-      <span>{{ questoesStore.questoes[props.questaoId]?.pergunta }}</span>
+      <span>{{ questaoStore.pergunta }}</span>
     </q-card-section>
 
     <q-card-actions class="resposta">
@@ -211,7 +202,7 @@ const encerrar = () => {
 @media (orientation: portrait) {
   .questoes {
     border-radius: 0 !important;
-    height: 40dvh!important;
+    height: 40dvh !important;
     width: 100dvw !important;
     margin-right: 0 !important;
   }

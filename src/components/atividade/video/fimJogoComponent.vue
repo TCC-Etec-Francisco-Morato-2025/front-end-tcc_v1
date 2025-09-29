@@ -1,18 +1,39 @@
 <script setup lang="ts">
+import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import useMateriaStore from 'src/stores/materiaStore';
+import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUpStore from 'src/stores/popUp';
 
 const $q = useQuasar();
 const router = useRouter();
+const atividadesStore = useAtividadesStore();
 const materiaStore = useMateriaStore();
 const popUpStore = usePopUpStore();
 const atividadeStore = useAtividadeStore();
 
 const proxima = () => {
+  // encontrar a próxima atividade e deixar o popUp ativo
+  const proximaAtividade = atividadesStore.atividades.find((el) => el.id === atividadeStore.id + 1);
+
+  if (!proximaAtividade) return;
+
+  atividadeStore.mudarAtividade(
+    proximaAtividade.id,
+    proximaAtividade.assunto,
+    proximaAtividade.materia,
+    proximaAtividade.nome,
+    proximaAtividade.estrelas,
+    proximaAtividade.descricao
+  );
+
+  popUpStore.atividade = true;
+  popUpStore.fimJogo=false;
+
   void $q.fullscreen.exit();
+
   router.push(`/materias/${materiaStore.path}`).catch((error) => {
     console.error('Erro ao navegar:', error);
   });
@@ -20,11 +41,17 @@ const proxima = () => {
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.fimJogo" persistent backdrop-filter="blur(20px) brightness(0)">
+  <q-dialog
+    v-if="popUpStore.fimJogo"
+    v-model="popUpStore.fimJogo"
+    persistent
+    backdrop-filter="blur(20px) brightness(0)"
+    :maximized="popUpStore.fimJogo"
+  >
     <!-- <q-card class="top-card">
       <span> LOGARITIMO </span>
     </q-card> -->
-    <q-card class="corpo-card">
+    <q-card class="corpo-card" flat v-once>
       <q-card-section class="center">
         <q-item-label class="titulo">
           {{ atividadeStore.titulo }}
@@ -43,8 +70,20 @@ const proxima = () => {
           disable
         />
       </q-card-section>
-      <q-card-section class="descricao"> </q-card-section>
-      <q-card-section align="right">
+      <q-card-section class="animacao center">
+        <dot-lottie-vue
+          class="sol"
+          src="https://lottie.host/89de8449-8b30-4af0-ac2b-64cceff2ff6a/3D1vugTNAp.json"
+          loop
+          autoplay
+        />
+        <dot-lottie-vue
+          class="confete"
+          src="https://lottie.host/53c8947e-1829-49c2-a508-fce69bae936b/UmfKTLVqQy.json"
+          autoplay
+        />
+      </q-card-section>
+      <q-card-actions align="right" class="caixa-botoes">
         <q-btn
           class="btn-novamente"
           @click="proxima"
@@ -60,12 +99,24 @@ const proxima = () => {
           icon-right="keyboard_double_arrow_right"
           v-if="atividadeStore.estrelas > 0"
         />
-      </q-card-section>
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <style scoped>
+@media (orientation: landscape) {
+  .corpo-card {
+    height: 95dvh !important;
+    width: 400px !important;
+    border-radius: 20px !important;
+  }
+
+  .caixa-botoes {
+    padding: 10px 20px;
+  }
+}
+
 .q-item__label.titulo {
   font-family: 'Pixelify Sans';
   text-align: center;
@@ -85,11 +136,9 @@ const proxima = () => {
 
 .corpo-card {
   display: grid;
-  grid-template-areas:
-    'topo'
-    'estrelas';
   /* grid-template-rows: 1fr 5fr auto; */
   width: 300px;
+  height: fit-content;
   background-color: var(--fundo-card);
   color: var(--color-text-1);
   border-radius: 20px;
@@ -115,39 +164,34 @@ const proxima = () => {
   cursor: pointer !important;
 }
 
-.descricao {
-  text-align: center;
-  font-family: 'Handjet';
-  font-size: 16px;
+.animacao {
+  position: relative;
+  overflow: hidden;
+}
+.confete {
+  position: absolute;
+  width: 540px;
+}
+.sol {
+  z-index: 1;
 }
 
-.itens {
+.caixa-botoes {
   display: flex;
-  justify-content: center;
-  gap: 15px;
+  gap: 10px;
+  justify-content: right;
+  padding: 10px auto;
 }
-.itens-select {
-  color: #d77f17;
-  background-color: #ffda92 !important;
-  border: 3px solid #d77f17;
-  border-radius: 100%;
-  box-shadow: 0 4px 5px 0px rgba(0, 0, 0, 0.466);
-}
-.itens-select .item {
-  width: 50px;
-  height: 50px;
-}
-
 .btn-proxima {
   font-family: 'Pixelify Sans';
   text-shadow: 1px 1px 2px rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   background-color: #f1bf18;
 }
-.btn-novamente{
+.btn-novamente {
   font-family: 'Pixelify Sans';
   color: rgb(0, 0, 0);
   border: 2px solid #f7c92e;
-  background-color: #fff0b1 ;
+  background-color: #fff0b1;
 }
 </style>

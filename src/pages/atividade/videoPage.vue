@@ -2,6 +2,10 @@
 import { useQuasar } from 'quasar';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { gsap } from 'gsap';
+import useAtacItemStore from 'src/stores/itens/atacStore';
+import useDefeItemStore from 'src/stores/itens/defeStore';
+import useEspecItemStore from 'src/stores/itens/especStore';
+import useQuestaoStore from 'src/stores/materias/atividades/questaoStore';
 import usePopUpStore from 'src/stores/popUp';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 import fimJogoComponent from 'src/components/atividade/video/fimJogoComponent.vue';
@@ -14,9 +18,12 @@ import videojs from 'video.js';
 const $q = useQuasar();
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
+const questaoStore = useQuestaoStore();
+const itemAtacStore = useAtacItemStore();
+const itemDefeStore = useDefeItemStore();
+const itemEspecStore = useEspecItemStore();
 // const materiaStore = useMateriaStore();
 // const corFundo = ref(materiaStore.cor);
-const questaoAtual = ref(0);
 const sec = ref(0);
 const boxQuestoes = ref<HTMLElement | null>(null);
 const videoPlayer = ref<HTMLVideoElement | null>(null);
@@ -27,34 +34,41 @@ onMounted(() => {
   if (videoPlayer.value) {
     player = videojs(videoPlayer.value, {
       controls: false,
-      preload:'auto',
+      preload: 'auto',
       playsinline: true,
     });
 
-    if($q.screen.height<$q.screen.width){
+    if ($q.screen.height < $q.screen.width) {
       player.autoplay(true);
     }
     // verifica a cada segundo o tempo do video
     player.on('timeupdate', () => {
-        // transforma em numero para depois arredondar
-        const currentTime = player?.currentTime();
-        if (currentTime !== undefined) {
-          sec.value = Math.floor(currentTime);
-          // vasculha o store de questões para achar correspondente
-          questoesStore.questoes.forEach((el) => {
-            // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
-            if (el.tempo === sec.value && questaoAtual.value != el.id) {
-              questaoAtual.value = el.id;
-              // função para ativar o popup
-              popUpStore.toggleQuestoes();
-              // garante que a variavel que controla o video sempre esteja false quando ele for pausado
-              popUpStore.questoes.playVideo = false;
-              player?.pause();
-              void animacaoQuestao();
-            }
-          });
-        }
+      // transforma em numero para depois arredondar
+      const currentTime = player?.currentTime();
+      if (currentTime !== undefined) {
+        sec.value = Math.floor(currentTime);
+        // vasculha o store de questões para achar correspondente
+        questoesStore.questoes.forEach((el) => {
+          // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
+          if (el.tempo === sec.value && questaoStore.id != el.id) {
+            questaoStore.mudarQuestao(
+              el.id,
+              el.pergunta,
+              el.perguntaFacil,
+              el.tempo,
+              el.tempoCronometro
+            );
+            // função para ativar o popup
+            popUpStore.toggleQuestoes();
+            // garante que a variavel que controla o video sempre esteja false quando ele for pausado
+            popUpStore.questoes.playVideo = false;
+            player?.pause();
+            void animacaoQuestao();
+          }
+        });
+      }
     });
+    // pausar o video quando o valor mudar
     watch(
       () => popUpStore.questoes.playVideo,
       async () => {
@@ -70,6 +84,11 @@ onMounted(() => {
         }
       }
     );
+
+    //Finalizar quando o video acabar
+    player.on('ended', () => {
+      popUpStore.fimJogo = true;
+    });
   }
 });
 
@@ -77,12 +96,12 @@ onBeforeUnmount(() => {
   if (player) player.dispose();
 });
 
-const resetarVideo = () =>{
+const resetarVideo = () => {
   player?.currentTime(0);
-  questaoAtual.value = 0;
+  questaoStore.id = 0;
   void player?.play();
   popUpStore.questoes.playVideo = true;
-}
+};
 
 // animação
 const tml = gsap.timeline({ paused: true });
@@ -93,11 +112,11 @@ const animacaoQuestao = (): Promise<boolean> => {
       // constrói animação se ainda não foi montada
       tml.clear();
 
-      if($q.screen.height<$q.screen.width){
+      if ($q.screen.height < $q.screen.width) {
         tml
           .fromTo('.q-responsive', { x: 0 }, { x: '-24dvw', scale: '0.4', duration: 1 })
           .fromTo(boxQuestoes.value, { x: 700 }, { x: '24dvw', duration: 1 }, '-=0.8');
-      }else{
+      } else {
         tml
           .fromTo('.q-responsive', { y: 0 }, { y: '-15dvh', duration: 1 })
           .fromTo(boxQuestoes.value, { y: '100dvh' }, { y: '30dvh', duration: 1 }, '-=1');
@@ -115,20 +134,25 @@ const animacaoQuestao = (): Promise<boolean> => {
 
 <template>
   <fim-jogo-component />
-  <pause-component @reiniciar="resetarVideo"/>
+  <pause-component @reiniciar="resetarVideo" />
   <q-page>
     <screen-rotate-component />
     <main class="center">
-      <q-responsive ref="boxPlayer" :ratio="16/9">
+      <q-responsive ref="boxPlayer" :ratio="16 / 9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
           <source
-            src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4"
+            src="/src/assets/aulas/Mãe é tudo igual, só muda o endereço  IRMÃO DO JOREL - Cartoon Network Brasil (720p, h264, youtube).mp4"
             type="video/mp4"
           />
         </video>
       </q-responsive>
       <div ref="boxQuestoes" class="box-questoes">
-        <questoes-component :questao-id="questaoAtual" v-if="popUpStore.questoes.estado" />
+        <questoes-component v-if="popUpStore.questoes.estado" />
+      </div>
+      <div class="box-itens">
+        <q-avatar rounded>
+          <q-img />
+        </q-avatar>
       </div>
     </main>
   </q-page>

@@ -1,7 +1,12 @@
 import { defineStore } from 'pinia';
+import type { Materia } from 'src/types';
+
+interface MateriasStore {
+  materias: Materia[];
+}
 
 const useMateriasStore = defineStore('materias', {
-  state: () => ({
+  state: (): MateriasStore => ({
     materias: [
       {
         id: 1,
@@ -27,7 +32,7 @@ const useMateriasStore = defineStore('materias', {
         path: 'ingles',
         textColor: 'black',
       },
-    ]
+    ],
   }),
 });
 export default useMateriasStore;

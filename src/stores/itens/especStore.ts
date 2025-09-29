@@ -1,15 +1,20 @@
 import { defineStore } from "pinia";
 
 const useEspecItemStore = defineStore('especItem',{
-  state:()=>({
+  state: () => ({
+    id: 0,
     nome: '',
     icon: 'add',
+    img: '',
+    recarregando: true,
   }),
-  actions:{
-    mudarItem(nome:string,icon:string){
+  actions: {
+    mudarItem(id: number, nome: string, icon: string, img: string) {
+      this.id = id;
       this.nome = nome;
       this.icon = icon;
-    }
+      this.img = img;
+    },
   },
 
   persist:{

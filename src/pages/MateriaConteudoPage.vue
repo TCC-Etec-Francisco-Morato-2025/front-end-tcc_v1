@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Assunto } from 'src/types';
 import { defineAsyncComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import assuntoComponent from '../components/materias/assuntoComponent.vue';
@@ -7,11 +8,6 @@ import useMateriaStore from 'src/stores/materiaStore';
 import useAssuntosStore from 'src/stores/materias/assuntosStore';
 import setaIcon from 'components/icons/setaIcon.vue';
 
-interface Assunto{
-  id: number,
-  nome: string,
-  materia: number
-}
 
 const materiaStore = useMateriaStore();
 const assuntosStore = useAssuntosStore();

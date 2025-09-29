@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Personagem, Fala } from 'src/types';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
@@ -7,21 +8,6 @@ import usePersonagensStore from 'src/stores/materias/atividades/personagensStore
 // import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import Typed from 'typed.js';
-
-interface Personagem {
-  id: number;
-  nome: string;
-  materia: string;
-  cor: string;
-  personagem: string;
-}
-
-interface Fala {
-  id: number;
-  personagem: number;
-  atividade: number;
-  fala: string;
-}
 
 const router = useRouter();
 const ordem = ref(1);
@@ -71,7 +57,7 @@ const voltarFala = () => {
 };
 
 const proximaFala = () => {
-  if(ordem.value < falaStore.falas.length){
+  if (ordem.value < falaStore.falas.length) {
     ordem.value++;
     escolherFala(ordem.value, 1);
     if (typedInstance) {
@@ -85,8 +71,8 @@ const proximaFala = () => {
         });
       }
     }
-  }else{
-    void router.push('/atividade/video')
+  } else {
+    void router.push('/atividade/video');
   }
 };
 
@@ -109,9 +95,8 @@ const escolherPersonagem = (id: number) => {
   });
 };
 
-
-const reiniciar = ()=>{
-  ordem.value=1;
+const reiniciar = () => {
+  ordem.value = 1;
   escolherFala(ordem.value, atividadeStore.id);
   if (typedElement.value && falaAtual.value) {
     typedInstance = new Typed(typedElement.value, {
@@ -121,11 +106,11 @@ const reiniciar = ()=>{
       showCursor: false,
     });
   }
-}
+};
 </script>
 
 <template>
-  <pause-component @reiniciar="reiniciar"/>
+  <pause-component @reiniciar="reiniciar" />
   <q-page>
     <q-btn
       class="btn-voltar"
