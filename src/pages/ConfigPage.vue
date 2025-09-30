@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import usePopUpStore from 'src/stores/popUp';
 import editarIcon from 'src/components/icons/editarIcon.vue';
 import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import useLoginStore from 'src/stores/loginStore';
 import useConfig from 'src/stores/configStore';
-import {  ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 
+const popUpStore = usePopUpStore();
 const userStore = useUserStore();
 const loginStore = useLoginStore();
 const notificacao = ref(true);
@@ -16,11 +18,18 @@ watch(
   () => newNome.value,
   () => {
     if (newNome.value != '') {
-      userStore.nome=newNome.value;
+      userStore.nome = newNome.value;
       console.log(userStore.nome);
     } else {
       newNome.value = userStore.nome;
     }
+  }
+);
+
+watch(
+  () => configStore.aviso,
+  () => {
+    popUpStore.confirmar.naoAparecerNovamente = !configStore.aviso;
   }
 );
 </script>
@@ -32,14 +41,13 @@ watch(
       <h1>Ajustes</h1>
     </q-header>
     <q-main class="main">
-
       <section class="config-perfil">
         <!-- avatar -->
         <q-avatar size="150px">
           <!-- se o usuário estiver logado, ele mostra a imagem de perfil -->
-          <img :src="userStore.perfil" alt="" v-if="userStore.logado"/>
+          <img :src="userStore.perfil" alt="" v-if="userStore.logado" />
           <!-- se não, ele mostra uma imagem padrão -->
-          <perfil-icon v-else/>
+          <perfil-icon v-else />
         </q-avatar>
 
         <!-- nome de usuário -->
@@ -52,18 +60,24 @@ watch(
 
         <!-- se não estiver logado, ele mostra os botões para login e registro -->
         <div v-else>
-          <q-btn class="btn-cadastro" align="center" label="Entrar" no-caps flat to="/login"/>
-          <q-btn class="btn-cadastro" label="Registrar-se" flat @click="loginStore.slide='registrar'" no-caps to="/login"/>
+          <q-btn class="btn-cadastro" align="center" label="Entrar" no-caps flat to="/login" />
+          <q-btn
+            class="btn-cadastro"
+            label="Registrar-se"
+            flat
+            @click="loginStore.slide = 'registrar'"
+            no-caps
+            to="/login"
+          />
         </div>
       </section>
 
       <!-- configuração da página -->
       <section class="config-page">
-
         <!-- mudar para modo claro ou escuro -->
         <div class="opcoes" :class="{ ativo: configStore.darkMode }">
           <span>Dark Mode</span>
-          <q-toggle color="blue" v-model="configStore.darkMode" val="battery"/>
+          <q-toggle color="blue" v-model="configStore.darkMode" val="battery" />
         </div>
 
         <!-- ativar ou desativar notificações -->
@@ -71,14 +85,28 @@ watch(
           <span>Notificações</span>
           <q-toggle color="blue" v-model="notificacao" val="battery" />
         </div>
+
+        <!-- ativar aviso nas atividades -->
+        <div class="opcoes" :class="{ ativo: configStore.aviso }">
+          <span>Aviso</span>
+          <q-toggle color="blue" v-model="configStore.aviso" val="battery" />
+        </div>
       </section>
 
       <!-- termos de privacidade e ajuda -->
-      <q-btn no-caps label="Sair da conta" icon="logout" rounded class="btn-logout" @click="userStore.logout" v-if="userStore.logado"/>
-      <section class="center">
+      <q-btn
+        no-caps
+        label="Sair da conta"
+        icon="logout"
+        rounded
+        class="btn-logout"
+        @click="userStore.logout"
+        v-if="userStore.logado"
+      />
+      <!-- <section class="center">
         <a href="#" class="opcao">Ajuda</a>
         <a href="#" class="opcao">Termos de uso e políticas de privacidade</a>
-      </section>
+      </section> -->
     </q-main>
   </q-layout>
 </template>
@@ -91,11 +119,7 @@ watch(
     'main'
     'section';
   grid-template-rows: 125px;
-  background: linear-gradient(
-    -40deg,
-    var(--color-background-4)30%,
-    var(--color-background)100%
-  );
+  background: linear-gradient(-40deg, var(--color-background-4) 30%, var(--color-background) 100%);
 }
 
 header {
@@ -130,7 +154,7 @@ header h1 {
   gap: 10px;
 }
 
-.q-btn.btn-cadastro{
+.q-btn.btn-cadastro {
   padding: 0 20px;
   margin: 0 10px;
   border-bottom: 2px solid var(--color-text-2);
@@ -181,7 +205,7 @@ header h1 {
   background-color: rgb(65, 65, 175) !important;
 }
 
-.btn-logout{
+.btn-logout {
   color: var(--color-text-3);
   background-color: rgb(236, 57, 57);
 }

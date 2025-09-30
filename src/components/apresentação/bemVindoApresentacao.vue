@@ -141,6 +141,7 @@ h1 {
   font-size: 1.8rem;
   border-radius: 20px;
   box-shadow: 2px 3px 0 2px rgba(0, 0, 0, 0.185);
+  color: white;
   width: 250px;
 }
 

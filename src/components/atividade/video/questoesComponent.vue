@@ -225,6 +225,10 @@ const encerrar = () => {
   overflow: hidden;
 }
 
+span{
+  color: white;
+}
+
 .q-knob {
   padding: 0;
   margin: 0;

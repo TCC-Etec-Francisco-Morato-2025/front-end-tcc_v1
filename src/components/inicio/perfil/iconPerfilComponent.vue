@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import perfilIcon from '../icons/perfilIcon.vue';
+import usePopUpStore from 'src/stores/popUp';
+import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import { useRouter } from 'vue-router';
 
+const popUpStore = usePopUpStore();
 const userStore = useUserStore();
 const router = useRouter();
 
 const logar = () => {
-  if (!userStore.logado) {
+  if (userStore.logado) {
+    popUpStore.togglePerfil();
+  } else {
     router.push('/login').catch((error) => {
       console.error('Erro ao navegar:', error);
     });
@@ -33,7 +37,7 @@ const logar = () => {
   color: var(--color-text-1);
 }
 
-.nLogado{
+.nLogado {
   box-shadow: none;
   width: 250px;
 }

@@ -72,7 +72,7 @@ for (let i = 0; i < quant; i++) {
   height: 100%;
   z-index: 1;
   background: radial-gradient(circle, transparent, #000000 70%),
-    linear-gradient(to top, transparent 60%, black 90%),
+    linear-gradient(to top, transparent 60%, black 80%),
     linear-gradient(to bottom, transparent 50%, black 80%);
 }
 .titulo {
@@ -80,6 +80,7 @@ for (let i = 0; i < quant; i++) {
   font-family: 'horror';
   font-size: 3rem;
   bottom: 20px;
+  color: white;
   z-index: 2;
 }
 .img-slide {

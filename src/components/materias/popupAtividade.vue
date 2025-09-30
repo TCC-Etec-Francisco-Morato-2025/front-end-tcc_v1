@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Item } from 'src/types';
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
@@ -12,9 +13,14 @@ import useDefeItemStore from 'src/stores/itens/defeStore';
 import useEspecItemStore from 'src/stores/itens/especStore';
 
 interface Itens {
-  atac: object[];
-  def: object[];
-  espec: object[];
+  atac: Item[];
+  def: Item[];
+  espec: Item[];
+}
+
+interface ItemUser {
+  id: number;
+  tipo: number;
 }
 
 // configurações dá aplicação
@@ -35,35 +41,33 @@ const defeItemStore = useDefeItemStore();
 const especItemStore = useEspecItemStore();
 
 // variaveis para funcionalidade da página
-const itensUser = ref<Itens>();
+const itensUser = ref<Itens>({
+  atac: [],
+  def: [],
+  espec: [],
+});
 
 // função para selecionar quais são os itens do usuário e quais não são
 
 // ataque
-itensStore.atac.findIndex((el) => {
-  userStore.itens.findIndex((el2) => {
-    if (el.id == el2.id && el.tipo == el2.tipo) {
-      itensUser.value?.atac.push(el);
-    }
-  });
+itensStore.atac.forEach((el: Item) => {
+  if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
+    itensUser.value.atac.push(el);
+  }
 });
 
 // defesa
-itensStore.def.findIndex((el) => {
-  userStore.itens.findIndex((el2) => {
-    if (el.id == el2.id && el.tipo == el2.tipo) {
-      itensUser.value?.def.push(el);
-    }
-  });
+itensStore.def.forEach((el: Item) => {
+  if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
+    itensUser.value.def.push(el);
+  }
 });
 
 // especial
-itensStore.espec.findIndex((el) => {
-  userStore.itens.findIndex((el2) => {
-    if (el.id == el2.id && el.tipo == el2.tipo) {
-      itensUser.value?.espec.push(el);
-    }
-  });
+itensStore.espec.forEach((el: Item) => {
+  if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
+    itensUser.value.espec.push(el);
+  }
 });
 
 const comecarAtividade = () => {
@@ -114,15 +118,15 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="atacItemStore.mudarItem(0, 'add', '', '')"
+            @click="atacItemStore.mudarItem(0, 'add', '', '', '')"
           />
           <q-fab-action
-            v-for="atac in itensUser?.atac"
+            v-for="atac in itensUser.atac"
             class="item"
             color="black"
-            :icon=""
+            :icon="atac.icon"
             :key="atac.id"
-            @click="atacItemStore.mudarItem('machado', 'img:/src/assets/itens/ataque/machado.png')"
+            @click="atacItemStore.mudarItem(atac.id, atac.nome, atac.icon, atac.img, atac.func)"
           />
         </q-fab>
 
@@ -131,13 +135,15 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="atacItemStore.mudarItem(0, 'add', '', '')"
+            @click="atacItemStore.mudarItem(0, 'add', '', '', '')"
           />
           <q-fab-action
+            v-for="def in itensUser.def"
             class="item"
             color="black"
-            icon="img:/src/assets/itens/defesa/escudo.png"
-            @click="defeItemStore.mudarItem('escudo', 'img:/src/assets/itens/defesa/escudo.png')"
+            :icon="def.icon"
+            :key="def.id"
+            @click="defeItemStore.mudarItem(def.id, def.nome, def.icon, def.img, def.func)"
           />
         </q-fab>
 
@@ -146,13 +152,15 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="atacItemStore.mudarItem(0, 'add', '', '')"
+            @click="atacItemStore.mudarItem(0, 'add', '', '', '')"
           />
           <q-fab-action
+            v-for="espec in itensUser.espec"
             class="item"
             color="black"
-            icon="img:/src/assets/itens/especial/anel.png"
-            @click="especItemStore.mudarItem('especial', 'img:/src/assets/itens/especial/anel.png')"
+            :icon="espec.icon"
+            :key="espec.id"
+            @click="especItemStore.mudarItem(espec.id, espec.nome, espec.icon, espec.img, espec.func)"
           />
         </q-fab>
       </q-card-section>

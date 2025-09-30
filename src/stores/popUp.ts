@@ -9,12 +9,13 @@ const usePopUpStore = defineStore('popup', {
       naoAparecerNovamente: false,
     },
     questoes: {
-      estado:false,
-      playVideo:true
+      estado: false,
+      playVideo: true,
     },
     fimJogo: false,
     atividade: false,
-    eventoBoss: false
+    eventoBoss: false,
+    perfil: false,
   }),
 
   getters: {
@@ -26,33 +27,35 @@ const usePopUpStore = defineStore('popup', {
       this.pause = !this.pause;
     },
     toggleNotFullScreen(isFullscreen: boolean) {
-      this.notFullScreen = isFullscreen
+      this.notFullScreen = isFullscreen;
     },
     toggleConfirmar(naoAparecerNovamente?: boolean) {
-      if (!naoAparecerNovamente)
-        this.confirmar.estado = !this.confirmar.estado
+      if (!naoAparecerNovamente) this.confirmar.estado = !this.confirmar.estado;
 
       if (naoAparecerNovamente) {
-        this.confirmar.naoAparecerNovamente = naoAparecerNovamente
+        this.confirmar.naoAparecerNovamente = naoAparecerNovamente;
       }
     },
     toggleQuestoes() {
       this.questoes.estado = !this.questoes.estado;
     },
-    toggleFimJogo(){
+    toggleFimJogo() {
       this.fimJogo = !this.fimJogo;
     },
-    toggleAtividade(){
+    toggleAtividade() {
       this.atividade = !this.atividade;
     },
-    toggleEventoBoss(){
+    toggleEventoBoss() {
       this.eventoBoss = !this.eventoBoss;
-    }
+    },
+    togglePerfil() {
+      this.perfil = !this.perfil;
+    },
   },
   persist: {
     storage: localStorage,
-    pick: ['confirmar.naoAparecerNovamente']
-  }
+    pick: ['confirmar.naoAparecerNovamente'],
+  },
 });
 
 export default usePopUpStore;

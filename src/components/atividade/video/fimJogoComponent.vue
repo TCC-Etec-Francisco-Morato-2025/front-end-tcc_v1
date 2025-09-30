@@ -30,7 +30,18 @@ const proxima = () => {
   );
 
   popUpStore.atividade = true;
-  popUpStore.fimJogo=false;
+  popUpStore.fimJogo = false;
+
+  void $q.fullscreen.exit();
+
+  router.push(`/materias/${materiaStore.path}`).catch((error) => {
+    console.error('Erro ao navegar:', error);
+  });
+};
+
+const sair = () => {
+  popUpStore.atividade = false;
+  popUpStore.fimJogo = false;
 
   void $q.fullscreen.exit();
 
@@ -56,7 +67,7 @@ const proxima = () => {
         <q-item-label class="titulo">
           {{ atividadeStore.titulo }}
         </q-item-label>
-        <q-btn class="btn-sair" icon="close" @click="popUpStore.toggleAtividade()" push />
+        <q-btn class="btn-sair" icon="close" @click="sair" push />
       </q-card-section>
       <q-card-section class="center estrelas">
         <q-rating
@@ -109,7 +120,6 @@ const proxima = () => {
   .corpo-card {
     height: 95dvh !important;
     width: 400px !important;
-    border-radius: 20px !important;
   }
 
   .caixa-botoes {
@@ -132,6 +142,7 @@ const proxima = () => {
   height: 35px;
   padding: 0;
   border-radius: 100%;
+  color: white;
 }
 
 .corpo-card {
@@ -141,7 +152,7 @@ const proxima = () => {
   height: fit-content;
   background-color: var(--fundo-card);
   color: var(--color-text-1);
-  border-radius: 20px;
+  border-radius: 20px !important;
 }
 
 .top-card {

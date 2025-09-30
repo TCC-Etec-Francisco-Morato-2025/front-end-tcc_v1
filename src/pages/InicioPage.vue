@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 import useUserStore from 'src/stores/userStore';
 
-import perfilComponent from 'components/inicio/perfilComponent.vue';
+import perfilComponent from 'src/components/inicio/perfil/perfilComponent.vue';
+import iconPerfilComponent from 'src/components/inicio/perfil/iconPerfilComponent.vue';
 import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
 // import useMenuStore from 'src/stores/menuStore';
 import menuComponent from 'components/inicio/menu/menuComponent.vue';
@@ -30,10 +31,11 @@ const animacaoEntrada = () => {
 
 <template>
   <q-layout>
+    <perfil-component/>
     <menu-component />
     <q-header>
       <div class="perfil">
-        <perfilComponent />
+        <icon-perfil-component/>
       </div>
       <btnMenuComponent />
     </q-header>
