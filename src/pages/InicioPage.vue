@@ -11,6 +11,7 @@ import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
 import menuComponent from 'components/inicio/menu/menuComponent.vue';
 import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent.vue';
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
+import eventoComponent from 'src/components/inicio/eventos/eventoComponent.vue';
 
 const router = ref(useRouter());
 const userStore = useUserStore();
@@ -67,7 +68,11 @@ const animacaoEntrada = () => {
         <carrocel-component />
       </section>
 
-      <section class="secao-eventos"></section>
+      <section class="secao-eventos">
+        <evento-component/>
+        <evento-component/>
+        <evento-component/>
+      </section>
     </q-main>
   </q-layout>
 </template>
@@ -125,5 +130,12 @@ main {
   to {
     background-position: -134% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
   }
+}
+
+.secao-eventos{
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px;
+  gap: 100px;
 }
 </style>

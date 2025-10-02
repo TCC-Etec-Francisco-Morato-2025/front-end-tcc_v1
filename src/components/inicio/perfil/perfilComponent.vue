@@ -1,32 +1,45 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { Item } from 'src/types';
 import usePopUpStore from 'src/stores/popUp';
 import useUserStore from 'src/stores/userStore';
 import useItensStore from 'src/stores/itens/itensStore';
 
 const itensStore = useItensStore();
 const popUpStore = usePopUpStore();
-const itensUser = ref<Item[]>([]);
+const itensAtac = ref(itensStore.atac);
+const itensDef = ref(itensStore.def);
+const itensEspec = ref(itensStore.espec);
 const userStore = useUserStore();
 const newNome = ref(userStore.nome);
 
 itensStore.atac.forEach((el) => {
-  if (userStore.itens.some((el2) => el.id === el2.id)) {
-    itensUser.value.push(el)
-  }
+  userStore.itens.some((el2, i) => {
+    if (el2.id === el.id) {
+      const item = itensAtac.value[i];
+      itensAtac.value.splice(i, 1);
+      if (item !== undefined) itensAtac.value.unshift(item);
+    }
+  });
 });
 
 itensStore.def.forEach((el) => {
-  if (userStore.itens.some((el2) => el.id === el2.id)) {
-    itensUser.value.push(el)
-  }
+  userStore.itens.some((el2, i) => {
+    if (el2.id === el.id) {
+      const item = itensDef.value[i];
+      itensDef.value.splice(i, 1);
+      if (item !== undefined) itensDef.value.unshift(item);
+    }
+  });
 });
 
 itensStore.espec.forEach((el) => {
-  if (userStore.itens.some((el2) => el.id === el2.id)) {
-    itensUser.value.push(el)
-  }
+  userStore.itens.some((el2, i) => {
+    if (el2.id === el.id) {
+      const item = itensEspec.value[i];
+      itensEspec.value.splice(i, 1);
+      if (item !== undefined) itensEspec.value.unshift(item);
+    }
+  });
 });
 </script>
 
@@ -36,48 +49,116 @@ itensStore.espec.forEach((el) => {
       <q-card-actions align="right">
         <q-btn icon="close" color="red" size="12px" round @click="popUpStore.togglePerfil()" />
       </q-card-actions>
-      <q-card-section align="center" >
+      <q-card-section align="center">
         <!-- avatar -->
-        <q-avatar size="30px">
+        <q-avatar size="100px">
           <!-- se o usuário estiver logado, ele mostra a imagem de perfil -->
           <img :src="userStore.perfil" alt="" />
           <!-- se não, ele mostra uma imagem padrão -->
         </q-avatar>
 
         <!-- nome de usuário -->
-        <div style="cursor: pointer;margin-top: 10px;">
+        <div style="cursor: pointer; margin-top: 10px">
           {{ userStore.nome }}
           <q-popup-edit v-model="newNome" auto-save v-slot="scope">
             <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
           </q-popup-edit>
         </div>
       </q-card-section>
-      <q-card-actions align="center" vertical>
-        <h2 class="tag-itens">Itens Adquiridos</h2>
-        <div class="box-item center">
-          <q-btn class="itens" v-for="(item, indexOf) in itensUser" :key="indexOf" :icon="item.icon" size="20px" round push color="amber-7"/>
+      <q-card-actions class="box-itens center" align="left" vertical>
+        <h2 class="tag-itens">Itens do Jogo:</h2>
+        <div class="nome-itens atac">
+          Itens de Ataque
         </div>
-        <q-btn class="btn-vertudo" label="ver tudo" size="10px" icon-right="keyboard_arrow_right" flat align="right"/>
+        <div class="box-item center">
+          <q-btn
+            class="itens"
+            v-for="(item, indexOf) in itensAtac"
+            :key="indexOf"
+            :icon="item.icon"
+            size="20px"
+            round
+            push
+          />
+        </div>
+        <div class="nome-itens def">
+          Itens de Defesa
+        </div>
+        <div class="box-item center">
+          <q-btn
+            class="itens"
+            v-for="(item, indexOf) in itensDef"
+            :key="indexOf"
+            :icon="item.icon"
+            size="20px"
+            round
+            push
+          />
+        </div>
+        <div class="nome-itens espec">
+          Itens Especiais
+        </div>
+        <div class="box-item center">
+          <q-btn
+            class="itens"
+            v-for="(item, indexOf) in itensEspec"
+            :key="indexOf"
+            :icon="item.icon"
+            size="20px"
+            round
+            push
+          />
+        </div>
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <style scoped>
-.q-card{
+.q-card {
   background: linear-gradient(-30deg, var(--color-background-4) 10%, var(--color-background) 100%);
   padding: 10px;
 }
 
-.tag-itens{
-  font-size: 2rem;
+.tag-itens {
+  font-family: 'Pixelify Sans';
+  align-self: flex-start;
+  font-size: 1.5rem;
 }
 
-.box-item{
+.box-itens{
+  margin: 25px 0;
+  font-size: 1.2rem;
+  font-family: Handjet;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 20px;
+}
+.box-item {
   gap: 10px;
 }
 
-.btn-vertudo{
+.q-btn.itens{
+  background-color: var(--color-background);
+}
+
+/* nomes das classes dos itens */
+.nome-itens{
+  text-align: center;
+  width: 100%;
+}
+.nome-itens.atac{
+  background-color: var(--cor-principal-1);
+}
+.nome-itens.def{
+  background-color: var(--cor-principal-3);
+}
+.nome-itens.espec{
+  background-color: var(--cor-principal-2);
+}
+
+
+.btn-vertudo {
   margin-top: 5px;
   align-self: flex-end;
 }
