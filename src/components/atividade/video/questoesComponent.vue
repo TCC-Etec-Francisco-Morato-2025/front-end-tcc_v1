@@ -4,15 +4,21 @@ import { useQuasar } from 'quasar';
 import { ref, watch, nextTick, onMounted } from 'vue';
 import { gsap } from 'gsap';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
+import useAtacItemStore from 'src/stores/itens/atacStore';
+import useDefeItemStore from 'src/stores/itens/defeStore';
+import useEspecItemStore from 'src/stores/itens/especStore';
 import useQuestaoStore from 'src/stores/materias/atividades/questaoStore';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 import usePopUpStore from 'src/stores/popUp';
-
 
 // variaveis pinia
 const questaoStore = useQuestaoStore();
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
+// itens
+const atacStore = useAtacItemStore();
+const defeStore = useDefeItemStore();
+const especStore = useEspecItemStore();
 
 // variaveis que faz o tempo esgotado funcionar
 const boxTempoEsgotado = ref<HTMLElement | null>(null);
@@ -164,7 +170,7 @@ const encerrar = () => {
   </div>
 
   <q-card class="questoes" flat>
-    <q-card-section class="pergunta">
+    <q-card-section align="left">
       <q-avatar>
         <q-knob
           readonly
@@ -178,10 +184,10 @@ const encerrar = () => {
         />
       </q-avatar>
 
-      <span>{{ questaoStore.pergunta }}</span>
+      <span class="pergunta">{{ questaoStore.pergunta }}</span>
     </q-card-section>
 
-    <q-card-actions class="resposta">
+    <q-card-actions align="center">
       <q-list>
         <q-item
           dense
@@ -194,6 +200,11 @@ const encerrar = () => {
           <q-item-section class="label-resposta">{{ resposta.resposta }}</q-item-section>
         </q-item>
       </q-list>
+    </q-card-actions>
+    <q-card-actions align="center">
+      <q-btn color="blue" :icon="atacStore.icon" size="16px" round push />
+      <q-btn color="blue" :icon="defeStore.icon" size="16px" round push />
+      <q-btn color="blue" :icon="especStore.icon" size="16px" round push />
     </q-card-actions>
   </q-card>
 </template>
@@ -225,43 +236,34 @@ const encerrar = () => {
   overflow: hidden;
 }
 
-span{
-  color: white;
-}
-
 .q-knob {
   padding: 0;
   margin: 0;
   color: var(--cor-principal-3);
 }
 
+.pergunta {
+  margin-left: 20px;
+}
+
 .questoes {
+  background: linear-gradient(to bottom, var(--color-background) 20%, var(--color-background-4) 100%);
   border-radius: 10px;
   height: 350px;
   width: 400px;
   margin-right: 20px;
 }
 
-.pergunta {
+.q-list {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px 20px 0 20px;
-  font-size: 120%;
-  gap: 10px;
-}
-
-.resposta {
   flex-direction: column;
-}
-
-.resposta .q-list {
+  gap: 15px;
   width: 80%;
+  margin-top: 10px;
 }
 
 .q-item {
   min-height: 40px;
-  margin: 20px 0;
   width: 100%;
   border-radius: 20px;
   background-color: var(--cor-principal-1) !important;

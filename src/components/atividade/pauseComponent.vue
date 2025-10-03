@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { defineEmits , watch } from 'vue';
+import { defineEmits, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import usePopUpStore from 'src/stores/popUp';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import useMateriaStore from 'src/stores/materiaStore';
 
-const emits = defineEmits(['reiniciar'])
+const emits = defineEmits(['reiniciar']);
 
 const popUpStore = usePopUpStore();
 const atividadeStore = useAtividadeStore();
@@ -14,18 +14,18 @@ const router = useRouter();
 
 const continuar = () => {
   popUpStore.questoes.playVideo = true;
-  popUpStore.togglePause()
-}
+  popUpStore.togglePause();
+};
 
 const confirmar = () => {
-  popUpStore.togglePause()
+  popUpStore.togglePause();
   popUpStore.questoes.estado = false;
-  popUpStore.toggleConfirmar()
+  popUpStore.toggleConfirmar();
   void router.push(`/materias/${materiaStore.path}`);
   document.exitFullscreen().catch(() => {
     return;
   });
-}
+};
 
 const sair = () => {
   if (!popUpStore.confirmar.naoAparecerNovamente) {
@@ -41,36 +41,49 @@ const sair = () => {
 };
 
 const reiniciar = () => {
-  emits('reiniciar')
-  popUpStore.togglePause()
+  emits('reiniciar');
+  popUpStore.togglePause();
 };
 
-watch(()=>popUpStore.pause,()=>{
-  if(popUpStore.pause==false){
-    popUpStore.questoes.playVideo=true
+watch(
+  () => popUpStore.pause,
+  () => {
+    if (popUpStore.pause == false) {
+      popUpStore.questoes.playVideo = true;
+    }
   }
-})
+);
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.pause" :maximized="popUpStore.pause" backdrop-filter="blur(15px)" class="pause">
-    <q-card class="center">
-      <q-card-section class="titulo">
-        <h2 class="center">
-          {{ atividadeStore.titulo }}<br />
-          <span>Introdução</span>
-        </h2>
+  <q-dialog
+    v-model="popUpStore.pause"
+    :maximized="popUpStore.pause"
+    backdrop-filter="blur(15px)"
+    class="pause"
+  >
+    <q-card class="center text-white">
+      <q-card-section align="center">
+          <h2>
+            {{ atividadeStore.titulo }}
+          </h2>
+          Introdução<br />
       </q-card-section>
-      <q-card-actions class="btns center">
-        <q-btn color="green-14" label="continuar" icon-right="play_arrow" push @click="continuar" />
-        <q-btn color="amber-7" label="reiniciar" icon-right="autorenew" push @click="reiniciar" />
-        <q-btn color="red" label="sair" icon-right="exit_to_app" push @click="sair" />
+      <q-card-actions align="center" vertical style="gap: 5px;">
+        <q-btn class="opcao" color="green-14" label="continuar" icon-right="play_arrow" push @click="continuar" />
+        <q-btn class="opcao" color="amber-7" label="reiniciar" icon-right="autorenew" push @click="reiniciar" />
+        <q-btn class="opcao" color="red" label="sair" icon-right="exit_to_app" push @click="sair" />
       </q-card-actions>
     </q-card>
   </q-dialog>
 
   <!-- confirmar popup -->
-  <q-dialog v-model="popUpStore.confirmar.estado" persistent transition-show="scale" transition-hide="scale">
+  <q-dialog
+    v-model="popUpStore.confirmar.estado"
+    persistent
+    transition-show="scale"
+    transition-hide="scale"
+  >
     <q-card class="bg-amber-6 text-white" style="width: 300px">
       <q-card-section>
         <div class="text-h5">
@@ -99,8 +112,19 @@ watch(()=>popUpStore.pause,()=>{
 </template>
 
 <style scoped>
+@media (orientation: landscape) {
+  .q-dialog.pause .q-card {
+    width: 450px !important;
+    height: 350px !important;
+  }
+  .opcao.q-btn {
+    width: 300px !important;
+    height: 50px !important;
+  }
+}
+
 .btn-pause {
-  color: rgb(0, 0, 0);
+  color: rgb(29, 21, 21);
   background-color: rgba(255, 255, 255, 0.507);
   top: 10px;
   right: 10px;
@@ -113,29 +137,17 @@ watch(()=>popUpStore.pause,()=>{
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  width: 90%;
-  height: 60%;
+  width: 350px;
+  height: 450px;
   background-color: rgba(255, 255, 255, 0.473);
   border-radius: 20px !important;
 }
 
-.titulo h2 {
-  flex-direction: column;
-  margin: 0;
-  font-size: 10dvw;
+h2{
+  font-size: 2.5rem;
 }
 
-h2 span {
-  font-size: 5dvw;
-}
-
-.q-dialog .btns {
-  flex-direction: column;
-  width: 100%;
-  gap: 20px;
-}
-
-.btns .q-btn {
+.opcao.q-btn {
   font-size: 1rem;
   width: 80%;
   height: 65px;
