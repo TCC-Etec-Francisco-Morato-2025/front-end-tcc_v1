@@ -25,12 +25,14 @@ export interface Assunto {
 
 export interface Atividade {
   id: number;
-  nome: string;
+  titulo: string;
   estrelas: number;
   descricao: string;
   assunto: number;
   materia: number;
-  proxima?:boolean;
+  proxima?: boolean;
+  acertos?: number;
+  vida?: number;
 }
 
 export interface Fala {

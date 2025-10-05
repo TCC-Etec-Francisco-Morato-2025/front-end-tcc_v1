@@ -13,6 +13,7 @@ const usePopUpStore = defineStore('popup', {
       playVideo: true,
     },
     fimJogo: false,
+    gameOver: false,
     atividade: false,
     eventoBoss: false,
     perfil: false,
@@ -41,6 +42,9 @@ const usePopUpStore = defineStore('popup', {
     },
     toggleFimJogo() {
       this.fimJogo = !this.fimJogo;
+    },
+    toggleGameOver() {
+      this.gameOver = !this.gameOver;
     },
     toggleAtividade() {
       this.atividade = !this.atividade;

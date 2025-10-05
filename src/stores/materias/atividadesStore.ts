@@ -10,7 +10,7 @@ const useAtividadesStore = defineStore('atividades', {
     atividades: [
       {
         id: 1,
-        nome: 'Lei da Inércia I',
+        titulo: 'Lei da Inércia I',
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -19,7 +19,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 2,
-        nome: 'Lei da Inércia II',
+        titulo: 'Lei da Inércia II',
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -28,7 +28,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 3,
-        nome: 'Lei da Inércia III',
+        titulo: 'Lei da Inércia III',
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -37,7 +37,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 4,
-        nome: 'Princípio Fundamental da Dinâmica I',
+        titulo: 'Princípio Fundamental da Dinâmica I',
         estrelas: 2,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -46,7 +46,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 5,
-        nome: 'Princípio Fundamental da Dinâmica II',
+        titulo: 'Princípio Fundamental da Dinâmica II',
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -55,7 +55,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 6,
-        nome: 'Princípio Fundamental da Dinâmica III',
+        titulo: 'Princípio Fundamental da Dinâmica III',
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -64,7 +64,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 7,
-        nome: 'Lei da Ação e Reação I',
+        titulo: 'Lei da Ação e Reação I',
         estrelas: 2,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -73,7 +73,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 8,
-        nome: 'Lei da Ação e Reação II',
+        titulo: 'Lei da Ação e Reação II',
         estrelas: 0,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -82,7 +82,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 1,
-        nome: 'Quimica Orgânica I',
+        titulo: 'Quimica Orgânica I',
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -91,7 +91,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 2,
-        nome: 'Quimica Orgânica II',
+        titulo: 'Quimica Orgânica II',
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -100,7 +100,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 3,
-        nome: 'Quimica Orgânica III',
+        titulo: 'Quimica Orgânica III',
         estrelas: 0,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -109,7 +109,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 1,
-        nome: 'Verbo To Be I',
+        titulo: 'Verbo To Be I',
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -118,7 +118,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 2,
-        nome: 'Verbo To Be II',
+        titulo: 'Verbo To Be II',
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
@@ -127,7 +127,7 @@ const useAtividadesStore = defineStore('atividades', {
       },
       {
         id: 3,
-        nome: 'Verbo To Be III',
+        titulo: 'Verbo To Be III',
         estrelas: 2,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',

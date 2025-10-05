@@ -64,14 +64,28 @@ watch(
   >
     <q-card class="center text-white">
       <q-card-section align="center">
-          <h2>
-            {{ atividadeStore.titulo }}
-          </h2>
-          Introdução<br />
+        <h2>
+          {{ atividadeStore.titulo }}
+        </h2>
+        Introdução<br />
       </q-card-section>
-      <q-card-actions align="center" vertical style="gap: 5px;">
-        <q-btn class="opcao" color="green-14" label="continuar" icon-right="play_arrow" push @click="continuar" />
-        <q-btn class="opcao" color="amber-7" label="reiniciar" icon-right="autorenew" push @click="reiniciar" />
+      <q-card-actions align="center" vertical style="gap: 5px">
+        <q-btn
+          class="opcao"
+          color="green-14"
+          label="continuar"
+          icon-right="play_arrow"
+          push
+          @click="continuar"
+        />
+        <q-btn
+          class="opcao"
+          color="amber-7"
+          label="reiniciar"
+          icon-right="autorenew"
+          push
+          @click="reiniciar"
+        />
         <q-btn class="opcao" color="red" label="sair" icon-right="exit_to_app" push @click="sair" />
       </q-card-actions>
     </q-card>
@@ -118,7 +132,6 @@ watch(
     height: 350px !important;
   }
   .opcao.q-btn {
-    width: 300px !important;
     height: 50px !important;
   }
 }
@@ -143,14 +156,14 @@ watch(
   border-radius: 20px !important;
 }
 
-h2{
+h2 {
   font-size: 2.5rem;
 }
 
 .opcao.q-btn {
   font-size: 1rem;
-  width: 80%;
-  height: 65px;
+  width: 300px;
+  height: 60px;
   border-radius: 20px;
 }
 

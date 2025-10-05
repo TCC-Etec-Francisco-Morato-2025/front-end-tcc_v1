@@ -17,8 +17,8 @@ const atividades = ref<Atividade[]>([]);
 const estadoLista = ref(false);
 const btn = ref<HTMLElement | null>(null);
 
-const ativarPopUp = (id: number, titulo: string, estrelas: number, descricao: string, assunto: number, materia: number) => {
-  atividadeStore.mudarAtividade(id,assunto,materia,titulo,estrelas,descricao);
+const ativarPopUp = (atividade:Atividade) => {
+  atividadeStore.mudarAtividade(atividade);
   popUpStore.toggleAtividade();
 };
 
@@ -106,7 +106,7 @@ const descidirAnimacao = (quant_estrela: number) => {
                 :push="atividade.estrelas > 0 || atividade.proxima"
                 :flat="atividade.estrelas == 0 && !atividade.proxima"
                 :disable="atividade.estrelas == 0 && !atividade.proxima"
-                @click="ativarPopUp(atividade.id, atividade.nome, atividade.estrelas, atividade.descricao, atividade.assunto, atividade.materia)"
+                @click="ativarPopUp(atividade)"
               >
                 <!-- ativiades de verdade organizadas em lista -->
                 <q-item>
@@ -119,7 +119,7 @@ const descidirAnimacao = (quant_estrela: number) => {
                         'font-branca': atividade.estrelas == 3 || atividade.proxima,
                       }"
                     >
-                      {{ atividade.nome }}
+                      {{ atividade.titulo }}
                     </q-item-label>
                   </q-item-section>
                   <!-- status da atividade -->

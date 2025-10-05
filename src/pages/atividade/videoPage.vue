@@ -5,11 +5,11 @@ import { gsap } from 'gsap';
 import useQuestaoStore from 'src/stores/materias/atividades/questaoStore';
 import usePopUpStore from 'src/stores/popUp';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
+import gameOverComponent from 'src/components/atividade/video/gameOverComponent.vue';
 import fimJogoComponent from 'src/components/atividade/video/fimJogoComponent.vue';
 import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import screenRotateComponent from 'src/components/atividade/video/screenRotateComponent.vue';
 import questoesComponent from 'src/components/atividade/video/questoesComponent.vue';
-// import useMateriaStore from 'src/stores/materiaStore';
 import videojs from 'video.js';
 
 const $q = useQuasar();
@@ -71,6 +71,7 @@ onMounted(() => {
           if (popUpStore.questoes.estado) {
             await animacaoQuestao();
             popUpStore.toggleQuestoes();
+            questoesStore.$reset();
           }
           void player?.play();
         } else {
@@ -127,6 +128,7 @@ const animacaoQuestao = (): Promise<boolean> => {
 </script>
 
 <template>
+  <game-over-component @reiniciar="resetarVideo" />
   <fim-jogo-component />
   <pause-component @reiniciar="resetarVideo" />
   <q-page>

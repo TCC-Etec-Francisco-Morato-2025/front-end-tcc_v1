@@ -4,14 +4,28 @@ import { useQuasar } from 'quasar';
 import { ref, watch, nextTick, onMounted } from 'vue';
 import { gsap } from 'gsap';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
+
+// import funcGlobal Itens
+import { useAtacFunc } from 'src/composables/itens/useAtacFunc';
+import { useDefeFunc } from 'src/composables/itens/useDefeFunc';
+import { useEspecFunc } from 'src/composables/itens/useEspecFunc';
+
+// imports pinia
 import useAtacItemStore from 'src/stores/itens/atacStore';
 import useDefeItemStore from 'src/stores/itens/defeStore';
 import useEspecItemStore from 'src/stores/itens/especStore';
 import useQuestaoStore from 'src/stores/materias/atividades/questaoStore';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 import usePopUpStore from 'src/stores/popUp';
+import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
+
+// funcGlobal Itens
+const { espadaOndulatoriaDivina, trombetaDosArcanjos } = useAtacFunc();
+const { anelDoVazio } = useDefeFunc();
+const { ampulhetaDeZhonyas } = useEspecFunc();
 
 // variaveis pinia
+const atividadeStore = useAtividadeStore();
 const questaoStore = useQuestaoStore();
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
@@ -90,6 +104,7 @@ const resultado = (resposta: boolean) => {
 // função para animação da resposta
 const animacaoResultado = async (resposta: boolean) => {
   resultado(resposta);
+  atividadeStore.isCerto(resposta);
 
   showResultado.value = true;
 
@@ -151,6 +166,27 @@ const tempoEsgotado = async () => {
 const encerrar = () => {
   popUpStore.questoes.playVideo = true;
 };
+
+// func Itens
+const ativarItem = (nomeFunc: string): void => {
+  switch (nomeFunc) {
+    case 'trombetaDosArcanjos':
+      trombetaDosArcanjos();
+      break;
+
+    case 'espadaOndulatoriaDivina':
+      espadaOndulatoriaDivina();
+      break;
+
+    case 'anelDoVazio':
+      anelDoVazio();
+      break;
+
+    case 'ampulhetaDeZhonyas':
+      ampulhetaDeZhonyas();
+      break;
+  }
+};
 </script>
 
 <template>
@@ -202,9 +238,33 @@ const encerrar = () => {
       </q-list>
     </q-card-actions>
     <q-card-actions align="center">
-      <q-btn color="blue" :icon="atacStore.icon" size="16px" round push />
-      <q-btn color="blue" :icon="defeStore.icon" size="16px" round push />
-      <q-btn color="blue" :icon="especStore.icon" size="16px" round push />
+      <q-btn
+        v-if="atacStore.icon!==''"
+        style="background-color: var(--color-background-2)"
+        :icon="atacStore.icon"
+        size="16px"
+        @click="ativarItem(atacStore.func)"
+        round
+        push
+      />
+      <q-btn
+        v-if="defeStore.icon!==''"
+        style="background-color: var(--color-background-2)"
+        :icon="defeStore.icon"
+        size="16px"
+        @click="ativarItem(defeStore.func)"
+        round
+        push
+      />
+      <q-btn
+        v-if="especStore.icon!==''"
+        style="background-color: var(--color-background-2)"
+        :icon="especStore.icon"
+        size="16px"
+        @click="ativarItem(especStore.func)"
+        round
+        push
+      />
     </q-card-actions>
   </q-card>
 </template>
@@ -247,7 +307,11 @@ const encerrar = () => {
 }
 
 .questoes {
-  background: linear-gradient(to bottom, var(--color-background) 20%, var(--color-background-4) 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--color-background) 20%,
+    var(--color-background-4) 100%
+  );
   border-radius: 10px;
   height: 350px;
   width: 400px;
@@ -266,7 +330,7 @@ const encerrar = () => {
   min-height: 40px;
   width: 100%;
   border-radius: 20px;
-  background-color: var(--cor-principal-1) !important;
+  background-color: var(--cor-principal-2) !important;
 }
 
 .numero-resposta {

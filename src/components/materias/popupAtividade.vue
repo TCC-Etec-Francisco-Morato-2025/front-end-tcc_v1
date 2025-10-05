@@ -3,7 +3,6 @@ import type { Item } from 'src/types';
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
-import sairIcon from '../icons/sairIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import useItensStore from 'src/stores/itens/itensStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
@@ -81,20 +80,18 @@ const comecarAtividade = () => {
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.atividade" persistent v-if="popUpStore.atividade">
+  <q-dialog v-model="popUpStore.atividade" :maximized="popUpStore.atividade" persistent v-if="popUpStore.atividade">
     <!-- <q-card class="top-card">
       <span> LOGARITIMO </span>
     </q-card> -->
-    <q-card class="corpo-card">
-      <q-card-section class="center">
-        <q-item-label class="titulo">
+    <q-card flat>
+      <q-card-section align="center">
+        <div class="titulo">
           {{ atividadeStore.titulo }}
-        </q-item-label>
-        <q-btn class="btn-sair" @click="popUpStore.toggleAtividade()" push>
-          <sair-icon :color="'white'" />
-        </q-btn>
+        </div>
+        <q-btn icon="close" color="red" class="btn-sair" @click="popUpStore.toggleAtividade()" round push/>
       </q-card-section>
-      <q-card-section class="center estrelas">
+      <q-card-section align="center">
         <q-rating
           v-model="atividadeStore.estrelas"
           :max="3"
@@ -106,7 +103,7 @@ const comecarAtividade = () => {
           disable
         />
       </q-card-section>
-      <q-card-section class="descricao">
+      <q-card-section align="center">
         <p>
           {{ atividadeStore.descricao }}
         </p>
@@ -135,7 +132,7 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="atacItemStore.mudarItem(0, 'add', '', '', '')"
+            @click="defeItemStore.mudarItem(0, 'add', '', '', '')"
           />
           <q-fab-action
             v-for="def in itensUser.def"
@@ -152,7 +149,7 @@ const comecarAtividade = () => {
             class="item"
             color="black"
             icon="remove"
-            @click="atacItemStore.mudarItem(0, 'add', '', '', '')"
+            @click="especItemStore.mudarItem(0, 'add', '', '', '')"
           />
           <q-fab-action
             v-for="espec in itensUser.espec"
@@ -164,7 +161,7 @@ const comecarAtividade = () => {
           />
         </q-fab>
       </q-card-section>
-      <q-card-section class="center">
+      <q-card-section align="center">
         <q-btn class="btn-Jogar" @click="comecarAtividade" flat>
           <q-item-label>
             {{ atividadeStore.estrelas > 0 ? 'jogar de novo' : 'Começar' }}
@@ -176,38 +173,46 @@ const comecarAtividade = () => {
 </template>
 
 <style scoped>
-.q-item__label.titulo {
+
+@media (orientation: portrait){
+
+}
+
+.titulo {
+  font-size: 130%;
   font-family: 'Pixelify Sans';
   text-align: center;
   width: 230px;
+  margin-top: 10px;
 }
 
 .btn-sair {
   top: 12px;
   right: 12px;
   position: absolute;
-  background-color: red;
-  width: 35px;
-  height: 35px;
-  padding: 0;
-  border-radius: 100%;
 }
 
-.corpo-card {
-  display: grid;
-  grid-template-areas:
-    'topo'
-    'estrelas'
-    'btn';
-  /* grid-template-rows: 1fr 5fr auto; */
-  width: 300px;
+.q-card {
+  width: 500px;
+  height: auto;
+  max-height: 90dvh;
+  max-width: 90dvw;
   background-color: var(--fundo-card);
   color: var(--color-text-1);
-  border-radius: 20px;
+  border-radius: 20px !important;
 }
 
+/* .corpo-card {
+  width: 500px;
+  height: auto;
+  max-height: 90dvh;
+  max-width: 90dvw;
+  background-color: var(--fundo-card);
+  color: var(--color-text-1);
+  border-radius: 20px !important;
+} */
+
 .top-card {
-  grid: topo;
   background-color: blue;
   padding: 30px;
   width: fit-content;
@@ -215,7 +220,6 @@ const comecarAtividade = () => {
 }
 
 .estrelas {
-  grid: estrela;
   cursor: none;
 }
 .disabled,
@@ -250,7 +254,6 @@ const comecarAtividade = () => {
 }
 
 .btn-Jogar {
-  grid: btn;
   font-family: 'Pixelify Sans' !important;
   width: 80%;
   margin-bottom: 15px;

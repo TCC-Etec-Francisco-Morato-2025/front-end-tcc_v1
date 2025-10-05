@@ -6,13 +6,25 @@ import useMateriaStore from 'src/stores/materiaStore';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUpStore from 'src/stores/popUp';
+import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 
 const $q = useQuasar();
 const router = useRouter();
+const questoesStore = useQuestoesStore();
 const atividadesStore = useAtividadesStore();
 const materiaStore = useMateriaStore();
 const popUpStore = usePopUpStore();
 const atividadeStore = useAtividadeStore();
+
+// calculo de estrelas
+if (atividadeStore.acertos != undefined)
+  if (atividadeStore.acertos === questoesStore.questoes.length) {
+    atividadeStore.estrelas = 3;
+  } else if (atividadeStore.acertos >= questoesStore.questoes.length * 0.6) {
+    atividadeStore.estrelas = 2;
+  } else {
+    atividadeStore.estrelas = 1;
+  }
 
 const proxima = () => {
   // encontrar a próxima atividade e deixar o popUp ativo
@@ -20,14 +32,7 @@ const proxima = () => {
 
   if (!proximaAtividade) return;
 
-  atividadeStore.mudarAtividade(
-    proximaAtividade.id,
-    proximaAtividade.assunto,
-    proximaAtividade.materia,
-    proximaAtividade.nome,
-    proximaAtividade.estrelas,
-    proximaAtividade.descricao
-  );
+  atividadeStore.mudarAtividade(proximaAtividade);
 
   popUpStore.atividade = true;
   popUpStore.fimJogo = false;
