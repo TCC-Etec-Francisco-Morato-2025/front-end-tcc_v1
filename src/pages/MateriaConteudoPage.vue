@@ -25,7 +25,7 @@ const pesquisa = ()=>{
   if(txtPesquisa.value != '')
   atividadesStore.atividades.forEach((el)=>{
     if(el.proxima==true || el.estrelas>0){
-      if(el.titulo.toLowerCase().trim().includes(txtPesquisa.value)){
+      if(el.titulo.toLowerCase().trim().includes(txtPesquisa.value.toLowerCase().trim())){
         atividadesPesquisa.value.push(el)
       }
     }

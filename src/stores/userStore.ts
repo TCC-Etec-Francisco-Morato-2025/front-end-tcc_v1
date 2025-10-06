@@ -1,14 +1,15 @@
-
+import type { User } from "src/types";
 import { defineStore } from "pinia";
 
 const useUserStore = defineStore('user', {
-  state: ()=>({
+  state: (): User=>({
     primeiraVez: true,
     logado: false,
     uid:'',
     nome:'',
     perfil:'',
     email:'',
+    admin: false,
     senha:'',
     token:'',
     itens:[
@@ -19,15 +20,15 @@ const useUserStore = defineStore('user', {
   }),
 
   actions:{
-    login(newUID:string,newNome:string|null,newPerfil:string|null,newEmail:string|null,newSenha:string,newToken:string){
-      if(newNome!=null && newPerfil!=null && newEmail!=null){
-        this.uid=newUID
-        this.nome=newNome
-        this.perfil=newPerfil
-        this.email=newEmail
-        this.senha=newSenha
-        this.token=newToken
-        this.logado=true
+    mudarUser(newUser:User){
+      if(newUser.token!=undefined){
+        this.logado= true;
+        this.uid= newUser.uid;
+        this.nome= newUser.nome;
+        this.perfil= newUser.perfil;
+        this.admin= newUser.admin;
+        this.token= newUser.token;
+        this.itens= newUser.itens;
       }
     },
     logout(){

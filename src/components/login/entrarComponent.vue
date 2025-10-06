@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { User } from 'src/types';
 import { auth } from 'boot/firebase';
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
@@ -15,7 +16,14 @@ const loginWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    const user:User={
+        uid: result.user.uid,
+        nome: result.user.displayName,
+        perfil: result.user.photoURL,
+        admin: ,
+        token: result.user.uid,
+        itens: result.user.uid,
+    }
     useStore.login(
       user.uid,
       user.displayName,
@@ -55,45 +63,45 @@ const emit = defineEmits(['registrar']);
 </script>
 
 <template>
-    <q-card-section class="login-topo">
-      <h1>Login</h1>
-      <q-btn flat class="sair" @click="router.push('/config')">
-        <sair-icon :color="'var(--color-text-1)'"/>
-      </q-btn>
-    </q-card-section>
-    <q-card-section>
-      <q-form>
-        <q-input label="Email" type="email" v-model="txtEmail" autofocus />
-        <q-input label="Senha" type="password" v-model="txtSenha" />
-        <div class="area-btn center">
-          <q-btn label="Registrar-se" no-caps @click="emit('registrar')" id="btn-registrar" flat/>
-          <q-btn type="submit" label="Entrar" no-caps id="btn-entrar"/>
-        </div>
-      </q-form>
-    </q-card-section>
-    <q-card-section class="center login-rapido">
-      <q-btn
-        class="login-rapido-opcoes"
-        id="login-google"
-        icon="img:https://www.google.com/favicon.ico "
-        @click="loginWithGoogle"
-        label="Entrar com o Google"
-        push
-        no-caps
-      />
-      <q-btn
-        class="login-rapido-opcoes"
-        id="login-facebook"
-        icon="img:src\assets\Facebook_Logo_Secondary.png"
-        @click="loginWithFacebook"
-        label="Entrar com o Facebook"
-        push
-        no-caps
-      />
-    </q-card-section>
-    <q-card-actions align="center">
-      <q-btn flat label="Esqueci minha senha" no-caps />
-    </q-card-actions>
+  <q-card-section class="login-topo">
+    <h1>Login</h1>
+    <q-btn flat class="sair" @click="router.push('/config')">
+      <sair-icon :color="'var(--color-text-1)'" />
+    </q-btn>
+  </q-card-section>
+  <q-card-section>
+    <q-form>
+      <q-input label="Email" type="email" v-model="txtEmail" autofocus />
+      <q-input label="Senha" type="password" v-model="txtSenha" />
+      <div class="area-btn center">
+        <q-btn label="Registrar-se" no-caps @click="emit('registrar')" id="btn-registrar" flat />
+        <q-btn type="submit" label="Entrar" no-caps id="btn-entrar" />
+      </div>
+    </q-form>
+  </q-card-section>
+  <q-card-section class="center login-rapido">
+    <q-btn
+      class="login-rapido-opcoes"
+      id="login-google"
+      icon="img:https://www.google.com/favicon.ico "
+      @click="loginWithGoogle"
+      label="Entrar com o Google"
+      push
+      no-caps
+    />
+    <q-btn
+      class="login-rapido-opcoes"
+      id="login-facebook"
+      icon="img:src\assets\Facebook_Logo_Secondary.png"
+      @click="loginWithFacebook"
+      label="Entrar com o Facebook"
+      push
+      no-caps
+    />
+  </q-card-section>
+  <q-card-actions align="center">
+    <q-btn flat label="Esqueci minha senha" no-caps />
+  </q-card-actions>
 </template>
 
 <style scoped>
@@ -126,11 +134,11 @@ const emit = defineEmits(['registrar']);
   gap: 10px;
   margin-top: 10px;
 }
-.area-btn #btn-entrar{
+.area-btn #btn-entrar {
   background-color: var(--cor-principal-1);
   box-shadow: 0 3px 2px 2px rgba(0, 0, 0, 0.432);
 }
-.area-btn #btn-registrar{
+.area-btn #btn-registrar {
   padding: 0 10px;
   color: var(--color-text-1);
   border-radius: 0;

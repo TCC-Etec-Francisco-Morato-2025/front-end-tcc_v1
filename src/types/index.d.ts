@@ -66,4 +66,22 @@ export interface Resposta {
   certa: boolean;
 }
 
+export interface itensUser{
+  id:number,
+  tipo:number,
+}
+
+export interface User{
+    primeiraVez?: boolean,
+    logado?: boolean,
+    uid:string,
+    nome:string,
+    perfil:string,
+    email?:string,
+    admin:boolean,
+    senha?:string,
+    token?:string,
+    itens:itensUser[]
+}
+
 export {};
