@@ -1,19 +1,36 @@
 <script setup lang="ts">
-import type { Assunto } from 'src/types';
+import type { Assunto, Atividade } from 'src/types';
 import { defineAsyncComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import assuntoComponent from '../components/materias/assuntoComponent.vue';
 import popupAtividade from 'src/components/materias/popupAtividade.vue';
+import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useMateriaStore from 'src/stores/materiaStore';
 import useAssuntosStore from 'src/stores/materias/assuntosStore';
 import setaIcon from 'components/icons/setaIcon.vue';
 
-
+const atividadesStore = useAtividadesStore();
+const atividadesPesquisa = ref<Atividade[]>([])
 const materiaStore = useMateriaStore();
 const assuntosStore = useAssuntosStore();
 const assuntos = ref<Assunto[]>([]);
 const router = useRouter();
 const txtPesquisa = ref('');
+const pesquisando = ref(false);
+
+const pesquisa = ()=>{
+  setTimeout(()=>{
+    pesquisando.value = true
+  },300);
+  if(txtPesquisa.value != '')
+  atividadesStore.atividades.forEach((el)=>{
+    if(el.proxima==true || el.estrelas>0){
+      if(el.titulo.toLowerCase().trim().includes(txtPesquisa.value)){
+        atividadesPesquisa.value.push(el)
+      }
+    }
+  });
+}
 
 const voltar = () => {
   router.push('/materias').catch((error) => {
@@ -55,7 +72,7 @@ const icone_materia = defineAsyncComponent(
         </div>
       </q-btn>
       <div class="pesquisa">
-        <q-input v-model="txtPesquisa" label="Pesquisar atividade">
+        <q-input v-model="txtPesquisa" label="Pesquisar atividade" @input="pesquisa">
           <template v-slot:append>
             <q-icon v-if="txtPesquisa === ''" name="search" />
             <q-icon v-else name="clear" class="cursor-pointer" @click="txtPesquisa = ''" />
@@ -68,7 +85,7 @@ const icone_materia = defineAsyncComponent(
       <popup-atividade />
       <q-list>
         <q-intersection transition="scale" v-for="assunto in assuntos" :key="assunto.id" once>
-          <assunto-component :id="assunto.id" :cor="materiaStore.cor" :nome="assunto.nome" :textColor="materiaStore.textColor" />
+          <assunto-component :id="assunto.id" :cor="materiaStore.cor" :nome="assunto.nome" :textColor="materiaStore.textColor" v-if="!pesquisando"/>
         </q-intersection>
       </q-list>
     </q-main>
