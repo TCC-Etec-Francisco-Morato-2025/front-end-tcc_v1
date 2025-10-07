@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import usePopUpStore from 'src/stores/popUp';
-import useMateriaStore from 'src/stores/materiaStore';
+import useMateriaStore from 'src/stores/materias/materiaStore';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 // import { useRouter } from 'vue-router';
 import { ref } from 'vue';

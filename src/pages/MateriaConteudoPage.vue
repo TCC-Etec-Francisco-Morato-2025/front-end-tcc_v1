@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 import assuntoComponent from '../components/materias/assuntoComponent.vue';
 import popupAtividade from 'src/components/materias/popupAtividade.vue';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
-import useMateriaStore from 'src/stores/materiaStore';
+import useMateriaStore from 'src/stores/materias/materiaStore';
 import useAssuntosStore from 'src/stores/materias/assuntosStore';
 import setaIcon from 'components/icons/setaIcon.vue';
 

@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import type { Materia } from 'src/types';
 import { defineProps , defineAsyncComponent } from 'vue';
-import useMateriaStore from 'src/stores/materiaStore';
+import useMateriaStore from 'src/stores/materias/materiaStore';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

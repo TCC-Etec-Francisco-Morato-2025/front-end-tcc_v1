@@ -4,7 +4,7 @@
 import type { Atividade } from 'src/types';
 import { defineProps, ref } from 'vue';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
-import useMateriaStore from 'src/stores/materiaStore';
+import useMateriaStore from 'src/stores/materias/materiaStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUpStore from 'src/stores/popUp';
 import setaIcon from '../icons/setaIcon.vue';

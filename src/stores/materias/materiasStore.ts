@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia';
+import { api } from 'src/boot/axios';
 import type { Materia } from 'src/types';
 
 interface MateriasStore {
   materias: Materia[];
+  loading: boolean;
 }
 
 const useMateriasStore = defineStore('materias', {
@@ -33,6 +35,34 @@ const useMateriasStore = defineStore('materias', {
         textColor: 'black',
       },
     ],
+    loading: false,
   }),
+  actions: {
+    async getMaterias() {
+      this.loading = true;
+      const query = `
+        query{
+          materias{
+            id
+            nome
+            icon
+            cor
+            path
+            textColor
+          }
+        }
+      `;
+
+      const response = await api.post<{ data: Materia[] }>('', query);
+
+      try {
+        this.materias = response.data.data;
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
 });
 export default useMateriasStore;

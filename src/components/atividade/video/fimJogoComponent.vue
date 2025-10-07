@@ -2,7 +2,7 @@
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
-import useMateriaStore from 'src/stores/materiaStore';
+import useMateriaStore from 'src/stores/materias/materiaStore';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUpStore from 'src/stores/popUp';

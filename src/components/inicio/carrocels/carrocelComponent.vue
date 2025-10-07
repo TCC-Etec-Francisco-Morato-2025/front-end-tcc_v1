@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRouter } from 'vue-router';
 import 'swiper/css';
 import useMateriasStore from 'src/stores/materias/materiasStore';
-import useMateriaStore from 'src/stores/materiaStore';
+import useMateriaStore from 'src/stores/materias/materiaStore';
 
 import { ref, defineAsyncComponent } from 'vue';
 

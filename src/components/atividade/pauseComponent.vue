@@ -3,7 +3,7 @@ import { defineEmits, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import usePopUpStore from 'src/stores/popUp';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
-import useMateriaStore from 'src/stores/materiaStore';
+import useMateriaStore from 'src/stores/materias/materiaStore';
 
 const emits = defineEmits(['reiniciar']);
 
