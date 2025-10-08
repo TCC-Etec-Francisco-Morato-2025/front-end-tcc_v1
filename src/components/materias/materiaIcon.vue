@@ -15,12 +15,7 @@ const icon_materia = defineAsyncComponent(()=>import(`../icons-materias/${props.
 
 const ativarMaterias = () => {
   materiaStore.mudarMateria(
-    props.nome,
-    props.icon,
-    props.cor,
-    props.textColor,
-    props.id,
-    props.path
+    props
   );
   if (materiaStore.nome == undefined) return;
   router.push(`/materias/${props.path}`).catch((error) => {

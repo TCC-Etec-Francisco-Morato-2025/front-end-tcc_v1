@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Aula, Atividade } from 'src/types';
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, onMounted, onUnmounted, onUpdated, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import aulaComponent from '../components/materias/aulaComponent.vue';
 import popupAtividade from 'src/components/materias/popupAtividade.vue';
@@ -17,6 +17,11 @@ const aulas = ref<Aula[]>([]);
 const router = useRouter();
 const txtPesquisa = ref('');
 const pesquisando = ref(false);
+
+onMounted(async()=>{
+  await aulasStore.getAulas(materiaStore.id)
+  encontrarAula();
+})
 
 const pesquisa = ()=>{
   setTimeout(()=>{
@@ -39,12 +44,14 @@ const voltar = () => {
   });
 };
 
-// laço de repção feito para encontrar o assunto que se encaixe nessa matéria
-aulasStore.aulas.forEach((el) => {
-  if (el.id_materia == materiaStore.id) {
-    aulas.value.push(el);
-  }
-});
+// laço de repção feito para encontrar a aula que se encaixe nessa matéria
+const encontrarAula = ()=>{
+  aulasStore.aulas.forEach((el) => {
+    if (el.id_materia == materiaStore.id) {
+      aulas.value.push(el);
+    }
+  });
+}
 
 const icone_materia = defineAsyncComponent(
   () => import(`components/icons-materias/${materiaStore.icon}.vue`)

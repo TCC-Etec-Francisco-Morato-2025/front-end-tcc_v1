@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { Materia } from 'src/types';
 
 const useMateriaStore = defineStore('materia', {
   state: () => ({
@@ -16,14 +17,14 @@ const useMateriaStore = defineStore('materia', {
   },
 
   actions: {
-    mudarMateria(nome:string, icon:string, cor:string, textColor:string, id:number, path:string){
+    mudarMateria(materia:Materia){
       this.ativo=true
-      this.id = id
-      this.nome = nome
-      this.icon = icon
-      this.cor = cor
-      this.textColor = textColor
-      this.path = path
+      this.id = materia.id
+      this.nome = materia.nome
+      this.icon = materia.icon
+      this.cor = materia.cor
+      this.textColor = materia.textColor
+      this.path = materia.path
     }
   },
   persist: {

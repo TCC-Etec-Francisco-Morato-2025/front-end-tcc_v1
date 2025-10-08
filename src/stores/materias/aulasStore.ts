@@ -8,33 +8,47 @@ interface AulasState {
 }
 
 const useAulasStore = defineStore('aulas', {
-  state: (): AulasState => ({
-    aulas: [{ id: 1, id_materia: 1, titulo: 'verbo to be' },{ id: 2, id_materia: 1, titulo: 'verbo to be' },{ id: 3, id_materia: 2, titulo: 'verbo to be' },{ id: 4, id_materia: 3, titulo: 'verbo to be' }],
+  state: ():AulasState => ({
+    aulas: [
+      // { id: 1, id_materia: 1, titulo: 'verbo to be' },
+      // { id: 2, id_materia: 1, titulo: 'verbo to be' },
+      // { id: 3, id_materia: 2, titulo: 'verbo to be' },
+      // { id: 4, id_materia: 3, titulo: 'verbo to be' },
+    ],
     loading: false,
   }),
   actions: {
-    async getaulas(idMateria: string) {
+    async getAulas(idMateria: number) {
       this.loading = true;
+
       const query = `
-        query pegarAulas($idMateria: ID!){
-          aulas(id_materia:$idMateria){
+      query pegarAulas($id_materia: Int!){
+        aulas(id_materia:$id_materia){
+          items{
             id
             id_materia
             titulo
           }
         }
+      }
       `;
 
       const variables = {
-        idMateria: idMateria,
+        id_materia: idMateria,
       };
 
-      const response = await api.post<{ data: { aulas: Aula[] } }>('', { query, variables });
-
       try {
-        this.aulas.push(...response.data.data.aulas);
+        const response = await api.post<{ data: { aulas: { items: Aula[] } } }>('', {
+          query,
+          variables,
+        });
+
+        this.aulas = response.data.data.aulas.items;
+        console.log(response.data.data.aulas.items);
+
       } catch (error) {
-        console.log(error);
+        console.error('Erro ao buscar aulas:', error);
+        throw error;
       } finally {
         this.loading = false;
       }
