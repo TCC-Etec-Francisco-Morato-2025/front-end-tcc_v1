@@ -6,11 +6,12 @@ const userStore = useUserStore();
 
 const useLoginStore = defineStore('login', {
   state: () => ({
+    slide: 'entrar',
     query: '',
     variables: {
       token: '',
       email: '',
-      senha: '',
+      password: '',
     },
     loading: false,
   }),
@@ -19,16 +20,16 @@ const useLoginStore = defineStore('login', {
       this.loading = true;
 
       this.query = `
-      query loginUser($email:String!, $senha:String!){
-        user(email: $email, senha: $senha){
+      query loginUser($email:String!, $password:String!){
+        user(email: $email, password: $password){
           username
           email
         }
       }`;
 
-      if (userStore.email && userStore.senha) {
+      if (userStore.email && userStore.password) {
         this.variables.email = userStore.email;
-        this.variables.senha = userStore.senha;
+        this.variables.password = userStore.password;
       } else{
         return;
       }
@@ -53,7 +54,7 @@ const useLoginStore = defineStore('login', {
       this.loading = true;
       this.query = `
         query loginUser($email:String!, $token:String!){
-          user(email: $email, senha: $token){
+          user(email: $email, password: $token){
             username
             email
           }

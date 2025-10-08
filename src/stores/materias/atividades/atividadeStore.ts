@@ -7,20 +7,21 @@ const popUpStore = usePopUpStore();
 const useAtividadeStore = defineStore('atividade', {
   state: (): Atividade => ({
     id: 0,
-    assunto: 0,
-    materia: 0,
+    id_aula: 0,
+    id_materia: 0,
     titulo: '',
     estrelas: 0,
     descricao: '',
     acertos: 0,
     vida: 1,
+    video:''
   }),
 
   actions: {
     mudarAtividade(atividade: Atividade) {
       this.id = atividade.id;
-      this.assunto = atividade.assunto;
-      this.materia = atividade.materia;
+      this.id_aula = atividade.id_aula;
+      this.id_materia = atividade.id_materia;
       this.titulo = atividade.titulo;
       this.descricao = atividade.descricao;
       this.estrelas = atividade.estrelas;

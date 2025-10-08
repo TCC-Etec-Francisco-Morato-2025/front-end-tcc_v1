@@ -50,24 +50,27 @@ const itensUser = ref<Itens>({
 
 // ataque
 itensStore.atac.forEach((el: Item) => {
-  if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
-    itensUser.value.atac.push(el);
-  }
-});
+    if(userStore.itens==undefined)return;
+    if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
+      itensUser.value.atac.push(el);
+    }
+  });
 
-// defesa
-itensStore.def.forEach((el: Item) => {
-  if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
-    itensUser.value.def.push(el);
-  }
-});
+  // defesa
+  itensStore.def.forEach((el: Item) => {
+    if(userStore.itens==undefined)return;
+    if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
+      itensUser.value.def.push(el);
+    }
+  });
 
-// especial
-itensStore.espec.forEach((el: Item) => {
-  if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
-    itensUser.value.espec.push(el);
-  }
-});
+  // especial
+  itensStore.espec.forEach((el: Item) => {
+    if(userStore.itens==undefined)return;
+    if (userStore.itens.some((el2: ItemUser) => el.id === el2.id && el.tipo == el2.tipo)) {
+      itensUser.value.espec.push(el);
+    }
+  });
 
 const comecarAtividade = () => {
   $q.fullscreen.request().catch(() => {

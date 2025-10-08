@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import type { Assunto, Atividade } from 'src/types';
+import type { Aula, Atividade } from 'src/types';
 import { defineAsyncComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import assuntoComponent from '../components/materias/assuntoComponent.vue';
+import aulaComponent from '../components/materias/aulaComponent.vue';
 import popupAtividade from 'src/components/materias/popupAtividade.vue';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useMateriaStore from 'src/stores/materias/materiaStore';
-import useAssuntosStore from 'src/stores/materias/assuntosStore';
+import useAulasStore from 'src/stores/materias/aulasStore';
 import setaIcon from 'components/icons/setaIcon.vue';
 
 const atividadesStore = useAtividadesStore();
 const atividadesPesquisa = ref<Atividade[]>([])
 const materiaStore = useMateriaStore();
-const assuntosStore = useAssuntosStore();
-const assuntos = ref<Assunto[]>([]);
+const aulasStore = useAulasStore();
+const aulas = ref<Aula[]>([]);
 const router = useRouter();
 const txtPesquisa = ref('');
 const pesquisando = ref(false);
@@ -40,9 +40,9 @@ const voltar = () => {
 };
 
 // laço de repção feito para encontrar o assunto que se encaixe nessa matéria
-assuntosStore.assuntos.forEach((el) => {
-  if (el.materia == materiaStore.id) {
-    assuntos.value.push(el);
+aulasStore.aulas.forEach((el) => {
+  if (el.id_materia == materiaStore.id) {
+    aulas.value.push(el);
   }
 });
 
@@ -84,8 +84,8 @@ const icone_materia = defineAsyncComponent(
       <!-- popup que aparece sobre a atividade antes dela começar -->
       <popup-atividade />
       <q-list>
-        <q-intersection transition="scale" v-for="assunto in assuntos" :key="assunto.id" once>
-          <assunto-component :id="assunto.id" :cor="materiaStore.cor" :nome="assunto.nome" :textColor="materiaStore.textColor" v-if="!pesquisando"/>
+        <q-intersection transition="scale" v-for="aula in aulas" :key="aula.id" once>
+          <aula-component :id="aula.id" :cor="materiaStore.cor" :nome="aula.titulo" :textColor="materiaStore.textColor" v-if="!pesquisando"/>
         </q-intersection>
       </q-list>
     </q-main>

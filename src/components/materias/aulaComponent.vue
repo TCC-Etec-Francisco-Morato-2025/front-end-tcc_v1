@@ -43,7 +43,7 @@ const corTextAtivo = ref(props.textColor);
 
 // achar as ativiades dessa matéria em especifico, caso a pessoa já tenha entrado em outras matérias
 atividadesStore.atividades.forEach((el) => {
-  if (el.assunto === props.id && el.materia === materiaStore.id) {
+  if (el.id_aula === props.id && el.id_aula === materiaStore.id) {
     atividades.value.push(el);
   }
 });

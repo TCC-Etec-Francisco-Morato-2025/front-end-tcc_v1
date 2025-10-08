@@ -5,7 +5,7 @@ import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'fireb
 import { useRouter } from 'vue-router';
 import useUserStore from 'src/stores/userStore';
 import sairIcon from 'src/components/icons/sairIcon.vue';
-import { ref,defineEmits } from 'vue';
+import { ref, defineEmits } from 'vue';
 
 const useStore = useUserStore();
 const txtEmail = ref('');
@@ -16,21 +16,17 @@ const loginWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
-    const user:User={
-        uid: result.user.uid,
+      const user: User = {
+        id: result.user.uid,
         nome: result.user.displayName,
-        perfil: result.user.photoURL,
-        admin: ,
-        token: result.user.uid,
-        itens: result.user.uid,
-    }
-    useStore.login(
-      user.uid,
-      user.displayName,
-      user.photoURL,
+        foto: result.user.photoURL,
+        admin: true,
+      };
+    useStore.mudarUser(
+      user.id,
+      user.nome,
+      user.foto,
       user.email,
-      user.refreshToken,
-      user.refreshToken
     );
     router.go(-1);
     // Redirecione o usuário ou atualize a UI

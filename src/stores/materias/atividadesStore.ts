@@ -14,8 +14,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 2,
@@ -23,8 +25,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 3,
@@ -32,8 +36,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 4,
@@ -41,8 +47,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 2,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 5,
@@ -50,8 +58,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 6,
@@ -59,8 +69,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 7,
@@ -68,8 +80,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 2,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 8,
@@ -77,8 +91,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 0,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 1,
+        id_aula: 1,
+        id_materia: 1,
+        vida: 3,
+        video: '',
       },
       {
         id: 1,
@@ -86,8 +102,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 2,
+        id_aula: 1,
+        id_materia: 2,
+        vida: 3,
+        video: '',
       },
       {
         id: 2,
@@ -95,8 +113,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 2,
+        id_aula: 1,
+        id_materia: 2,
+        vida: 3,
+        video: '',
       },
       {
         id: 3,
@@ -104,8 +124,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 0,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 2,
+        id_aula: 1,
+        id_materia: 2,
+        vida: 3,
+        video: '',
       },
       {
         id: 1,
@@ -113,8 +135,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 1,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 3,
+        id_aula: 1,
+        id_materia: 3,
+        vida: 2,
+        video: '',
       },
       {
         id: 2,
@@ -122,8 +146,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 3,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 3,
+        id_aula: 1,
+        id_materia: 3,
+        vida: 2,
+        video: '',
       },
       {
         id: 3,
@@ -131,8 +157,10 @@ const useAtividadesStore = defineStore('atividades', {
         estrelas: 2,
         descricao:
           'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quae laudantium illo perferendis non.',
-        assunto: 1,
-        materia: 3,
+        id_aula: 1,
+        id_materia: 3,
+        vida: 2,
+        video: '',
       },
     ],
   }),

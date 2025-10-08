@@ -5,12 +5,12 @@ const useUserStore = defineStore('user', {
   state: (): User=>({
     primeiraVez: true,
     logado: false,
-    uid:'',
+    id:'',
     nome:'',
-    perfil:'',
+    foto:'',
     email:'',
     admin: false,
-    senha:'',
+    password:'',
     token:'',
     itens:[
       { id: 1 , tipo: 1 },
@@ -21,22 +21,20 @@ const useUserStore = defineStore('user', {
 
   actions:{
     mudarUser(newUser:User){
-      if(newUser.token!=undefined){
         this.logado= true;
-        this.uid= newUser.uid;
+        this.id= newUser.id;
         this.nome= newUser.nome;
-        this.perfil= newUser.perfil;
+        this.foto= newUser.foto;
         this.admin= newUser.admin;
-        this.token= newUser.token;
-        this.itens= newUser.itens;
-      }
+        // this.token= newUser.token;
+        // this.itens= newUser.itens;
     },
     logout(){
-        this.uid=''
+        this.id=''
         this.nome=''
-        this.perfil=''
+        this.foto=''
         this.email=''
-        this.senha=''
+        this.password=''
         this.token=''
         this.logado=false
     },

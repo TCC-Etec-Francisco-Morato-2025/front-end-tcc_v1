@@ -68,7 +68,7 @@ watch(
 const criarRespostas = (): Promise<boolean> => {
   return new Promise((resolve) => {
     questoesStore.respostas.forEach((el) => {
-      if (el.perguntaId === questaoStore.id) {
+      if (el.id_pergunta === questaoStore.id) {
         respostas.value.push(el);
       }
     });

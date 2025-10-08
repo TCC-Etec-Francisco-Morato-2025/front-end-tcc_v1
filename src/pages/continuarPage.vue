@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import setaIcon from 'src/components/icons/setaIcon.vue';
-import assuntoComponent from 'src/components/materias/assuntoComponent.vue';
+import assuntoComponent from 'src/components/materias/aulaComponent.vue';
 
 const router = useRouter();
 

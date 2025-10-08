@@ -45,7 +45,7 @@ watch(
         <!-- avatar -->
         <q-avatar size="150px">
           <!-- se o usuário estiver logado, ele mostra a imagem de perfil -->
-          <img :src="userStore.perfil" alt="" v-if="userStore.logado" />
+          <img src="userStore.foto" alt="" v-if="userStore.logado" />
           <!-- se não, ele mostra uma imagem padrão -->
           <perfil-icon v-else />
         </q-avatar>

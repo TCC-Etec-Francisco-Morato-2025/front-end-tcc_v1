@@ -17,10 +17,10 @@ export interface Materia {
   textColor: string;
 }
 
-export interface Assunto {
+export interface Aula {
   id: number;
-  nome: string;
-  materia: number;
+  id_materia: number;
+  titulo: string;
 }
 
 export interface Atividade {
@@ -28,17 +28,18 @@ export interface Atividade {
   titulo: string;
   estrelas: number;
   descricao: string;
-  assunto: number;
-  materia: number;
+  id_aula: number;
+  id_materia: number;
   proxima?: boolean;
   acertos?: number;
-  vida?: number;
+  vida: number;
+  video: string;
 }
 
 export interface Fala {
   id: number;
-  personagem: number;
-  atividade: number;
+  id_personagem: number;
+  id_atividade: number;
   fala: string;
 }
 
@@ -47,7 +48,7 @@ export interface Personagem {
   nome: string;
   materia: string;
   cor: string;
-  personagem: string;
+  img: string;
 }
 
 export interface Questao {
@@ -55,13 +56,12 @@ export interface Questao {
   pergunta: string;
   perguntaFacil: string;
   tempo: number;
-  cronometro: number;
   tempoCronometro: number;
   cronometro?: number;
 }
 
 export interface Resposta {
-  perguntaId: number;
+  id_pergunta: number;
   resposta: string;
   certa: boolean;
 }
@@ -74,14 +74,14 @@ export interface itensUser{
 export interface User{
     primeiraVez?: boolean,
     logado?: boolean,
-    uid:string,
-    nome:string,
-    perfil:string,
+    id:string,
+    nome:string|null,
+    foto:string|null,
     email?:string,
     admin:boolean,
-    senha?:string,
+    password?:string,
     token?:string,
-    itens:itensUser[]
+    itens?:itensUser[]
 }
 
 export {};

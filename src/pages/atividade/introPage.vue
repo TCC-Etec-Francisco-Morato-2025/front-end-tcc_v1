@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { Personagem, Fala } from 'src/types';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import useFalasPersonagensStore from 'src/stores/materias/atividades/falasPersonagensStore';
 import usePersonagensStore from 'src/stores/materias/atividades/personagensStore';
 // import useAtividadesStore from 'src/stores/materias/atividadesStore';
@@ -10,21 +9,20 @@ import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import Typed from 'typed.js';
 
 const router = useRouter();
-const ordem = ref(1);
-const atividadeStore = useAtividadeStore();
+const ordem = ref(0);
 // const atividadesStore = useAtividadesStore();
 const falaStore = useFalasPersonagensStore();
 const personagensStore = usePersonagensStore();
 const personagemAtual = ref<Personagem>();
-const falaAtual = ref<Fala>();
+const falaAtual = ref<Fala|undefined>(falaStore.falas[ordem.value]);
 const corAtual = ref('');
 const typedElement = ref<HTMLSpanElement | null>(null);
 let typedInstance: Typed | null = null;
 
 // Executa quando o componente é montado
 onMounted(() => {
-  escolherFala(ordem.value, 1); // substituir o 1 per atividade.id
   if (typedElement.value && falaAtual.value) {
+    mudarFala();
     typedInstance = new Typed(typedElement.value, {
       strings: [falaAtual.value.fala],
       typeSpeed: 50,
@@ -41,8 +39,8 @@ onUnmounted(() => {
 });
 
 const voltarFala = () => {
-  if (ordem.value > 1) ordem.value--;
-  escolherFala(ordem.value, 1);
+  if (ordem.value > 0) ordem.value--;
+  mudarFala();
   if (typedInstance) {
     typedInstance.destroy();
     if (typedElement.value && falaAtual.value) {
@@ -59,7 +57,7 @@ const voltarFala = () => {
 const proximaFala = () => {
   if (ordem.value < falaStore.falas.length) {
     ordem.value++;
-    escolherFala(ordem.value, 1);
+    mudarFala();
     if (typedInstance) {
       typedInstance.destroy();
       if (typedElement.value && falaAtual.value) {
@@ -76,14 +74,10 @@ const proximaFala = () => {
   }
 };
 
-const escolherFala = (ordem: number, atividade: number) => {
-  falaStore.falas.forEach((fala) => {
-    if (atividade === fala.atividade && ordem === fala.id) {
-      falaAtual.value = fala;
-      escolherPersonagem(falaAtual.value.personagem);
-    }
-  });
-};
+const mudarFala = ()=>{
+  falaAtual.value = falaStore.falas[ordem.value];
+  if (falaAtual.value) escolherPersonagem(falaAtual.value.id_personagem);
+}
 
 const escolherPersonagem = (id: number) => {
   personagensStore.personagens.forEach((personagem) => {
@@ -96,8 +90,8 @@ const escolherPersonagem = (id: number) => {
 };
 
 const reiniciar = () => {
-  ordem.value = 1;
-  escolherFala(ordem.value, atividadeStore.id);
+  ordem.value = 0;
+  mudarFala();
   if (typedElement.value && falaAtual.value) {
     typedInstance = new Typed(typedElement.value, {
       strings: [falaAtual.value.fala],
@@ -121,7 +115,7 @@ const reiniciar = () => {
       v-if="ordem > 1"
     />
     <main>
-      <q-img :src="`src/assets/personagens/${personagemAtual?.personagem}.png`" />
+      <q-img :src="`src/assets/personagens/${personagemAtual?.img}.png`" />
       <q-card class="caixa-fala center">
         <q-card-section>
           <span ref="typedElement"></span>

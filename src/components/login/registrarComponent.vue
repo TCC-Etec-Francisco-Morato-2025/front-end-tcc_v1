@@ -19,7 +19,7 @@ const loginWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     console.log(user.photoURL);
-    useStore.login(
+    useStore.mudarUser(
       user.uid,
       user.displayName,
       user.photoURL,
