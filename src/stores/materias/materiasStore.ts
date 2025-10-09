@@ -58,7 +58,12 @@ const useMateriasStore = defineStore('materias', {
           query,
         });
 
-        this.materias = response.data.data.materias;
+        response.data.data.materias.forEach((a)=>{
+            const novaMateria:Materia = a
+
+            if(this.materias.fi)
+            console.log(novaMateria)
+        })
 
       } catch (error) {
         console.error('Erro ao buscar aulas:', error);
