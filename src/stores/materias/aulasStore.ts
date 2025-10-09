@@ -44,7 +44,6 @@ const useAulasStore = defineStore('aulas', {
         });
 
         this.aulas = response.data.data.aulas.items;
-        console.log(response.data.data.aulas.items);
 
       } catch (error) {
         console.error('Erro ao buscar aulas:', error);

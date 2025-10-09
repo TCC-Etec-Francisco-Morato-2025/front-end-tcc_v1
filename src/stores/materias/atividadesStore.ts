@@ -3,6 +3,7 @@ import type { Atividade } from 'src/types';
 
 interface AtividadesState {
   atividades: Atividade[];
+  loading:boolean;
 }
 
 const useAtividadesStore = defineStore('atividades', {
@@ -163,7 +164,45 @@ const useAtividadesStore = defineStore('atividades', {
         video: '',
       },
     ],
+    loading:false
   }),
+actions: {
+    async getAulas(idAula: number) {
+      this.loading = true;
+
+      const query = `
+      query pegarAulas($id_materia: Int!){
+        aulas(id_materia:$id_materia){
+          items{
+            id
+            id_materia
+            titulo
+          }
+        }
+      }
+      `;
+
+      const variables = {
+        id_materia: idAula,
+      };
+
+      try {
+        const response = await api.post<{ data: { aulas: { items: Aula[] } } }>('', {
+          query,
+          variables,
+        });
+
+        this.aulas = response.data.data.aulas.items;
+        console.log(response.data.data.aulas.items);
+
+      } catch (error) {
+        console.error('Erro ao buscar aulas:', error);
+        throw error;
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
 });
 
 export default useAtividadesStore;

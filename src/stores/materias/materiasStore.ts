@@ -53,12 +53,16 @@ const useMateriasStore = defineStore('materias', {
         }
       `;
 
-      const response = await api.post<{ data: Materia[] }>('', query);
-
       try {
-        this.materias = response.data.data;
+        const response = await api.post<{ data: { materias: Materia[] } }>('', {
+          query,
+        });
+
+        this.materias = response.data.data.materias;
+
       } catch (error) {
-        console.log(error);
+        console.error('Erro ao buscar aulas:', error);
+        throw error;
       } finally {
         this.loading = false;
       }
