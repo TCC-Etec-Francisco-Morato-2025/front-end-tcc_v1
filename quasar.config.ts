@@ -11,10 +11,10 @@ export default defineConfig((/* ctx */) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['axios','config','firebase','vue3-tour','swiper'],
+    boot: ['axios', 'config', 'firebase', 'vue3-tour', 'swiper', 'gsap'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
-    css: ['main.css','../../node_modules/video.js/dist/video-js.css'],
+    css: ['main.css', '../../node_modules/video.js/dist/video-js.css'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -26,16 +26,12 @@ export default defineConfig((/* ctx */) => {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
+      'material-symbols-outlined',
       'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
     metaVariables: {
-      font: [
-        'Fredoka One',
-        'Pixelify Sans',
-        'Baloo 2',
-        'Handjet'
-      ] // ou 'Poppins', 'Open Sans', etc.
+      font: ['Fredoka One', 'Pixelify Sans', 'Baloo 2', 'BBH Sans Hegarty', 'Handjet'], // ou 'Poppins', 'Open Sans', etc.
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
@@ -119,7 +115,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['LoadingBar','AppFullscreen'],
+      plugins: ['LoadingBar', 'AppFullscreen', 'Notify'],
     },
 
     // animations: 'all', // --- includes all animations

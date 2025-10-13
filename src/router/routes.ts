@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
           loadingComponent: materiaConteudoLoading,
           delay: 100, // espera 100ms antes de mostrar o skeleton (evita piscar em loads rápidos)
           timeout: 10000, // tempo máximo de espera antes de erro
-        })
+        }),
       },
       {
         path: 'para-voce',
@@ -71,14 +71,14 @@ const routes: RouteRecordRaw[] = [
       {
         path: `/atividade/introducao`,
         name: 'introducao-atividade',
-        component: () => import('pages/atividade/introPage.vue')
+        component: () => import('pages/atividade/introPage.vue'),
       },
       {
         path: `/atividade/video`,
         name: 'video-atividade',
-        component: () => import('pages/atividade/videoPage.vue')
-      }
-    ]
+        component: () => import('pages/atividade/videoPage.vue'),
+      },
+    ],
   },
   {
     // path: `:nomeMateria/:nomeConteudo/:nomeAtividade`,
@@ -89,13 +89,25 @@ const routes: RouteRecordRaw[] = [
       {
         path: `/tour/apresentacao`,
         name: 'apresentacao',
-        component: () => import('pages/apresentacaoPage.vue')
-      }
-    ]
+        component: () => import('pages/apresentacaoPage.vue'),
+      },
+    ],
   },
   {
     path: '/login',
     component: () => import('pages/LoginPage.vue'),
+  },
+  {
+    path: '/create/materia',
+    component: () => import('pages/create/createMateriaPage.vue'),
+  },
+  {
+    path: '/create/atividade',
+    component: () => import('pages/create/createAtividade.vue'),
+  },
+  {
+    path: '/create/item',
+    component: () => import('pages/create/createItemPage.vue'),
   },
   // Always leave this as last one,
   // but you can also remove it

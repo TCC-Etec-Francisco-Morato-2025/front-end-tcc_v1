@@ -11,7 +11,7 @@ const useMateriasStore = defineStore('materias', {
   state: (): MateriasStore => ({
     materias: [
       {
-        id: 1,
+        id: '1',
         nome: 'Fisíca',
         icon: 'fisicaIcon',
         cor: 'rgba(0, 128, 255, 1)',
@@ -19,7 +19,7 @@ const useMateriasStore = defineStore('materias', {
         textColor: 'white',
       },
       {
-        id: 2,
+        id: '2',
         nome: 'Química',
         icon: 'quimicaIcon',
         cor: '#9cdd82',
@@ -27,7 +27,7 @@ const useMateriasStore = defineStore('materias', {
         textColor: 'white',
       },
       {
-        id: 3,
+        id: '3',
         nome: 'Inglês',
         icon: 'inglesIcon',
         cor: '#ffffff',
@@ -58,12 +58,19 @@ const useMateriasStore = defineStore('materias', {
           query,
         });
 
-        this.materias = response.data.data.materias;
+        console.log(response.data.data)
+
+        const existMateriasId = new Set(this.materias.map((a) => a.id));
+        const novasMateriasAdd = response.data.data.materias.filter(
+          (materia) => !existMateriasId.has(materia.id),
+        );
+        this.materias.push(...novasMateriasAdd);
 
       } catch (error) {
-        console.error('Erro ao buscar aulas:', error);
+        console.error('Erro ao buscar Matérias:', error);
         throw error;
       } finally {
+        console.log(this.materias)
         this.loading = false;
       }
     },

@@ -2,82 +2,152 @@ import { defineStore } from 'pinia';
 import useUserStore from './userStore';
 import { api } from 'src/boot/axios';
 
-const userStore = useUserStore();
+interface LoginState {
+  slide: string;
+  query: string;
+  mutation: string;
+  variables: {
+    nome: string | null;
+    email: string | null;
+    senha: string | null;
+  };
+  loading: boolean;
+}
 
 const useLoginStore = defineStore('login', {
-  state: () => ({
+  state: (): LoginState => ({
     slide: 'entrar',
     query: '',
+    mutation: '',
     variables: {
-      token: '',
-      email: '',
-      password: '',
+      nome: null,
+      email: null,
+      senha: null,
     },
     loading: false,
   }),
+
   actions: {
-    async login() {
-      this.loading = true;
+    async login(email: string, senha: string) {
+      const hasAuth = email && senha;
 
-      this.query = `
-      query loginUser($email:String!, $password:String!){
-        user(email: $email, password: $password){
-          username
-          email
-        }
-      }`;
-
-      if (userStore.email && userStore.password) {
-        this.variables.email = userStore.email;
-        this.variables.password = userStore.password;
-      } else{
-        return;
+      if (!hasAuth) {
+        throw new Error('Forneça email e senha');
       }
 
-      const response = await api.post('', { query: this.query, variables: this.variables });
+      const variables = {
+        senha:senha,
+        email:email
+      }
 
       try {
-        if (response.data && response.data.data) {
-          userStore.mudarUser(response.data.data);
-        } else {
-          console.error('Dados da resposta não encontrados ou formatados de maneira incorreta.');
+        this.loading = true;
+          this.variables = { email, senha, nome: null };
+          const query =
+          `mutation login($email: String!, $senha: String!) {
+            	login(email:$email,password:$senha){
+                token
+                user{
+                  id
+                  username
+                }
+              }
+          }`;
+
+        const response = await api.post('', {
+          query,
+          variables,
+        });
+
+        console.log(response.data.data.login)
+
+        if (response.data.errors) {
+          throw new Error(response.data.errors[0].message);
         }
+
+        return response.data.data;
       } catch (error) {
-        console.log(error);
+        console.error('Erro no login:', error);
+        throw error;
       } finally {
         this.loading = false;
       }
     },
-    async register() {},
 
-    async manterLogin() {
-      this.loading = true;
-      this.query = `
-        query loginUser($email:String!, $token:String!){
-          user(email: $email, password: $token){
-            username
-            email
+    async register(nome: string, email: string, senha: string) {
+      this.mutation = `
+        mutation Register($nome: String!, $email: String!, $senha: String!) {
+          register(username: $nome, email: $email, password: $senha,uuid:null,token:null) {
+            token
+            user {
+              username
+              foto
+            }
           }
-        }`;
+        }
+      `;
 
-      const response = await api.post('', { query: this.query, variables: this.variables });
+      this.variables = { nome, email, senha };
 
       try {
-        if (response.data && response.data.data) {
+        this.loading = true;
+        const response = await api.post('', {
+          query: this.mutation,
+          variables: this.variables
+        });
+
+        if (response.data.errors) {
+          throw new Error(response.data.errors[0].message);
+        }
+
+        return response.data.data;
+      } catch (error: any) {
+        console.error('Erro no registro:', error);
+        throw error;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async manterLogin() {
+      try {
+        this.loading = true;
+        const userStore = useUserStore();
+
+        this.query = `
+          query loginUser($email: String!, $token: String!) {
+            user(email: $email, password: $token) {
+              username
+              email
+            }
+          }`;
+
+        const response = await api.post('', {
+          query: this.query,
+          variables: this.variables
+        });
+
+        if (response.data.errors) {
+          throw new Error(response.data.errors[0].message);
+        }
+
+        if (response.data?.data) {
           userStore.mudarUser(response.data.data);
         } else {
-          console.error('Dados da resposta não encontrados ou formatados de maneira incorreta.');
+          console.error('Dados da resposta não encontrados');
         }
       } catch (error) {
-        console.log(error);
+        console.error('Erro no manterLogin:', error);
       } finally {
         this.loading = false;
       }
     },
   },
+
   persist: {
     storage: localStorage,
     pick: ['variables.email', 'variables.token'],
   },
 });
+
 export default useLoginStore;

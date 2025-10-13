@@ -24,6 +24,7 @@
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.5.0",
     "quasar": "^2.16.0",
+    "split-type": "^0.3.4",
     "swiper": "^11.2.10",
     "typed.js": "^2.1.0",
     "vue": "^3.4.18",

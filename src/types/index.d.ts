@@ -1,5 +1,5 @@
 export interface Item {
-  id: number;
+  id: string;
   tipo: number;
   nome: string;
   icon: string;
@@ -9,7 +9,7 @@ export interface Item {
 }
 
 export interface Materia {
-  id: number;
+  id: string;
   nome: string;
   icon: string;
   cor: string;
@@ -18,18 +18,18 @@ export interface Materia {
 }
 
 export interface Aula {
-  id: number;
-  id_materia: number;
+  id: string;
+  id_materia: string;
   titulo: string;
 }
 
 export interface Atividade {
-  id: number;
+  id: string;
   titulo: string;
   estrelas: number;
   descricao: string;
-  id_aula: number;
-  id_materia: number;
+  id_aula: string;
+  id_materia: string;
   proxima?: boolean;
   acertos?: number;
   vida: number;
@@ -37,14 +37,14 @@ export interface Atividade {
 }
 
 export interface Fala {
-  id: number;
-  id_personagem: number;
-  id_atividade: number;
+  id: string;
+  id_personagem: string;
+  id_atividade: string;
   fala: string;
 }
 
 export interface Personagem {
-  id: number;
+  id: string;
   nome: string;
   materia: string;
   cor: string;
@@ -52,7 +52,7 @@ export interface Personagem {
 }
 
 export interface Questao {
-  id: number;
+  id: string;
   pergunta: string;
   perguntaFacil: string;
   tempo: number;
@@ -61,13 +61,13 @@ export interface Questao {
 }
 
 export interface Resposta {
-  id_pergunta: number;
+  id_pergunta: string;
   resposta: string;
   certa: boolean;
 }
 
 export interface itensUser{
-  id:number,
+  id:string,
   tipo:number,
 }
 

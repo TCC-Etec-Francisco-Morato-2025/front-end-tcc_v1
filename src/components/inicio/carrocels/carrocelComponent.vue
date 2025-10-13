@@ -3,7 +3,6 @@ import type { Materia } from 'src/types';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { useRouter } from 'vue-router';
-import 'swiper/css';
 import useMateriasStore from 'src/stores/materias/materiasStore';
 import useMateriaStore from 'src/stores/materias/materiaStore';
 
@@ -21,7 +20,7 @@ materiasStore.materias.map((el) => {
 
 const irParaMateria = (slide:Materia) => {
 
-  materiaStore.mudarMateria(slide.nome, slide.icon, slide.cor, slide.textColor, slide.id, slide.path)
+  materiaStore.mudarMateria(slide)
 
   router.push(`/materias/${slide.path}`).catch((error) => {
     // Adicione um .catch() aqui

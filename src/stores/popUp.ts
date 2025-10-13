@@ -17,6 +17,7 @@ const usePopUpStore = defineStore('popup', {
     atividade: false,
     eventoBoss: false,
     perfil: false,
+    createItem:false,
   }),
 
   getters: {
@@ -55,6 +56,9 @@ const usePopUpStore = defineStore('popup', {
     togglePerfil() {
       this.perfil = !this.perfil;
     },
+    togglecreateItem(){
+      this.createItem = !this.createItem;
+    }
   },
   persist: {
     storage: localStorage,

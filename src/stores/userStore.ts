@@ -13,9 +13,9 @@ const useUserStore = defineStore('user', {
     password:'',
     token:'',
     itens:[
-      { id: 1 , tipo: 1 },
-      { id: 1 , tipo: 2 },
-      { id: 1 , tipo: 3 },
+      { id: '1' , tipo: 1 },
+      { id: '1' , tipo: 2 },
+      { id: '1' , tipo: 3 },
     ]
   }),
 
