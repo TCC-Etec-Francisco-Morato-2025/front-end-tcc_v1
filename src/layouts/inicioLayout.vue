@@ -7,9 +7,9 @@ import navBottomComponent from 'src/components/navBottomComponent.vue';
       <router-view/>
     </q-page-container>
     <q-fab class="btn-create" icon="edit" direction="up" flat>
-      <q-fab-action class="icon" icon="menu_book"/>
+      <q-fab-action class="icon" icon="menu_book" to="/create/materia"/>
       <q-fab-action class="icon" icon="sym_o_swords" to="/create/item"/>
-      <q-fab-action class="icon" icon="smart_display"/>
+      <q-fab-action class="icon" icon="smart_display" to="/create/atividade"/>
     </q-fab>
     <q-footer>
       <navBottomComponent />
