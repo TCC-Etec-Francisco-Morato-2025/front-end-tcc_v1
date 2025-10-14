@@ -9,7 +9,7 @@ const loginStore = useLoginStore();
 
 onMounted(async() => {
   animacao();
-  await loginStore.login('ejaskolski@example.net','1234567');
+  await loginStore.register('sadsadsa','dsadsadsa@gmail.com','1234567');
 });
 
 const animacao = () => {

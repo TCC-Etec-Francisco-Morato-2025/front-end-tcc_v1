@@ -59,7 +59,7 @@ const useLoginStore = defineStore('login', {
           variables,
         });
 
-        console.log(response.data.data.login)
+        console.log(response.data)
 
         if (response.data.errors) {
           throw new Error(response.data.errors[0].message);
@@ -77,7 +77,7 @@ const useLoginStore = defineStore('login', {
     async register(nome: string, email: string, senha: string) {
       this.mutation = `
         mutation Register($nome: String!, $email: String!, $senha: String!) {
-          register(username: $nome, email: $email, password: $senha,uuid:null,token:null) {
+          register(username: $nome, email: $email, password: $senha) {
             token
             user {
               username
@@ -146,7 +146,7 @@ const useLoginStore = defineStore('login', {
 
   persist: {
     storage: localStorage,
-    pick: ['variables.email', 'variables.token'],
+    pick: [],
   },
 });
 

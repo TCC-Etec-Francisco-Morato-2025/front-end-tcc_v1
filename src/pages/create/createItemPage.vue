@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
 import usePopUpStore from 'src/stores/popUp';
 import popUpCreateItemComponent from 'src/components/create/popUpCreateItemComponent.vue';
 
 const popUpStore = usePopUpStore();
-const $q = useQuasar();
 
 const clickCriarAtividade = ()=>{
   popUpStore.togglecreateItem();
-  void $q.fullscreen.request();
 }
 </script>
 

@@ -4,25 +4,41 @@
 import type { Atividade } from 'src/types';
 import { defineProps, ref } from 'vue';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
-import useMateriaStore from 'src/stores/materias/materiaStore';
 import setaIcon from '../icons/setaIcon.vue';
 import atividadeComponent from './atividadeComponent.vue';
 
 const atividadesStore = useAtividadesStore();
-const materiaStore = useMateriaStore();
 const atividades = ref<Atividade[]>([]);
 const estadoLista = ref(false);
 const btn = ref<HTMLElement | null>(null);
+const isFirst = ref(true);
 
-const mutEstadoLista = () => {
+const mutEstadoLista = async () => {
+  if (isFirst.value) {
+    await atividadesStore.getAtividades(props.id);
+    procurarAtividade();
+    isFirst.value = false;
+
+    for (let i = 0; i < atividades.value.length; i++) {
+      const atividade = atividades.value[i];
+      if (atividade) {
+        if (atividade.estrelas === 0) {
+          atividade.proxima = true;
+          break; // para no primeiro que encontrar
+        } else {
+          atividade.proxima = false;
+        }
+      }
+    }
+  }
+
   const button = document.getElementById('btn-' + props.id);
-  console.log(button);
   estadoLista.value = !estadoLista.value;
   button?.classList.toggle('ativo');
 };
 
 interface Props {
-  id: number;
+  id: string;
   nome: string;
   cor: string;
   textColor: string;
@@ -34,23 +50,13 @@ const corAtivo = ref(props.cor);
 const corTextAtivo = ref(props.textColor);
 
 // achar as ativiades dessa matéria em especifico, caso a pessoa já tenha entrado em outras matérias
-atividadesStore.atividades.forEach((el) => {
-  if (el.id_aula === props.id && el.id_aula === materiaStore.id) {
-    atividades.value.push(el);
-  }
-});
-
-for (let i = 0; i < atividades.value.length; i++) {
-  const atividade = atividades.value[i];
-  if (atividade) {
-    if (atividade.estrelas === 0) {
-      atividade.proxima = true;
-      break; // para no primeiro que encontrar
-    } else {
-      atividade.proxima = false;
+const procurarAtividade = () => {
+  atividadesStore.atividades.forEach((el) => {
+    if (el.id_aula == props.id) {
+      atividades.value.push(el);
     }
-  }
-}
+  });
+};
 </script>
 
 <template>
@@ -73,7 +79,11 @@ for (let i = 0; i < atividades.value.length; i++) {
           <q-list class="lista-atividades">
             <!-- informações sobre a atividade -->
             <!-- btn usando para dar a sensação de click para o usuário -->
-            <atividade-component :atividade="atividade" v-for="atividade in atividades" :key="atividade.id"/>
+            <atividade-component
+              :atividade="atividade"
+              v-for="atividade in atividades"
+              :key="atividade.id"
+            />
           </q-list>
         </q-card-section>
       </q-card>

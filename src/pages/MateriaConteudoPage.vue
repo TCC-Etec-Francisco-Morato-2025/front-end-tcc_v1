@@ -20,7 +20,6 @@ const pesquisando = ref(false);
 
 onMounted(async()=>{
   await aulasStore.getAulas(materiaStore.id);
-  await atividadesStore.getAtividades('1');
 
   encontrarAula();
 })

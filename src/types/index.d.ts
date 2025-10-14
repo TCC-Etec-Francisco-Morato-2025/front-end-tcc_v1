@@ -29,7 +29,6 @@ export interface Atividade {
   estrelas: number;
   descricao: string;
   id_aula: string;
-  id_materia: string;
   proxima?: boolean;
   acertos?: number;
   vida: number;
