@@ -1,33 +1,60 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import type { QFile } from 'quasar';
 import { onBeforeUnmount, ref, watch } from 'vue';
+import type { QFile } from 'quasar';
+import videojs from 'video.js';
+import useMateriasStore from 'src/stores/materias/materiasStore';
 import usePopUpStore from 'src/stores/popUp';
 
+interface Options {
+  label: string;
+  value: string;
+}
+
 const $q = useQuasar();
+const inputVideo = ref<InstanceType<typeof QFile> | null>(null);
+let player: ReturnType<typeof videojs> | null = null;
+const urlVideo = ref('');
+const videoPreview = ref<HTMLVideoElement | null>(null);
 
-// barra de progresso
+const slide = ref('fase1');
+const optionsMateria = ref<Options[]>([]);
+const optionsVida = ref([
+  { label: '1', value: 1 },
+  { label: '2', value: 2 },
+  { label: '3', value: 3 },
+  { label: '4', value: 4 },
+  { label: '5', value: 5 },
+]);
+
+// pinias
+const materiasStore = useMateriasStore();
 const popUpStore = usePopUpStore();
-
-// pegar a imagem
-const imgItem = ref<File | null>(null);
-const inputImg = ref<InstanceType<typeof QFile> | null>(null);
 
 // variaveis para o que o usuário mandar
 const nome = ref('');
 const descricao = ref('');
-const imgPreview = ref('');
+const materia = ref('');
+const vida = ref(1);
+const video = ref<File | null>(null);
+
+// definir opções do select
+materiasStore.materias.map((e) => {
+  const newOption = {
+    label: e.nome,
+    value: e.id,
+  };
+  optionsMateria.value.push(newOption);
+});
 
 const mensagemAlert = () => {
-  let mensagem:string;
+  let mensagem: string;
 
-  if(!nome.value){
-    mensagem='Você precisa dar um nome ao item'
-  }else if(!descricao.value){
-    mensagem='você precisa dar uma descrição ao item'
-  }else if (!imgPreview.value){
-    mensagem='você precisa dar uma imagem ao item'
-  }else{
+  if (!nome.value) {
+    mensagem = 'Você precisa dar um nome ao item';
+  } else if (!descricao.value) {
+    mensagem = 'você precisa dar uma descrição ao item';
+  } else {
     return;
   }
 
@@ -40,56 +67,142 @@ const mensagemAlert = () => {
   });
 };
 
-const selectImg = () => {
-  if (inputImg.value) {
-    inputImg.value.pickFiles();
+// função para pegar o video
+const getVideo = () => {
+  if (inputVideo.value) {
+    inputVideo.value.pickFiles();
   }
 };
 
-const processImage = () => {
-  if (imgItem.value) {
-    if (imgPreview.value) {
-      URL.revokeObjectURL(imgPreview.value);
+// gerar URL
+watch(
+  () => video.value,
+  () => {
+    if (video.value) {
+      if (urlVideo.value) {
+        URL.revokeObjectURL(urlVideo.value);
+      }
+      urlVideo.value = URL.createObjectURL(video.value);
+      initializeVideoPlayer();
     }
-
-    imgPreview.value = URL.createObjectURL(imgItem.value);
-    console.log('🖼️ Imagem selecionada:', imgItem.value.name);
   }
+);
+
+// inicializar o video
+const initializeVideoPlayer = () => {
+  if (!videoPreview.value || !urlVideo.value) {
+    return;
+  }
+
+  if (player) {
+    player.dispose();
+  }
+
+  player = videojs(videoPreview.value, {
+    controls: true,
+    responsive: true,
+    fluid: true,
+  });
+
+  player.src({
+    src: urlVideo.value,
+    type: 'video/mp4'
+  });
 };
 
-watch(() => imgItem.value, processImage);
-
-// limpa ao desmontar componente
 onBeforeUnmount(() => {
-  // Limpar URL da imagem
-  if (imgPreview.value) {
-    URL.revokeObjectURL(imgPreview.value);
+  if (player) player.dispose();
+  if (urlVideo.value) {
+    URL.revokeObjectURL(urlVideo.value);
   }
 });
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.createItem" :maximized="popUpStore.createItem">
+  <q-dialog v-model="popUpStore.createAtividadePopUp" :maximized="popUpStore.createAtividadePopUp">
     <div class="popUp">
-      <h2 ref="text4" class="titulo">Vamos criar um item</h2>
-      <div class="box-carac center">
-        <section>
-          <h3>Selecione uma imagem:</h3>
-          <q-file ref="inputImg" v-model="imgItem" style="display: none" type="file" accept=".png" />
-          <div class="img center" :style="imgPreview ? 'border:none' : ''" @click="selectImg()">
-            <q-img :src="imgPreview" v-if="imgPreview" :ratio="4 / 4" />
-            <q-icon name="sym_o_cloud_upload" size="200px" v-else />
-          </div>
-        </section>
+      <h2 ref="text4" class="titulo">Vamos criar uma nova Atividade</h2>
+      <q-carousel v-model="slide" transition-prev="scale" transition-next="scale" animated>
+        <q-carousel-slide name="fase1" class="box-carac center">
+          <q-select v-model="materia" :options="optionsMateria" dark outlined bottom-slots>
+            <template v-slot:prepend>
+              <span style="font-size: 1.2rem"> Materia: </span>
+            </template>
+            <template v-slot:append>
+              <q-icon name="menu_book" />
+            </template>
+          </q-select>
 
-          <q-input class="nome" v-model="nome" label="Nome:" dense outlined standout/>
+          <q-input class="nome" v-model="nome" label="Nome:" dense outlined standout />
 
           <q-input class="descricao" label="descrição" v-model="descricao" autogrow outlined />
 
-          <div class="btn">
-            <q-btn label="enviar" color="green" @click="mensagemAlert()" push rounded/>
-            <q-btn label="cancelar" color="red" @click="popUpStore.togglecreateItem()" push rounded/>
-          </div>
+          <q-select
+            v-model="vida"
+            :options="optionsVida"
+            label="Quantidade de vidas:"
+            type="number"
+            outlined
+          />
+        </q-carousel-slide>
+        <q-carousel-slide name="fase2">
+          <q-responsive ref="boxPlayer" :ratio="16 / 9">
+            <q-file
+              ref="inputVideo"
+              v-model="video"
+              style="display: none"
+              type="file"
+              accept="video/*"
+            />
+            <div
+              style="border: 2px solid var(--color-background-3); border-radius: 20px"
+              class="center"
+              @click="getVideo()"
+
+            >
+              <q-icon name="sym_o_video_file" style="width: 100%" size="150px" />
+            </div>
+            <video ref="videoPreview" class="video-js vjs-big-play-centered">
+              <source/>
+            </video>
+          </q-responsive>
+        </q-carousel-slide>
+      </q-carousel>
+
+      <div class="btn center">
+        <q-btn
+          label="próxima"
+          icon-right="keyboard_double_arrow_right"
+          color="green"
+          @click="slide = 'fase2'"
+          push
+          rounded
+          v-if="slide == 'fase1'"
+        />
+        <q-btn
+          label="Voltar"
+          icon="keyboard_double_arrow_left"
+          color="orange-4"
+          @click="slide = 'fase1'"
+          push
+          rounded
+          v-if="slide == 'fase2'"
+        />
+        <q-btn
+          label="enviar"
+          color="green"
+          @click="mensagemAlert()"
+          push
+          rounded
+          v-if="slide == 'fase2'"
+        />
+        <q-btn
+          label="cancelar"
+          color="red"
+          @click="popUpStore.togglecreateAtividadePopUp()"
+          push
+          rounded
+        />
       </div>
     </div>
   </q-dialog>
@@ -108,28 +221,31 @@ onBeforeUnmount(() => {
 .titulo {
   text-align: center;
   font-family: 'Baloo 2';
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
 .btn {
-  display: flex;
-  align-self: center;
+  margin-top: 30px;
   gap: 10px;
 }
-.img {
-  height: 300px;
-  width: 300px;
-  border: 2px solid var(--color-background-3);
-  border-radius: 20px;
+
+.q-carousel {
+  background-color: transparent;
+  height: auto;
 }
 
-.nome{
+.nome {
   min-width: 300px;
 }
-.descricao{
+.descricao {
   min-width: 300px;
 }
-.q-input{
+.q-input {
   max-width: 500px;
+}
+.q-select {
+  padding: 0;
+  min-width: 300px;
+  font-size: 1rem;
 }
 
 .box-carac {

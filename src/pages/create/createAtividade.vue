@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import usePopUpStore from 'src/stores/popUp';
-import popUpCreateItemComponent from 'src/components/create/popUpCreateItemComponent.vue';
+import popUpCreateAtividadeComponent from 'src/components/create/popUpCreateAtividadeComponent.vue';
 
 const popUpStore = usePopUpStore();
 
 const clickCriarAtividade = ()=>{
-  popUpStore.togglecreateItem();
+  popUpStore.togglecreateAtividadePopUp();
 }
 </script>
 
 <template>
   <q-layout>
-    <pop-up-create-item-component/>
-    <q-btn class="btn-voltar" icon="sym_o_arrow_left_alt" dense push/>
-    <q-btn class="btn-criar" label="Criar novos itens" push rounded @click="clickCriarAtividade()"/>
+    <pop-up-create-atividade-component/>
+    <q-btn class="btn-voltar" icon="sym_o_arrow_left_alt" push/>
+    <q-btn class="btn-criar" label="Criar novas Atividades" push rounded @click="clickCriarAtividade()"/>
     <div class="titulo">
-      <h2>Editar Itens</h2>
+      <h2>Editar Atividades</h2>
       <q-icon name="edit" size="30px" />
     </div>
-    <div class="list-itens center">
-      <q-btn v-for="item in 10" :key="item" size="20px" round>a</q-btn>
+    <div class="list-atividades center">
+      <q-btn class="atividades" v-for="item in 10" :key="item" size="20px" rounded>a</q-btn>
     </div>
   </q-layout>
 </template>
@@ -45,8 +45,8 @@ const clickCriarAtividade = ()=>{
   margin-top: 70px;
   font-family: 'Baloo 2';
   font-size: 23px;
-  width: 300px;
-  height: 60px;
+  width: 350px;
+  height: 70px;
   background-color: var(--cor-principal-2);
   background: linear-gradient(
     80deg,
@@ -74,16 +74,22 @@ const clickCriarAtividade = ()=>{
   margin-top: 100px;
 }
 .titulo h2 {
-  font-family: 'BBH Sans Hegarty';
-  font-size: 2.5rem;
+  font-family: 'Baloo 2';
+  font-size: 2rem;
 }
 
-.list-itens {
+.list-atividades {
   flex-wrap: wrap;
   padding: 15px;
   gap: 20px;
 }
-.list-itens .q-btn {
+.list-atividades .q-btn {
   background-color: var(--cor-principal-1);
+}
+.atividades{
+  width: 300px;
+  height: 65px;
+  font-family: 'Baloo 2';
+  font-size: 30px;
 }
 </style>

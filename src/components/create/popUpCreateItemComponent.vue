@@ -69,7 +69,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.createItem" :maximized="popUpStore.createItem">
+  <q-dialog v-model="popUpStore.createItemPopUp" :maximized="popUpStore.createItemPopUp">
     <div class="popUp">
       <h2 ref="text4" class="titulo">Vamos criar um item</h2>
       <div class="box-carac center">
@@ -88,7 +88,7 @@ onBeforeUnmount(() => {
 
           <div class="btn">
             <q-btn label="enviar" color="green" @click="mensagemAlert()" push rounded/>
-            <q-btn label="cancelar" color="red" @click="popUpStore.togglecreateItem()" push rounded/>
+            <q-btn label="cancelar" color="red" @click="popUpStore.togglecreateItemPopUp()" push rounded/>
           </div>
       </div>
     </div>

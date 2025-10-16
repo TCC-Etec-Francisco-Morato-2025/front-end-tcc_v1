@@ -30,6 +30,7 @@ const mensagemAlert = () => {
     mensagem = 'você precisa dar uma imagem ao item';
   } else {
     criar(nome.value, imgPreview.value, corMateria.value, corLetra.value);
+    return;
   }
 
   $q.notify({
@@ -84,7 +85,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.createItem" :maximized="popUpStore.createItem">
+  <q-dialog v-model="popUpStore.createPopUp" :maximized="popUpStore.createPopUp">
     <div class="popUp">
       <h2 ref="text4" class="titulo">Vamos criar uma matéria</h2>
       <div class="box-carac center">

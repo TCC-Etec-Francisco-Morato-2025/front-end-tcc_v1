@@ -5,7 +5,7 @@ import popUpCreateItemComponent from 'src/components/create/popUpCreateItemCompo
 const popUpStore = usePopUpStore();
 
 const clickCriarAtividade = ()=>{
-  popUpStore.togglecreateItem();
+  popUpStore.togglecreateItemPopUp();
 }
 </script>
 

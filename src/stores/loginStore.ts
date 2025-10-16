@@ -96,6 +96,8 @@ const useLoginStore = defineStore('login', {
           variables: this.variables
         });
 
+        console.log(response.data)
+
         if (response.data.errors) {
           throw new Error(response.data.errors[0].message);
         }
