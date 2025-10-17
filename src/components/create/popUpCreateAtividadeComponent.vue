@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import { onBeforeUnmount, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
 import type { QFile } from 'quasar';
 import videojs from 'video.js';
 import useMateriasStore from 'src/stores/materias/materiasStore';
 import usePopUpStore from 'src/stores/popUp';
+import popUpCreateQuestaoComponent from './popUpCreateQuestaoComponent.vue';
 
 interface Options {
   label: string;
@@ -12,10 +13,14 @@ interface Options {
 }
 
 const $q = useQuasar();
+
+// variaveis do video
 const inputVideo = ref<InstanceType<typeof QFile> | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
 const urlVideo = ref('');
 const videoPreview = ref<HTMLVideoElement | null>(null);
+const tempoAtual = ref('00:00');
+const videoKey = ref(0);
 
 const slide = ref('fase1');
 const optionsMateria = ref<Options[]>([]);
@@ -83,13 +88,16 @@ watch(
         URL.revokeObjectURL(urlVideo.value);
       }
       urlVideo.value = URL.createObjectURL(video.value);
+      videoKey.value++;
       initializeVideoPlayer();
     }
   }
 );
 
 // inicializar o video
-const initializeVideoPlayer = () => {
+const initializeVideoPlayer = async () => {
+  await nextTick();
+
   if (!videoPreview.value || !urlVideo.value) {
     return;
   }
@@ -102,12 +110,39 @@ const initializeVideoPlayer = () => {
     controls: true,
     responsive: true,
     fluid: true,
+    sources: [
+      {
+        src: urlVideo.value,
+        type: 'video/mp4',
+      },
+    ],
   });
 
-  player.src({
-    src: urlVideo.value,
-    type: 'video/mp4'
+  player.load();
+  tempoAtual.value = '0000';
+
+  player.on('timeupdate', () => {
+    const currentTime = player?.currentTime();
+
+    if (currentTime !== undefined) tempoAtual.value = formatarTempo(currentTime);
   });
+};
+
+const formatarTempo = (totalSegundos: number) => {
+  const minutos = Math.floor(totalSegundos / 60);
+  const segundos = Math.floor(totalSegundos % 60);
+
+  const minutosFormatados = String(minutos).padStart(2, '0');
+  const segundosFormatados = String(segundos).padStart(2, '0');
+
+  return `${minutosFormatados}:${segundosFormatados}`;
+};
+
+const editTempo = (tempo: number) => {
+  let tempoAtualVideo = player?.currentTime();
+
+  if (tempoAtualVideo !== undefined) tempoAtualVideo += tempo;
+  player?.currentTime(tempoAtualVideo);
 };
 
 onBeforeUnmount(() => {
@@ -120,6 +155,7 @@ onBeforeUnmount(() => {
 
 <template>
   <q-dialog v-model="popUpStore.createAtividadePopUp" :maximized="popUpStore.createAtividadePopUp">
+    <pop-up-create-questao-component/>
     <div class="popUp">
       <h2 ref="text4" class="titulo">Vamos criar uma nova Atividade</h2>
       <q-carousel v-model="slide" transition-prev="scale" transition-next="scale" animated>
@@ -146,26 +182,54 @@ onBeforeUnmount(() => {
           />
         </q-carousel-slide>
         <q-carousel-slide name="fase2">
-          <q-responsive ref="boxPlayer" :ratio="16 / 9">
-            <q-file
-              ref="inputVideo"
-              v-model="video"
-              style="display: none"
-              type="file"
-              accept="video/*"
-            />
-            <div
-              style="border: 2px solid var(--color-background-3); border-radius: 20px"
-              class="center"
+          <section align="center" class="section-video">
+            <q-responsive ref="boxPlayer" :ratio="16 / 9">
+              <q-file
+                ref="inputVideo"
+                v-model="video"
+                style="display: none"
+                type="file"
+                accept="video/*"
+              />
+              <div
+                style="border: 2px solid; border-radius: 20px"
+                class="center"
+                @click="getVideo()"
+                v-if="!urlVideo"
+              >
+                <q-icon name="sym_o_video_file" style="width: 100%" size="150px" />
+              </div>
+              <video
+                ref="videoPreview"
+                class="video-js vjs-big-play-centered"
+                :key="videoKey"
+                v-else
+              >
+                <source />
+              </video>
+            </q-responsive>
+            <q-btn
+              class="btn-trocar-video"
+              :label="urlVideo ? 'trocar video' : 'adicionar video'"
+              :icon-right="urlVideo ? 'sync' : 'upload'"
               @click="getVideo()"
-
-            >
-              <q-icon name="sym_o_video_file" style="width: 100%" size="150px" />
+              push
+            />
+          </section>
+          <section class="section-info center" style="flex-direction: column; margin-top: 40px; gap: 30px;">
+            <div class="control-tempo center" style="flex-direction: column; gap: 15px">
+              <div class="box-tempo-video">Tempo: {{ tempoAtual }}</div>
+              <div class="center" style="gap: 10px">
+                <q-btn label="- 5s" @click="editTempo(-5)" no-caps round outline />
+                <q-btn label="- 1s" @click="editTempo(-1)" no-caps round outline />
+                <q-btn label="+1s" @click="editTempo(1)" no-caps round outline />
+                <q-btn label="+5s" @click="editTempo(5)" no-caps round outline />
+              </div>
             </div>
-            <video ref="videoPreview" class="video-js vjs-big-play-centered">
-              <source/>
-            </video>
-          </q-responsive>
+            <div class="questoes">
+              <q-btn class="btn-add-questoes" label="adicionar questoes" icon-right="add" flat rounded/>
+            </div>
+          </section>
         </q-carousel-slide>
       </q-carousel>
 
@@ -209,6 +273,14 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.disabled,
+.disabled *,
+[disabled],
+[disabled] * {
+  opacity: 1 !important ;
+  cursor: pointer !important;
+}
+
 .popUp {
   width: 100%;
   padding: 40px 20px;
@@ -256,5 +328,25 @@ onBeforeUnmount(() => {
 h3 {
   align-self: flex-start;
   font-size: 1.3rem;
+}
+
+.btn-trocar-video {
+  margin-top: 20px;
+  background-color: var(--cor-principal-3);
+}
+
+.box-tempo-video {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 5px;
+  font-size: 1.3rem;
+}
+
+.btn-add-questoes{
+  font-size: 1.3rem;
+  width: 300px;
+  font-family: 'Baloo 2';
+  border: 2px dotted ;
 }
 </style>

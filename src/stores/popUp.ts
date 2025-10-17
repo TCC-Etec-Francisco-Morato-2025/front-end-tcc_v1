@@ -20,6 +20,7 @@ const usePopUpStore = defineStore('popup', {
     createItemPopUp: false,
     createMateriaPopUp: false,
     createAtividadePopUp: false,
+    createQuestaoPopUp: true,
   }),
 
   getters: {
