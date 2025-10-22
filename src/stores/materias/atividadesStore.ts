@@ -162,14 +162,18 @@ const useAtividadesStore = defineStore('atividades', {
     loading: false,
   }),
   actions: {
-    async getAtividades(idAula: string, token?: string | null) {
+    async getAtividades(idAula: string, token?: string | null, editMode?:boolean) {
       if (!token) {
         token = null;
       }
 
       this.loading = true;
 
-      this.atividades=[];
+      if(editMode){
+        console.info('Pegando todas as Atividades...')
+      }else{
+        this.atividades=[];
+      }
 
       const query = `
       query pegarAtividades($id_aula: ID!){
@@ -214,8 +218,6 @@ const useAtividadesStore = defineStore('atividades', {
           };
           this.atividades.push(newAtividade)
         });
-
-        console.log(this.atividades);
       } catch (error) {
         console.error('Erro ao buscar aulas:', error);
         throw error;

@@ -1,29 +1,56 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import { nextTick, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
+import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import type { QFile } from 'quasar';
 import videojs from 'video.js';
-import useMateriasStore from 'src/stores/materias/materiasStore';
+import useAulasStore from 'src/stores/materias/aulasStore';
 import usePopUpStore from 'src/stores/popUp';
-import popUpCreateQuestaoComponent from './popUpCreateQuestaoComponent.vue';
+import popUpCreateQuestaoComponent from '../create/popUpCreateQuestaoComponent.vue';
+import type { Atividade } from 'src/types';
 
 interface Options {
   label: string;
   value: string;
 }
 
+interface RespostaCreate {
+  resposta: string;
+  isTrue: boolean;
+}
+interface QuestaoCreate {
+  id?: string;
+  pergunta: string;
+  perguntaFacil: string;
+  tempo: number;
+  tempoCronometro?: number;
+  cronometro?: number;
+  respostas?:RespostaCreate[];
+}
+
+
+interface Prop{
+  atividade:Atividade,
+}
+
+const props = defineProps<Prop>()
 const $q = useQuasar();
+const questaoDefault = ref<QuestaoCreate>({
+  pergunta: '',
+  perguntaFacil: '',
+  respostas: [],
+  tempo: 0,
+});
 
 // variaveis do video
 const inputVideo = ref<InstanceType<typeof QFile> | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
-const urlVideo = ref('');
+const urlVideo = ref(props.atividade.video);
 const videoPreview = ref<HTMLVideoElement | null>(null);
 const tempoAtual = ref('00:00');
 const videoKey = ref(0);
 
 const slide = ref('fase1');
-const optionsMateria = ref<Options[]>([]);
+const optionsAula = ref<Options[]>([]);
 const optionsVida = ref([
   { label: '1', value: 1 },
   { label: '2', value: 2 },
@@ -33,31 +60,28 @@ const optionsVida = ref([
 ]);
 
 // pinias
-const materiasStore = useMateriasStore();
+const aulasStore = useAulasStore();
 const popUpStore = usePopUpStore();
 
 // variaveis para o que o usuário mandar
-const nome = ref('');
-const descricao = ref('');
-const materia = ref('');
-const vida = ref(1);
 const video = ref<File | null>(null);
+const questoes = ref<QuestaoCreate[]>([]);
 
 // definir opções do select
-materiasStore.materias.map((e) => {
+aulasStore.aulas.map((e) => {
   const newOption = {
-    label: e.nome,
+    label: e.titulo,
     value: e.id,
   };
-  optionsMateria.value.push(newOption);
+  optionsAula.value.push(newOption);
 });
 
 const mensagemAlert = () => {
   let mensagem: string;
 
-  if (!nome.value) {
+  if (!props.atividade.titulo) {
     mensagem = 'Você precisa dar um nome ao item';
-  } else if (!descricao.value) {
+  } else if (!props.atividade.descricao) {
     mensagem = 'você precisa dar uma descrição ao item';
   } else {
     return;
@@ -89,7 +113,7 @@ watch(
       }
       urlVideo.value = URL.createObjectURL(video.value);
       videoKey.value++;
-      initializeVideoPlayer();
+      void initializeVideoPlayer();
     }
   }
 );
@@ -124,7 +148,10 @@ const initializeVideoPlayer = async () => {
   player.on('timeupdate', () => {
     const currentTime = player?.currentTime();
 
-    if (currentTime !== undefined) tempoAtual.value = formatarTempo(currentTime);
+    if (currentTime !== undefined) {
+      questaoDefault.value.tempo = Math.floor(currentTime);
+      tempoAtual.value = formatarTempo(currentTime);
+    }
   });
 };
 
@@ -145,6 +172,35 @@ const editTempo = (tempo: number) => {
   player?.currentTime(tempoAtualVideo);
 };
 
+const addQuestao = (newQuestao:QuestaoCreate) => {
+  questoes.value.push(newQuestao);
+};
+
+const createQuestao = () => {
+  questaoDefault.value.pergunta = '';
+  questaoDefault.value.perguntaFacil = '';
+  questaoDefault.value.respostas = [
+    {
+      resposta: '',
+      isTrue: true,
+    },
+    {
+      resposta: '',
+      isTrue: false,
+    },
+  ];
+  popUpStore.toggleCreateQuestaoPopUp();
+};
+
+const editQuestao = (questao: QuestaoCreate) => {
+  questaoDefault.value = questao;
+  popUpStore.toggleEditQuestaoPopUp()
+};
+
+const deleteQuestao = (index: number) => {
+  questoes.value.splice(index, 1);
+};
+
 onBeforeUnmount(() => {
   if (player) player.dispose();
   if (urlVideo.value) {
@@ -154,27 +210,27 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.createAtividadePopUp" :maximized="popUpStore.createAtividadePopUp">
-    <pop-up-create-questao-component/>
+  <q-dialog v-model="popUpStore.editAtividadePopUp" :maximized="popUpStore.editAtividadePopUp">
+    <pop-up-create-questao-component @questao-criada="addQuestao" :questao="questaoDefault" />
     <div class="popUp">
       <h2 ref="text4" class="titulo">Vamos criar uma nova Atividade</h2>
       <q-carousel v-model="slide" transition-prev="scale" transition-next="scale" animated>
         <q-carousel-slide name="fase1" class="box-carac center">
-          <q-select v-model="materia" :options="optionsMateria" dark outlined bottom-slots>
+          <q-select v-model="props.atividade.id_aula" :options="optionsAula" dark outlined bottom-slots>
             <template v-slot:prepend>
-              <span style="font-size: 1.2rem"> Materia: </span>
+              <span style="font-size: 1.2rem"> Aula: </span>
             </template>
             <template v-slot:append>
               <q-icon name="menu_book" />
             </template>
           </q-select>
 
-          <q-input class="nome" v-model="nome" label="Nome:" dense outlined standout />
+          <q-input class="nome" v-model="props.atividade.titulo" label="Nome:" dense outlined standout />
 
-          <q-input class="descricao" label="descrição" v-model="descricao" autogrow outlined />
+          <q-input class="descricao" label="descrição" v-model="props.atividade.descricao" autogrow outlined />
 
           <q-select
-            v-model="vida"
+            v-model="props.atividade.vida"
             :options="optionsVida"
             label="Quantidade de vidas:"
             type="number"
@@ -216,7 +272,10 @@ onBeforeUnmount(() => {
               push
             />
           </section>
-          <section class="section-info center" style="flex-direction: column; margin-top: 40px; gap: 30px;">
+          <section
+            class="section-info center"
+            style="flex-direction: column; margin-top: 40px; gap: 30px"
+          >
             <div class="control-tempo center" style="flex-direction: column; gap: 15px">
               <div class="box-tempo-video">Tempo: {{ tempoAtual }}</div>
               <div class="center" style="gap: 10px">
@@ -227,7 +286,38 @@ onBeforeUnmount(() => {
               </div>
             </div>
             <div class="questoes">
-              <q-btn class="btn-add-questoes" label="adicionar questoes" icon-right="add" flat rounded/>
+              <q-btn
+                class="btn-add-questoes"
+                label="adicionar questoes"
+                icon-right="add"
+                @click="createQuestao()"
+                flat
+                rounded
+              />
+              <q-list class="questoes-criadas">
+                <q-item v-for="(questao, indexOf) in questoes" :key="indexOf">
+                  <q-item-section>
+                    <q-item-label lines="1">
+                      {{ questao.pergunta }}
+                    </q-item-label>
+                  </q-item-section>
+                  <q-item-section class="center" side>
+                    <q-item-label top>
+                      {{ formatarTempo(questao.tempo) }}
+                    </q-item-label>
+                    <div>
+                      <q-btn icon="sym_o_edit_square" @click="editQuestao(questao)" dense flat />
+                      <q-btn
+                        icon="sym_o_delete"
+                        color="red"
+                        @click="deleteQuestao(indexOf)"
+                        dense
+                        flat
+                      />
+                    </div>
+                  </q-item-section>
+                </q-item>
+              </q-list>
             </div>
           </section>
         </q-carousel-slide>
@@ -263,7 +353,7 @@ onBeforeUnmount(() => {
         <q-btn
           label="cancelar"
           color="red"
-          @click="popUpStore.togglecreateAtividadePopUp()"
+          @click="popUpStore.toggleEditAtividadePopUp()"
           push
           rounded
         />
@@ -343,10 +433,23 @@ h3 {
   font-size: 1.3rem;
 }
 
-.btn-add-questoes{
+.btn-add-questoes {
   font-size: 1.3rem;
   width: 300px;
   font-family: 'Baloo 2';
-  border: 2px dotted ;
+  border: 2px dotted;
+}
+
+.questoes-criadas {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 20px;
+}
+.questoes-criadas .q-item {
+  border: 1px solid;
+  border-radius: 10px;
+  max-width: 80dvw;
+  width: 400px;
 }
 </style>

@@ -4,26 +4,12 @@ import { api } from 'src/boot/axios';
 
 interface LoginState {
   slide: string;
-  query: string;
-  mutation: string;
-  variables: {
-    nome: string | null;
-    email: string | null;
-    senha: string | null;
-  };
   loading: boolean;
 }
 
 const useLoginStore = defineStore('login', {
   state: (): LoginState => ({
     slide: 'entrar',
-    query: '',
-    mutation: '',
-    variables: {
-      nome: null,
-      email: null,
-      senha: null,
-    },
     loading: false,
   }),
 
@@ -35,14 +21,9 @@ const useLoginStore = defineStore('login', {
         throw new Error('Forneça email e senha');
       }
 
-      const variables = {
-        senha:senha,
-        email:email
-      }
-
       try {
         this.loading = true;
-          this.variables = { email, senha, nome: null };
+          const variables = { email, senha, nome: null };
           const query =
           `mutation login($email: String!, $senha: String!) {
             	login(email:$email,password:$senha){
@@ -75,7 +56,7 @@ const useLoginStore = defineStore('login', {
     },
 
     async register(nome: string, email: string, senha: string) {
-      this.mutation = `
+      const mutation = `
         mutation Register($nome: String!, $email: String!, $senha: String!) {
           register(username: $nome, email: $email, password: $senha) {
             token
@@ -87,13 +68,13 @@ const useLoginStore = defineStore('login', {
         }
       `;
 
-      this.variables = { nome, email, senha };
+      const variables = { nome, email, senha };
 
       try {
         this.loading = true;
         const response = await api.post('', {
-          query: this.mutation,
-          variables: this.variables
+          query: mutation,
+          variables: variables
         });
 
         console.log(response.data)
@@ -116,7 +97,7 @@ const useLoginStore = defineStore('login', {
         this.loading = true;
         const userStore = useUserStore();
 
-        this.query = `
+        const query = `
           query loginUser($email: String!, $token: String!) {
             user(email: $email, password: $token) {
               username
@@ -125,8 +106,7 @@ const useLoginStore = defineStore('login', {
           }`;
 
         const response = await api.post('', {
-          query: this.query,
-          variables: this.variables
+          query: query,
         });
 
         if (response.data.errors) {

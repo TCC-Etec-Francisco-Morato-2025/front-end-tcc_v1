@@ -20,7 +20,11 @@ const usePopUpStore = defineStore('popup', {
     createItemPopUp: false,
     createMateriaPopUp: false,
     createAtividadePopUp: false,
-    createQuestaoPopUp: true,
+    createQuestaoPopUp: false,
+    editItemPopUp: false,
+    editMateriaPopUp: false,
+    editAtividadePopUp: false,
+    editQuestaoPopUp: false,
   }),
 
   getters: {
@@ -59,14 +63,29 @@ const usePopUpStore = defineStore('popup', {
     togglePerfil() {
       this.perfil = !this.perfil;
     },
-    togglecreateItemPopUp() {
+    toggleCreateItemPopUp() {
       this.createItemPopUp = !this.createItemPopUp;
     },
-    togglecreateMateriaPopUp() {
+    toggleCreateMateriaPopUp() {
       this.createMateriaPopUp = !this.createMateriaPopUp;
     },
-    togglecreateAtividadePopUp() {
+    toggleCreateAtividadePopUp() {
       this.createAtividadePopUp = !this.createAtividadePopUp;
+    },
+    toggleCreateQuestaoPopUp() {
+      this.createQuestaoPopUp = !this.createQuestaoPopUp;
+    },
+    toggleEditItemPopUp() {
+      this.editItemPopUp = !this.editItemPopUp;
+    },
+    toggleEditMateriaPopUp() {
+      this.editMateriaPopUp = !this.editMateriaPopUp;
+    },
+    toggleEditAtividadePopUp() {
+      this.editAtividadePopUp = !this.editAtividadePopUp;
+    },
+    toggleEditQuestaoPopUp() {
+      this.editQuestaoPopUp = !this.editQuestaoPopUp;
     },
   },
   persist: {
