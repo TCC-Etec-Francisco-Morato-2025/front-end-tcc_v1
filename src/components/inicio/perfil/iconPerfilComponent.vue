@@ -22,7 +22,7 @@ const logar = () => {
 <template>
   <q-btn align="left" no-caps flat id="perfil" @click="logar" class="nLogado">
     <q-avatar size="60px">
-      <img :src="userStore.perfil" alt="" v-if="userStore.logado" />
+      <img :src="userStore.foto??'/public/img/perfil_sem_img.jpeg'" alt="" v-if="userStore.logado" />
       <perfil-icon v-else />
     </q-avatar>
     <span id="nomeUser" v-if="userStore.logado">{{ userStore.nome }}</span>

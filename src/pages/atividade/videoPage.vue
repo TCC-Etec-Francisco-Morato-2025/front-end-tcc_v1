@@ -137,7 +137,7 @@ const animacaoQuestao = (): Promise<boolean> => {
       <q-responsive ref="boxPlayer" :ratio="16 / 9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
           <source
-            src="/src/assets/aulas/Mãe é tudo igual, só muda o endereço  IRMÃO DO JOREL - Cartoon Network Brasil (720p, h264, youtube).mp4"
+            src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4"
             type="video/mp4"
           />
         </video>

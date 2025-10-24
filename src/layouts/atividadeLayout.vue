@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import useMateriasStore from 'src/stores/materias/materiasStore';
+import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUp from 'src/stores/popUp';
-import useUserStore from 'src/stores/userStore';
-import { onUnmounted } from 'vue';
+import { onBeforeMount } from 'vue';
 
 const $q = useQuasar();
 const popUpStore = usePopUp();
-const materiasStore = useMateriasStore();
-const userStore = useUserStore();
+const atividadeStore = useAtividadeStore();
+
+onBeforeMount(async()=>{
+  await atividadeStore.getAtividadeRestante();
+})
 
 // onUnmounted(async()=>{
 //   await materiasStore.getMaterias();

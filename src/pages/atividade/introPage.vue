@@ -9,8 +9,7 @@ import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import Typed from 'typed.js';
 
 const router = useRouter();
-const ordem = ref(0);
-// const atividadesStore = useAtividadesStore();
+const ordem = ref(1);
 const falaStore = useFalasPersonagensStore();
 const personagensStore = usePersonagensStore();
 const personagemAtual = ref<Personagem>();
@@ -79,7 +78,7 @@ const mudarFala = ()=>{
   if (falaAtual.value) escolherPersonagem(falaAtual.value.id_personagem);
 }
 
-const escolherPersonagem = (id: number) => {
+const escolherPersonagem = (id: string) => {
   personagensStore.personagens.forEach((personagem) => {
     if (id === personagem.id) {
       personagemAtual.value = personagem;

@@ -58,7 +58,7 @@ const useMateriasStore = defineStore('materias', {
           query,
         });
 
-        console.log(response.data.data)
+        console.log(response)
 
         const existMateriasId = new Set(this.materias.map((a) => a.id));
         const novasMateriasAdd = response.data.data.materias.filter(

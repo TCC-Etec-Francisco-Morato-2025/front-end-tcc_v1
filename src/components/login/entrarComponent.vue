@@ -55,6 +55,7 @@ const loginWithGoogle = async () => {
 
     if (email && token){
       await loginStore.login(email, token).catch(async () => {
+        console.error('Usuário não existe');
         if (displayName)
           await loginStore.register(displayName, email, token,uid)
       })
