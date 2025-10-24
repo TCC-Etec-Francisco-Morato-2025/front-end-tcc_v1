@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
-import type { Atividade, Fala, Personagem, Questao } from 'src/types';
+import type { Atividade } from 'src/types';
+// import type { Atividade, Fala, Personagem, Questao } from 'src/types';
 import usePopUpStore from 'src/stores/popUp';
-import { api } from 'src/boot/axios';
-import useFalasPersonagensStore from './falasPersonagensStore';
-import useQuestaoStore from './questaoStore';
-import usePersonagensStore from './personagensStore';
+// import { api } from 'src/boot/axios';
+// import useFalasPersonagensStore from './falasPersonagensStore';
+// import useQuestaoStore from './questaoStore';
+// import usePersonagensStore from './personagensStore';
 
 const popUpStore = usePopUpStore();
 
@@ -48,93 +49,93 @@ const useAtividadeStore = defineStore('atividade', {
       this.vida = 1;
     },
 
-    async getAtividadeRestante(id_atividade: number) {
-      const query = `
-      query getAtividadeResto($id_atividade:ID){
-        atividade(id_assunto:$id_atividade){
-          id
-          id_assunto
-          video
-        falas{
-            id_atividade
-            fala
-            personagem{
-              id
-              imagem
-              cor
-              materia
-              nome
-            }
-        }
-        questoes{
-            id
-            id_atividade
-            enunciado
-            aparecer
-            respostas{
-              id_questao
-              resposta
-              certa
-          }
-        }
-      }
-      `;
-      const variables = {
-        id_atividade: id_atividade,
-      };
+    // async getAtividadeRestante(id_atividade: number) {
+    //   const query = `
+    //   query getAtividadeResto($id_atividade:ID){
+    //     atividade(id_assunto:$id_atividade){
+    //       id
+    //       id_assunto
+    //       video
+    //     falas{
+    //         id_atividade
+    //         fala
+    //         personagem{
+    //           id
+    //           imagem
+    //           cor
+    //           materia
+    //           nome
+    //         }
+    //     }
+    //     questoes{
+    //         id
+    //         id_atividade
+    //         enunciado
+    //         aparecer
+    //         respostas{
+    //           id_questao
+    //           resposta
+    //           certa
+    //       }
+    //     }
+    //   }
+    //   `;
+    //   const variables = {
+    //     id_atividade: id_atividade,
+    //   };
 
-      const falasStore = useFalasPersonagensStore();
-      const questoesStore = useQuestaoStore();
-      const personagensStore = usePersonagensStore();
+    //   const falasStore = useFalasPersonagensStore();
+    //   const questoesStore = useQuestaoStore();
+    //   const personagensStore = usePersonagensStore();
 
-      try {
-        const response = await api.post('', {
-          query,
-          variables,
-        });
-        response.data.data.atividade.forEach((a) => {
-          const newQuestao: Questao = {
-            id: a.id,
-            pergunta: a.enunciado,
-            perguntaFacil: '',
-            tempo: 0,
-            tempoCronometro: 0,
-          };
-        });
+    //   try {
+    //     const response = await api.post('', {
+    //       query,
+    //       variables,
+    //     });
+    //     response.data.data.atividade.forEach((a) => {
+    //       const newQuestao: Questao = {
+    //         id: a.id,
+    //         pergunta: a.enunciado,
+    //         perguntaFacil: '',
+    //         tempo: 0,
+    //         tempoCronometro: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
+    //       };
+    //     });
 
-        response.data.data.questoes.forEach((q) => {
-          if (this.id == a.id_assunto) {
-            this.video = a.video;
-          }
-        });
+    //     response.data.data.questoes.forEach((q) => {
+    //       if (this.id == a.id_assunto) {
+    //         this.video = a.video;
+    //       }
+    //     });
 
-        // add falas e personagens
-        falasStore.falas = [];
-        response.data.data.falas.forEach((f) => {
-          // falas
-          const newFala: Fala = {
-            id: f.id,
-            id_personagem: f.personagem.id,
-            id_atividade: f.id_atividade,
-            fala: f.fala,
-          };
-          falasStore.falas.push(newFala);
+    //     // add falas e personagens
+    //     falasStore.falas = [];
+    //     response.data.data.falas.forEach((f) => {
+    //       // falas
+    //       const newFala: Fala = {
+    //         id: f.id,
+    //         id_personagem: f.personagem.id,
+    //         id_atividade: f.id_atividade,
+    //         fala: f.fala,
+    //       };
+    //       falasStore.falas.push(newFala);
 
-          // personagens
-          const newPersonagem: Personagem = {
-            id: f.personagem.id,
-            nome: f.personagem.nome,
-            materia: f.personagem.materia,
-            cor: f.personagem.cor,
-            img: f.personagem.imagem,
-          };
-          personagensStore.personagens.push(newPersonagem);
-        });
-      } catch (error) {
-        console.error('Erro ao buscar aulas:', error);
-        throw error;
-      }
-    },
+    //       // personagens
+    //       const newPersonagem: Personagem = {
+    //         id: f.personagem.id,
+    //         nome: f.personagem.nome,
+    //         materia: f.personagem.materia,
+    //         cor: f.personagem.cor,
+    //         img: f.personagem.imagem,
+    //       };
+    //       personagensStore.personagens.push(newPersonagem);
+    //     });
+    //   } catch (error) {
+    //     console.error('Erro ao buscar aulas:', error);
+    //     throw error;
+    //   }
+    // },
   },
   persist: {
     storage: localStorage,

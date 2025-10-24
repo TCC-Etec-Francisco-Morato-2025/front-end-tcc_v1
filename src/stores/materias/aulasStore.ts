@@ -18,7 +18,7 @@ const useAulasStore = defineStore('aulas', {
     loading: false,
   }),
   actions: {
-    async getAulas(idMateria: string) {
+    async getAulas(idMateria: string, token?:string) {
       this.loading = true;
 
       const query = `
@@ -41,6 +41,10 @@ const useAulasStore = defineStore('aulas', {
         const response = await api.post<{ data: { aulas: { items: Aula[] } } }>('', {
           query,
           variables,
+        },{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
         });
 
         console.log(response.data)

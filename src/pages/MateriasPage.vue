@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import useMateriasStore from 'src/stores/materias/materiasStore';
 import materiaIcon from 'components/materias/materiaIcon.vue';
-import { onMounted } from 'vue';
 
-const materiasStore = useMateriasStore();
-
-onMounted(async()=>{
-  await materiasStore.getMaterias();
-})
-
+const  materiasStore = useMateriasStore();
 </script>
 
 

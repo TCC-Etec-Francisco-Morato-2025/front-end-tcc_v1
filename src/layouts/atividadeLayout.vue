@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
+import useMateriasStore from 'src/stores/materias/materiasStore';
 import usePopUp from 'src/stores/popUp';
+import useUserStore from 'src/stores/userStore';
+import { onUnmounted } from 'vue';
 
 const $q = useQuasar();
 const popUpStore = usePopUp();
+const materiasStore = useMateriasStore();
+const userStore = useUserStore();
+
+// onUnmounted(async()=>{
+//   await materiasStore.getMaterias();
+// })
 
 const pausar = () => {
   popUpStore.questoes.playVideo=false;

@@ -8,7 +8,9 @@ import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useMateriaStore from 'src/stores/materias/materiaStore';
 import useAulasStore from 'src/stores/materias/aulasStore';
 import setaIcon from 'components/icons/setaIcon.vue';
+import useUserStore from 'src/stores/userStore';
 
+const userStore = useUserStore();
 const atividadesStore = useAtividadesStore();
 const atividadesPesquisa = ref<Atividade[]>([])
 const materiaStore = useMateriaStore();
@@ -19,7 +21,7 @@ const txtPesquisa = ref('');
 const pesquisando = ref(false);
 
 onMounted(async()=>{
-  await aulasStore.getAulas(materiaStore.id);
+  await aulasStore.getAulas(materiaStore.id,userStore.token);
 
   encontrarAula();
 })

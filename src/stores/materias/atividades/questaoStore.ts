@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 const useQuestaoStore = defineStore('questao', {
   state: () => ({
-    id: 0,
+    id: '0',
     pergunta: '',
     perguntaFacil: '',
     tempo: 0,

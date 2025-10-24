@@ -1,100 +1,136 @@
 import { defineStore } from 'pinia';
 import useUserStore from './userStore';
 import { api } from 'src/boot/axios';
+import { Loading } from 'quasar';
+import { User } from 'src/types';
 
 interface LoginState {
   slide: string;
-  loading: boolean;
 }
 
 const useLoginStore = defineStore('login', {
   state: (): LoginState => ({
     slide: 'entrar',
-    loading: false,
   }),
 
   actions: {
     async login(email: string, senha: string) {
-      const hasAuth = email && senha;
 
-      if (!hasAuth) {
-        throw new Error('Forneça email e senha');
-      }
+      const formData = new FormData();
+      const userStore = useUserStore();
+
+      const operations = {
+        query: `
+          mutation Login($email: String!, $senha: String!) {
+            login(email: $email, password: $senha) {
+              token
+              user {
+                id
+                username
+                foto
+              }
+            }
+          }
+        `,
+        variables: {
+          senha,
+          email,
+        },
+      };
+
+
+      formData.append('operations', JSON.stringify(operations));
+      formData.append('map', JSON.stringify({}));
 
       try {
-        this.loading = true;
-          const variables = { email, senha, nome: null };
-          const query =
-          `mutation login($email: String!, $senha: String!) {
-            	login(email:$email,password:$senha){
-                token
-                user{
-                  id
-                  username
-                }
-              }
-          }`;
-
-        const response = await api.post('', {
-          query,
-          variables,
+        Loading.show();
+        const response = await api.post('', formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         });
 
-        console.log(response.data)
-
-        if (response.data.errors) {
-          throw new Error(response.data.errors[0].message);
+        const user = response.data.data.login.user
+        const token = response.data.data.login.token;
+        const newUser: User = {
+          id: user.id,
+          nome: user.username,
+          foto: user.foto,
+          token: token,
+          admin: false
         }
+        userStore.mudarUser(newUser);
 
-        return response.data.data;
-      } catch (error) {
-        console.error('Erro no login:', error);
+      } catch (error: any) {
+        console.error("erro no registro:", error);
         throw error;
       } finally {
-        this.loading = false;
+        Loading.hide();
       }
     },
 
-    async register(nome: string, email: string, senha: string) {
-      const mutation = `
-        mutation Register($nome: String!, $email: String!, $senha: String!) {
-          register(username: $nome, email: $email, password: $senha) {
-            token
-            user {
-              username
-              foto
-            }
+    async register(nome: string, email: string, senha: string,uid?:string) {
+
+      const formData = new FormData();
+      const userStore = useUserStore();
+
+      const operations = {
+        query: `
+      mutation Register($email: String!, $senha: String!, $nome: String!, $uid:String) {
+        register(uuid:$uid,token:null,email: $email, password: $senha, username: $nome) {
+          token
+          user {
+            id
+            username
+            foto
           }
         }
-      `;
+      }
+    `,
+        variables: {
+          nome,
+          senha,
+          email,
+          uid
+        },
+      };
 
-      const variables = { nome, email, senha };
+
+      formData.append('operations', JSON.stringify(operations));
+      formData.append('map', JSON.stringify({}));
 
       try {
-        this.loading = true;
-        const response = await api.post('', {
-          query: mutation,
-          variables: variables
+        Loading.show();
+        const response = await api.post('', formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         });
 
-        console.log(response.data)
-
-        if (response.data.errors) {
-          throw new Error(response.data.errors[0].message);
+        const user = response.data.data.register.user
+        const token = response.data.data.register.token;
+        const newUser: User = {
+          id: user.id,
+          nome: user.username,
+          foto: user.foto,
+          token: token,
+          admin: false
         }
+        userStore.mudarUser(newUser);
 
-        return response.data.data;
       } catch (error: any) {
-        console.error('Erro no registro:', error);
+        console.error("erro no registro:", error);
         throw error;
       } finally {
-        this.loading = false;
+        Loading.hide();
       }
     },
 
     async manterLogin() {
       try {
-        this.loading = true;
+        Loading.show();
         const userStore = useUserStore();
 
         const query = `
@@ -121,14 +157,9 @@ const useLoginStore = defineStore('login', {
       } catch (error) {
         console.error('Erro no manterLogin:', error);
       } finally {
-        this.loading = false;
+        Loading.hide();
       }
     },
-  },
-
-  persist: {
-    storage: localStorage,
-    pick: [],
   },
 });
 

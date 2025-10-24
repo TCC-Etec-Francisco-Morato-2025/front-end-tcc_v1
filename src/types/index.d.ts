@@ -78,7 +78,6 @@ export interface User{
     foto:string|null,
     email?:string,
     admin:boolean,
-    password?:string,
     token?:string,
     itens?:itensUser[]
 }

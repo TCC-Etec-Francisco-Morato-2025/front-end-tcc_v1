@@ -162,17 +162,12 @@ const useAtividadesStore = defineStore('atividades', {
     loading: false,
   }),
   actions: {
-    async getAtividades(idAula: string, token?: string | null, editMode?:boolean) {
-      if (!token) {
-        token = null;
-      }
+    async getAtividades(idAula: string, token?: string, editMode?: boolean) {
 
-      this.loading = true;
-
-      if(editMode){
+      if (editMode) {
         console.info('Pegando todas as Atividades...')
-      }else{
-        this.atividades=[];
+      } else {
+        this.atividades = [];
       }
 
       const query = `
@@ -194,6 +189,8 @@ const useAtividadesStore = defineStore('atividades', {
       };
 
       try {
+        this.loading = true;
+
         const response = await api.post<{ data: { assuntos: { items: AssuntoBanco[] } } }>(
           '',
           {

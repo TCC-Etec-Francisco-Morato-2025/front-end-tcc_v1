@@ -6,7 +6,9 @@ import { defineProps, ref } from 'vue';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import setaIcon from '../icons/setaIcon.vue';
 import atividadeComponent from './atividadeComponent.vue';
+import useUserStore from 'src/stores/userStore';
 
+const userStore = useUserStore();
 const atividadesStore = useAtividadesStore();
 const atividades = ref<Atividade[]>([]);
 const estadoLista = ref(false);
@@ -15,7 +17,7 @@ const isFirst = ref(true);
 
 const mutEstadoLista = async () => {
   if (isFirst.value) {
-    await atividadesStore.getAtividades(props.id);
+    await atividadesStore.getAtividades(props.id,userStore.token);
     procurarAtividade();
     isFirst.value = false;
 

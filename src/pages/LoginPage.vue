@@ -7,9 +7,8 @@ import { onMounted } from 'vue';
 
 const loginStore = useLoginStore();
 
-onMounted(async() => {
+onMounted(() => {
   animacao();
-  await loginStore.register('sadsadsa','dsadsadsa@gmail.com','1234567');
 });
 
 const animacao = () => {
