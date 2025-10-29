@@ -22,7 +22,6 @@ let typedInstance: Typed | null = null;
 // Executa quando o componente é montado
 onMounted(async() => {
     await nextTick();
-    console.log('chegou aqui')
     mudarFala();
     if(falaAtual.value)
     typedInstance = new Typed(typedElement.value, {
@@ -85,7 +84,6 @@ const escolherPersonagem = (id: string) => {
   personagensStore.personagens.forEach((personagem) => {
     if (id === personagem.id) {
       personagemAtual.value = personagem;
-      console.log(personagemAtual.value);
       corAtual.value = personagemAtual.value.cor;
     }
   });

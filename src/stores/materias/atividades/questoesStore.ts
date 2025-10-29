@@ -2,24 +2,24 @@ import { defineStore } from 'pinia';
 import { api } from 'src/boot/axios';
 import type { Questao, Resposta } from 'src/types';
 
-interface QuestoesState{
+interface QuestoesState {
   questoes: Questao[],
   respostas: Resposta[],
 }
 
-interface QuestaoInput{
+interface QuestaoInput {
   pergunta: string;
   perguntaFacil: string;
   tempo: number;
 }
 
-interface RespostaInput{
+interface RespostaInput {
   resposta: string;
   certa: boolean;
 }
 
 const useQuestoesStore = defineStore('questoes', {
-  state: ():QuestoesState => ({
+  state: (): QuestoesState => ({
     questoes: [
       // { id: '1', pergunta: 'Pergunta 1?', perguntaFacil: 'Pergunta', tempo: 2, tempoCronometro: 10000 },
       // { id: '2', pergunta: 'Pergunta 2?', perguntaFacil: 'Pergunta', tempo: 60, tempoCronometro: 10 },
@@ -49,7 +49,7 @@ const useQuestoesStore = defineStore('questoes', {
       // { id_pergunta: '6', resposta: 'resposta 2?', certa: false },
     ],
   }),
-  actions:{
+  actions: {
     async addQuestoes(questoes: QuestaoInput[], id_atividade: number, respostas: RespostaInput[]): Promise<boolean> {
       const formData = new FormData();
       try {
@@ -89,16 +89,12 @@ const useQuestoesStore = defineStore('questoes', {
           formData.append('operations', JSON.stringify(operations));
           formData.append('map', JSON.stringify({}));
 
-          const response = await api.post('', formData, {
+          await api.post('', formData, {
             withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-
-          // ⚠️ Evite fazer login aqui — parece ser código copiado de outra função.
-          // Provavelmente você só precisa verificar o retorno da mutation:
-          console.log('Questão criada:', response);
         }
 
         return true;

@@ -47,8 +47,6 @@ const useAulasStore = defineStore('aulas', {
           }
         });
 
-        console.log(response.data)
-
         // adicionar apenas as que não existem
         const existAulasId = new Set(this.aulas.map((a) => a.id));
         const novasAulasAdd = response.data.data.aulas.items.filter(

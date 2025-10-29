@@ -40,7 +40,7 @@ const animacaoEntrada = () => {
       </div>
       <btnMenuComponent />
     </q-header>
-    <q-main>
+    <main>
       <section class="secao-evento-carrocel">
         <carrocel-evento />
       </section>
@@ -73,7 +73,7 @@ const animacaoEntrada = () => {
         <evento-component/>
         <evento-component/>
       </section>
-    </q-main>
+    </main>
   </q-layout>
 </template>
 

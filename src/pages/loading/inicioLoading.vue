@@ -6,7 +6,7 @@
         <q-skeleton type="text" style="width: 100px; margin-left: 10px" />
       </div>
     </q-header>
-    <q-main>
+    <main>
       <section class="secao-para-voce">
         <q-skeleton class="titulo-secao" type="text" />
         <div class="carrocel">
@@ -26,7 +26,7 @@
       </section>
 
       <section class="secao-eventos"></section>
-    </q-main>
+    </main>
   </q-layout>
 </template>
 

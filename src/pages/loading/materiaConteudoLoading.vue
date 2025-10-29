@@ -4,7 +4,7 @@
       <q-skeleton type="QBtn" class="titulo"/>
       <q-skeleton type="QInput" class="pesquisa"/>
     </header>
-    <q-main>
+    <main>
       <q-list>
           <q-skeleton class="item"/>
           <q-skeleton class="item"/>
@@ -12,7 +12,7 @@
           <q-skeleton class="item"/>
           <q-skeleton class="item"/>
       </q-list>
-    </q-main>
+    </main>
   </q-page>
 </template>
 

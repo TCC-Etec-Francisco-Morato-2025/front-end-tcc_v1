@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { auth } from 'boot/firebase';
-import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import useLoginStore from 'src/stores/loginStore';
 import useUserStore from 'src/stores/userStore';
-import sairIcon from 'src/components/icons/sairIcon.vue';
 import { ref } from 'vue';
 
 const loginStore = useLoginStore();
@@ -70,28 +69,28 @@ const loginWithGoogle = async () => {
     // Redirecione o usuário ou atualize a UI
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error.message);
+      console.error(error.message);
     } else {
-      console.log(String(error));
+      console.error(String(error));
     }
   }
 };
 
-const loginWithFacebook = async () => {
-  const provider = new FacebookAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    console.log('Login com Facebook bem-sucedido:', user);
-    // Redirecione o usuário ou atualize a UI
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log(error.message);
-    } else {
-      console.log(String(error));
-    }
-  }
-};
+// const loginWithFacebook = async () => {
+//   const provider = new FacebookAuthProvider();
+//   try {
+//     const result = await signInWithPopup(auth, provider);
+//     const user = result.user;
+//     ('Login com Facebook bem-sucedido:', user);
+//     // Redirecione o usuário ou atualize a UI
+//   } catch (error: unknown) {
+//     if (error instanceof Error) {
+//       (error.message);
+//     } else {
+//       (String(error));
+//     }
+//   }
+// };
 
 const emit = defineEmits(['entrar']);
 </script>
@@ -99,9 +98,7 @@ const emit = defineEmits(['entrar']);
 <template>
   <q-card-section class="login-topo">
     <h1>Registrar-se</h1>
-    <q-btn flat class="sair" @click="router.push('/config')">
-      <sair-icon :color="'var(--color-text-1)'" />
-    </q-btn>
+    <q-btn flat class="sair" icon="close" size="20px" @click="router.push('/config')"/>
   </q-card-section>
   <q-card-section>
     <q-form @submit="registrar">
@@ -119,8 +116,8 @@ const emit = defineEmits(['entrar']);
   <q-card-section class="center login-rapido">
     <q-btn class="login-rapido-opcoes" id="login-google" icon="img:https://www.google.com/favicon.ico "
       @click="loginWithGoogle" label="Entrar com o Google" push no-caps />
-    <q-btn class="login-rapido-opcoes" id="login-facebook" icon="img:src\assets\Facebook_Logo_Secondary.png"
-      @click="loginWithFacebook" label="Entrar com o Facebook" push no-caps />
+    <!-- <q-btn class="login-rapido-opcoes" id="login-facebook" icon="img:src\assets\Facebook_Logo_Secondary.png"
+      @click="loginWithFacebook" label="Entrar com o Facebook" push no-caps /> -->
   </q-card-section>
 </template>
 
@@ -139,9 +136,10 @@ const emit = defineEmits(['entrar']);
 }
 
 .login-topo .q-btn.sair {
+  position: absolute;
+  color: white;
   top: 15px;
   right: 15px;
-  position: absolute;
   padding: 0;
   width: 40px;
 }

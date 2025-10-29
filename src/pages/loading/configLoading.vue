@@ -3,7 +3,7 @@
     <q-header class="center">
       <h1>Ajustes</h1>
     </q-header>
-    <q-main class="main center">
+    <main class="main center">
       <section class="config-perfil">
         <q-skeleton type="QAvatar" size="150px"/>
         <div>
@@ -16,7 +16,7 @@
         <q-skeleton class="opcoes">
         </q-skeleton>
       </section>
-    </q-main>
+    </main>
   </q-layout>
 </template>
 

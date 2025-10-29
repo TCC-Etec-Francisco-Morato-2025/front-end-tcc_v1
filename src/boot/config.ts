@@ -12,7 +12,7 @@ const inciarMateria = async()=>{
 }
 
 inciarMateria().catch(()=>{
-  console.log('erro ao iniciar materias')
+  console.error('erro ao iniciar materias')
 })
 
 darkMode.set(configStore.darkMode);

@@ -80,35 +80,35 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  {
-    // path: `:nomeMateria/:nomeConteudo/:nomeAtividade`,
-    path: '/tour',
-    name: 'tour',
-    component: () => import('src/layouts/tourLayout.vue'),
-    children: [
-      {
-        path: `/tour/apresentacao`,
-        name: 'apresentacao',
-        component: () => import('pages/apresentacaoPage.vue'),
-      },
-    ],
-  },
+  // {
+  //   // path: `:nomeMateria/:nomeConteudo/:nomeAtividade`,
+  //   path: '/tour',
+  //   name: 'tour',
+  //   component: () => import('src/layouts/tourLayout.vue'),
+  //   children: [
+  //     {
+  //       path: `/tour/apresentacao`,
+  //       name: 'apresentacao',
+  //       component: () => import('pages/apresentacaoPage.vue'),
+  //     },
+  //   ],
+  // },
   {
     path: '/login',
     component: () => import('pages/LoginPage.vue'),
   },
-  {
-    path: '/create/materia',
-    component: () => import('pages/create/createMateriaPage.vue'),
-  },
-  {
-    path: '/create/atividade',
-    component: () => import('pages/create/createAtividade.vue'),
-  },
-  {
-    path: '/create/item',
-    component: () => import('pages/create/createItemPage.vue'),
-  },
+  // {
+  //   path: '/create/materia',
+  //   component: () => import('pages/create/createMateriaPage.vue'),
+  // },
+  // {
+  //   path: '/create/atividade',
+  //   component: () => import('pages/create/createAtividade.vue'),
+  // },
+  // {
+  //   path: '/create/item',
+  //   component: () => import('pages/create/createItemPage.vue'),
+  // },
   // Always leave this as last one,
   // but you can also remove it
   {

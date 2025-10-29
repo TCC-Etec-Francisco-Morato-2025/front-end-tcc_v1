@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import boosSazonal from 'assets/eventos/boosSazonal.jpeg'
 import usePopUpStore from 'src/stores/popUp';
 import useMateriaStore from 'src/stores/materias/materiaStore';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -45,7 +46,7 @@ for (let i = 0; i < quant; i++) {
     <swiper-slide class="slide" @click="popUpStore.toggleEventoBoss()">
       <div class="slide-pai center">
         <div class="efeito"></div>
-        <q-img ref="img" src="/src/assets/eventos/boosSazonal.jpeg" alt="Imagem da matéria" />
+        <q-img ref="img" :src="boosSazonal" alt="Imagem da matéria" />
         <div class="titulo">Boss Sazonal</div>
       </div>
     </swiper-slide>

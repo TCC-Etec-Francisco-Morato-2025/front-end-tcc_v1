@@ -26,7 +26,7 @@ watch(
     <q-header class="center">
       <h1>Ajustes</h1>
     </q-header>
-    <q-main class="main">
+    <main class="main">
       <section class="config-perfil">
         <!-- avatar -->
         <q-avatar size="150px">
@@ -90,7 +90,7 @@ watch(
         <a href="#" class="opcao">Ajuda</a>
         <a href="#" class="opcao">Termos de uso e políticas de privacidade</a>
       </section> -->
-    </q-main>
+    </main>
   </q-layout>
 </template>
 

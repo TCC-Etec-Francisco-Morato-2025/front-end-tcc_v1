@@ -61,7 +61,7 @@ const useFalasPersonagensStore = defineStore('falas', {
           formData.append('operations', JSON.stringify(operations));
           formData.append('map', JSON.stringify({}));
 
-          const response = await api.post('', formData, {
+          await api.post('', formData, {
             withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -70,7 +70,6 @@ const useFalasPersonagensStore = defineStore('falas', {
 
           // ⚠️ Evite fazer login aqui — parece ser código copiado de outra função.
           // Provavelmente você só precisa verificar o retorno da mutation:
-          console.log('Questão criada:', response);
         }
 
         return true;

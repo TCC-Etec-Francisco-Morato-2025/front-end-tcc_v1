@@ -90,7 +90,7 @@ const icone_materia = defineAsyncComponent(
         </q-input>
       </div>
     </header>
-    <q-main>
+    <main>
       <!-- popup que aparece sobre a atividade antes dela começar -->
       <popup-atividade />
       <q-list>
@@ -98,7 +98,7 @@ const icone_materia = defineAsyncComponent(
           <aula-component :id="aula.id" :cor="materiaStore.cor" :nome="aula.titulo" :textColor="materiaStore.textColor" v-if="!pesquisando"/>
         </q-intersection>
       </q-list>
-    </q-main>
+    </main>
   </q-page>
 </template>
 

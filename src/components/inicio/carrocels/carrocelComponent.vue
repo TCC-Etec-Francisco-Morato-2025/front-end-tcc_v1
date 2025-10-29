@@ -30,7 +30,7 @@ const irParaMateria = (slide:Materia) => {
 };
 
 const iconMateria = (icon: string) => {
-  return defineAsyncComponent(() => import(`../../icons-materias/${icon}.vue`));
+  return defineAsyncComponent(() => import(`components/icons-materias/${icon}.vue`));
 };
 </script>
 

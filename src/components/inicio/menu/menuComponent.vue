@@ -18,16 +18,13 @@ const mudarRota = (path: string) => {
 };
 
 // import perfilComponent from '../perfilComponent.vue';
-import sairIcon from 'src/components/icons/sairIcon.vue';
 </script>
 
 <template>
   <q-dialog v-model="menuStore.isOpen" position="right" :maximized="menuStore.isOpen">
     <q-card>
       <q-card-section class="topo">
-        <q-btn flat round dense @click="menuStore.toggleMenu" class="sair">
-          <sair-icon :color="'var(--cor-principal-1)'" />
-        </q-btn>
+        <q-btn flat round dense @click="menuStore.toggleMenu" size="20px" icon="close" class="sair"/>
         <q-avatar size="100px">
           <img :src="userStore.foto" alt="" v-if="userStore.logado && userStore.foto"/>
           <perfil-icon />
@@ -79,6 +76,7 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
 }
 
 .q-btn.sair {
+  color: var(--cor-principal-1);
   position: absolute;
   width: 50px;
   right: 10px;

@@ -1,7 +1,11 @@
+<script setup lang="ts">
+import novosEquipamentos from 'assets/eventos/novosEquipamentos.jpeg'
+</script>
+
 <template>
   <q-card align="center" flat>
     <div class="filtro"></div>
-      <q-img src="/src/assets/eventos/novosEquipamentos.jpeg"/>
+      <q-img :src="novosEquipamentos"/>
   </q-card>
 </template>
 

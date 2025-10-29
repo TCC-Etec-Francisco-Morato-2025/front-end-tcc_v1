@@ -12,7 +12,6 @@ const useMenuStore = defineStore('menu', {
   actions: {
     toggleMenu() {
       this.isOpen = !this.isOpen;
-      console.log(this.isOpen);
     },
   },
 });

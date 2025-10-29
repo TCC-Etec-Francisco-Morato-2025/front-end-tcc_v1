@@ -216,14 +216,12 @@ const useAtividadeStore = defineStore('atividade', {
       }
 
       try {
-        const response = await api.post('', { query, variables }, {
+        await api.post('', { query, variables }, {
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${userStore.token}`
           }
         })
-
-        console.log('resposta de salvar atividade: ', response)
       } catch (error) {
         console.error('Erro ao salvar a atividade: ', error);
         throw error

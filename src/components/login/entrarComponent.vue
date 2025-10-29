@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { auth } from 'boot/firebase';
-import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import { Notify } from 'quasar';
 import useLoginStore from 'src/stores/loginStore';
 import useUserStore from 'src/stores/userStore';
-import sairIcon from 'src/components/icons/sairIcon.vue';
 import { ref, defineEmits } from 'vue';
 
 const loginStore = useLoginStore();
@@ -53,41 +52,41 @@ const loginWithGoogle = async () => {
     const { uid, displayName, photoURL, email } = result.user;
     const token = await result.user.getIdToken();
 
-    if (email && token){
+    if (email && token) {
       await loginStore.login(email, token).catch(async () => {
         console.error('Usuário não existe');
         if (displayName)
-          await loginStore.register(displayName, email, token,uid)
+          await loginStore.register(displayName, email, token, uid)
       })
-      userStore.foto=photoURL;
+      userStore.foto = photoURL;
     }
 
     void router.push('/');
     // Redirecione o usuário ou atualize a UI
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error.message);
+      console.error(error.message);
     } else {
-      console.log(String(error));
+      console.error(String(error));
     }
   }
 };
 
-const loginWithFacebook = async () => {
-  const provider = new FacebookAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    console.log('Login com Facebook bem-sucedido:', user);
-    // Redirecione o usuário ou atualize a UI
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log(error.message);
-    } else {
-      console.log(String(error));
-    }
-  }
-};
+// const loginWithFacebook = async () => {
+//   const provider = new FacebookAuthProvider();
+//   try {
+//     const result = await signInWithPopup(auth, provider);
+//     const user = result.user;
+//     console.log('Login com Facebook bem-sucedido:', user);
+//     // Redirecione o usuário ou atualize a UI
+//   } catch (error: unknown) {
+//     if (error instanceof Error) {
+//       console.log(error.message);
+//     } else {
+//       console.log(String(error));
+//     }
+//   }
+// };
 
 const emit = defineEmits(['registrar']);
 </script>
@@ -95,9 +94,7 @@ const emit = defineEmits(['registrar']);
 <template>
   <q-card-section class="login-topo">
     <h1>Login</h1>
-    <q-btn flat class="sair" @click="router.push('/config')">
-      <sair-icon :color="'var(--color-text-1)'" />
-    </q-btn>
+    <q-btn flat class="sair" icon="close" size="20px" @click="router.push('/config')" />
   </q-card-section>
   <q-card-section>
     <q-form @submit="login()">
@@ -112,8 +109,8 @@ const emit = defineEmits(['registrar']);
   <q-card-section class="center login-rapido">
     <q-btn class="login-rapido-opcoes" id="login-google" icon="img:https://www.google.com/favicon.ico "
       @click="loginWithGoogle" label="Entrar com o Google" push no-caps />
-    <q-btn class="login-rapido-opcoes" id="login-facebook" icon="img:src\assets\Facebook_Logo_Secondary.png"
-      @click="loginWithFacebook" label="Entrar com o Facebook" push no-caps />
+    <!-- <q-btn class="login-rapido-opcoes" id="login-facebook" icon="img:src\assets\Facebook_Logo_Secondary.png"
+      @click="loginWithFacebook" label="Entrar com o Facebook" push no-caps /> -->
   </q-card-section>
   <q-card-actions align="center">
     <q-btn flat label="Esqueci minha senha" no-caps />
@@ -135,6 +132,7 @@ const emit = defineEmits(['registrar']);
 }
 
 .login-topo .q-btn.sair {
+  color: white;
   top: 15px;
   right: 15px;
   position: absolute;

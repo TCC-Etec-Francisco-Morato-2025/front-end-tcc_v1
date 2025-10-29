@@ -105,7 +105,7 @@ const comecarAtividade = () => {
       </q-card-section>
       <q-card-section align="center">
         <q-rating v-model="atividadeStore.estrelas" :max="3" class="estrela" size="70px" color="grey"
-          icon="img:src/assets/icons-pixel/star.svg" icon-selected="img:src/assets/icons-pixel/star-solid.svg"
+          icon="img:/public/icons/icons-pixel/star.svg" icon-selected="img:/public/icons/icons-pixel/star-solid.svg"
           disable />
       </q-card-section>
       <q-card-section align="center">

@@ -13,7 +13,7 @@ const itensEspec = ref(itensStore.espec);
 const userStore = useUserStore();
 const newNome = ref(userStore.nome);
 
-const editImage = ref(true);
+const editImage = ref(false);
 const imgPreview = ref('');
 const imgItem = ref<File | null>(null);
 const inputImg = ref<InstanceType<typeof QFile> | null>(null);
@@ -38,7 +38,6 @@ const processImage = () => {
     }
 
     imgPreview.value = URL.createObjectURL(imgItem.value);
-    console.log('🖼️ Imagem selecionada:', imgItem.value.name);
   }
 };
 const selectImg = () => {

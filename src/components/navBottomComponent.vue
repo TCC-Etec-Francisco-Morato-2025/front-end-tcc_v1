@@ -11,7 +11,6 @@ const route = useRoute();
 // A verificação `if (rota)` garante que o nome da rota seja válido.
 watchEffect(() => {
   const routeName = ref(route.name);
-  console.log(routeName.value)
   if (routeName.value) {
     tabAtual.value = routeName.value.toString();
     if(routeName.value=='materia-conteudo')

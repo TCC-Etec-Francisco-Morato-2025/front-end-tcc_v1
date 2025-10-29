@@ -58,7 +58,6 @@ const useMateriasStore = defineStore('materias', {
           query,
         });
 
-        console.log(response)
 
         const existMateriasId = new Set(this.materias.map((a) => a.id));
         const novasMateriasAdd = response.data.data.materias.filter(
@@ -70,7 +69,6 @@ const useMateriasStore = defineStore('materias', {
         console.error('Erro ao buscar Matérias:', error);
         throw error;
       } finally {
-        console.log(this.materias)
         this.loading = false;
       }
     },
@@ -111,19 +109,17 @@ const useMateriasStore = defineStore('materias', {
                     .toLowerCase()
           },
         };
-        
+
         formData.append('operations', JSON.stringify(operations));
         formData.append('map', JSON.stringify({ 0: ['variables.icon'] }));
         formData.append('0', icon);
 
-        const response = await api.post('', formData, {
+        await api.post('', formData, {
           withCredentials: true,
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-
-        console.log('Questão criada:', response);
 
       } catch (error) {
         console.error('Erro ao adicionar questões:', error);
