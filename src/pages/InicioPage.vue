@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
-import useUserStore from 'src/stores/userStore';
+// import useUserStore from 'src/stores/userStore';
 
 import perfilComponent from 'src/components/inicio/perfil/perfilComponent.vue';
 import iconPerfilComponent from 'src/components/inicio/perfil/iconPerfilComponent.vue';
@@ -14,12 +14,12 @@ import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
 import eventoComponent from 'src/components/inicio/eventos/eventoComponent.vue';
 
 const router = ref(useRouter());
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
 onMounted(()=>{
-  if(userStore.primeiraVez){
-    void router.value.push('/tour/apresentacao')
-  }
+  // if(userStore.primeiraVez){
+  //   void router.value.push('/tour/apresentacao')
+  // }
   animacaoEntrada();
 })
 

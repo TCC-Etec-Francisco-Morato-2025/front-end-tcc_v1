@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Aula, Atividade } from 'src/types';
-import { defineAsyncComponent, onMounted, onUnmounted, onUpdated, ref } from 'vue';
+import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import aulaComponent from '../components/materias/aulaComponent.vue';
 import popupAtividade from 'src/components/materias/popupAtividade.vue';

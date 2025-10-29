@@ -2,9 +2,10 @@
 import usePopUpStore from 'src/stores/popUp';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { FreeMode } from 'swiper/modules';
+import { ref } from 'vue';
 
 const popUpStore = usePopUpStore();
-const modules = [FreeMode];
+const modules = ref([FreeMode]);
 </script>
 
 <template>

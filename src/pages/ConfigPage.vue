@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import usePopUpStore from 'src/stores/popUp';
-import editarIcon from 'src/components/icons/editarIcon.vue';
 import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import useLoginStore from 'src/stores/loginStore';
@@ -12,19 +11,6 @@ const userStore = useUserStore();
 const loginStore = useLoginStore();
 const notificacao = ref(true);
 const configStore = useConfig();
-const newNome = ref(userStore.nome);
-
-watch(
-  () => newNome.value,
-  () => {
-    if (newNome.value != '') {
-      userStore.nome = newNome.value;
-      console.log(userStore.nome);
-    } else {
-      newNome.value = userStore.nome;
-    }
-  }
-);
 
 watch(
   () => configStore.aviso,
@@ -52,10 +38,7 @@ watch(
 
         <!-- nome de usuário -->
         <div style="cursor: pointer" v-if="userStore.logado">
-          {{ userStore.nome }}<editar-icon style="margin-left: 5px" />
-          <q-popup-edit v-model="newNome" auto-save v-slot="scope">
-            <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
-          </q-popup-edit>
+          {{ userStore.nome }}
         </div>
 
         <!-- se não estiver logado, ele mostra os botões para login e registro -->

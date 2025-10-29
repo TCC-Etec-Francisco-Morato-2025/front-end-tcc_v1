@@ -67,11 +67,9 @@ watch(
 // criar respostas
 const criarRespostas = (): Promise<boolean> => {
   return new Promise((resolve) => {
-    questoesStore.respostas.forEach((el) => {
-      if (el.id_pergunta === questaoStore.id) {
-        respostas.value.push(el);
-      }
-    });
+    respostas.value = questoesStore.respostas.filter(
+      (r: Resposta) => r.id_pergunta === questaoStore.id
+    )
     resolve(true);
   });
 };
@@ -80,9 +78,8 @@ const criarRespostas = (): Promise<boolean> => {
 const contar = () => {
   setInterval(() => {
     questaoStore.cronometro--;
-    if (questaoStore.cronometro == 0 && !showResultado.value) {
+    if (questaoStore.cronometro == 0 && !showResultado.value)
       void tempoEsgotado();
-    }
   }, 1000);
 };
 
@@ -192,12 +189,8 @@ const ativarItem = (nomeFunc: string): void => {
 <template>
   <div ref="boxTempoEsgotado" class="resultado center" v-if="showTempoEsgotado">
     <span v-if="showItensTempoEsgotado">Tempo Esgotado</span>
-    <DotLottieVue
-      style="scale: 2"
-      autoplay
-      src="https://lottie.host/74136ad9-98d0-4d7e-9e0d-a3e7e02cc37d/BM6BH5mW56.json"
-      v-if="showItensTempoEsgotado"
-    />
+    <DotLottieVue style="scale: 2" autoplay
+      src="https://lottie.host/74136ad9-98d0-4d7e-9e0d-a3e7e02cc37d/BM6BH5mW56.json" v-if="showItensTempoEsgotado" />
   </div>
 
   <div ref="boxResultado" class="resultado center" v-if="showResultado">
@@ -208,16 +201,8 @@ const ativarItem = (nomeFunc: string): void => {
   <q-card class="questoes" flat>
     <q-card-section align="left">
       <q-avatar>
-        <q-knob
-          readonly
-          :max="questaoStore.tempoCronometro"
-          v-model="questaoStore.cronometro"
-          show-value
-          size="50px"
-          :thickness="0.22"
-          track-color="grey-3"
-          class="q-ma-md"
-        />
+        <q-knob readonly :max="questaoStore.tempoCronometro" v-model="questaoStore.cronometro" show-value size="50px"
+          :thickness="0.22" track-color="grey-3" class="q-ma-md" />
       </q-avatar>
 
       <span class="pergunta">{{ questaoStore.pergunta }}</span>
@@ -225,46 +210,19 @@ const ativarItem = (nomeFunc: string): void => {
 
     <q-card-actions align="center">
       <q-list>
-        <q-item
-          dense
-          clickable
-          v-ripple
-          v-for="(resposta, indexOf) in respostas"
-          :key="indexOf"
-          @click="animacaoResultado(resposta.certa)"
-        >
+        <q-item dense clickable v-ripple v-for="(resposta, indexOf) in respostas" :key="indexOf"
+          @click="animacaoResultado(resposta.certa)">
           <q-item-section class="label-resposta">{{ resposta.resposta }}</q-item-section>
         </q-item>
       </q-list>
     </q-card-actions>
     <q-card-actions align="center">
-      <q-btn
-        v-if="atacStore.icon!==''"
-        style="background-color: var(--color-background-2)"
-        :icon="atacStore.icon"
-        size="16px"
-        @click="ativarItem(atacStore.func)"
-        round
-        push
-      />
-      <q-btn
-        v-if="defeStore.icon!==''"
-        style="background-color: var(--color-background-2)"
-        :icon="defeStore.icon"
-        size="16px"
-        @click="ativarItem(defeStore.func)"
-        round
-        push
-      />
-      <q-btn
-        v-if="especStore.icon!==''"
-        style="background-color: var(--color-background-2)"
-        :icon="especStore.icon"
-        size="16px"
-        @click="ativarItem(especStore.func)"
-        round
-        push
-      />
+      <q-btn v-if="atacStore.icon !== ''" style="background-color: var(--color-background-2)" :icon="atacStore.icon"
+        size="16px" @click="ativarItem(atacStore.func)" round push />
+      <q-btn v-if="defeStore.icon !== ''" style="background-color: var(--color-background-2)" :icon="defeStore.icon"
+        size="16px" @click="ativarItem(defeStore.func)" round push />
+      <q-btn v-if="especStore.icon !== ''" style="background-color: var(--color-background-2)" :icon="especStore.icon"
+        size="16px" @click="ativarItem(especStore.func)" round push />
     </q-card-actions>
   </q-card>
 </template>
@@ -307,11 +265,9 @@ const ativarItem = (nomeFunc: string): void => {
 }
 
 .questoes {
-  background: linear-gradient(
-    to bottom,
-    var(--color-background) 20%,
-    var(--color-background-4) 100%
-  );
+  background: linear-gradient(to bottom,
+      var(--color-background) 20%,
+      var(--color-background-4) 100%);
   border-radius: 10px;
   height: 350px;
   width: 400px;

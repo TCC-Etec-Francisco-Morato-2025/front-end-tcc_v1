@@ -9,6 +9,7 @@ interface Prop {
 }
 
 const props = defineProps<Prop>();
+const atividade = props.atividade
 const atividadeStore = useAtividadeStore();
 const popUpStore = usePopUpStore();
 
@@ -27,20 +28,20 @@ const descidirAnimacao = (quant_estrela: number) => {
 </script>
 
 <template>
-  <q-intersection :transition="descidirAnimacao(props.atividade.estrelas)" once>
+  <q-intersection :transition="descidirAnimacao(atividade.estrelas)" once>
     <q-btn
       class="atividade"
       :class="{
-        'estrelas-3': props.atividade.estrelas == 3,
-        'atividade-concluida': props.atividade.estrelas > 0,
-        'atividade-proxima': props.atividade.proxima,
+        'estrelas-3': atividade.estrelas == 3,
+        'atividade-concluida': atividade.estrelas > 0,
+        'atividade-proxima': atividade.proxima,
       }"
       no-caps
-      :push="props.atividade.estrelas > 0 || props.atividade.proxima"
-      :flat="props.atividade.estrelas == 0 && !props.atividade.proxima"
-      :disable="props.atividade.estrelas == 0 && !props.atividade.proxima"
-      :icon-right="props.atividade.proxima ? 'chevron_right':''"
-      @click="ativarPopUp(props.atividade)"
+      :push="atividade.estrelas > 0 || atividade.proxima"
+      :flat="atividade.estrelas == 0 && !atividade.proxima"
+      :disable="atividade.estrelas == 0 && !atividade.proxima"
+      :icon-right="atividade.proxima ? 'chevron_right':''"
+      @click="ativarPopUp(atividade)"
     >
       <!-- atividades de verdade organizadas em lista -->
       <q-item>
@@ -49,22 +50,22 @@ const descidirAnimacao = (quant_estrela: number) => {
           <q-item-label
             class="atividade-titulo"
             :class="{
-              'atividade-concluida-font': props.atividade.estrelas || props.atividade.proxima,
-              'font-branca': props.atividade.estrelas == 3 || props.atividade.proxima,
+              'atividade-concluida-font': atividade.estrelas || atividade.proxima,
+              'font-branca': atividade.estrelas == 3 || atividade.proxima,
             }"
           >
-            {{ props.atividade.titulo }}
+            {{ atividade.titulo }}
           </q-item-label>
         </q-item-section>
         <!-- status da atividade -->
-        <q-item-section side top class="atividade-status" v-if="props.atividade.estrelas">
+        <q-item-section side top class="atividade-status" v-if="atividade.estrelas">
           <!-- mostrar quando foi a ultima vez que a atividade foi acessada -->
           <!-- talvez seja removido -->
           <q-item-label caption>2 min ago</q-item-label>
           <!-- mostra qual foi a maestria do usuário na atividade -->
           <div class="atividade-estrelas">
             <q-rating
-              v-model="props.atividade.estrelas"
+              v-model="atividade.estrelas"
               :max="3"
               size="14px"
               icon="star"
@@ -74,7 +75,7 @@ const descidirAnimacao = (quant_estrela: number) => {
             />
           </div>
         </q-item-section>
-        <q-item-section side class="atividade-continuar" v-else-if="props.atividade.proxima">
+        <q-item-section side class="atividade-continuar" v-else-if="atividade.proxima">
         </q-item-section>
       </q-item>
     </q-btn>

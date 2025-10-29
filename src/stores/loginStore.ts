@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import useUserStore from './userStore';
 import { api } from 'src/boot/axios';
 import { Loading } from 'quasar';
-import { User } from 'src/types';
+import type { User } from 'src/types';
 
 interface LoginState {
   slide: string;

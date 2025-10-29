@@ -29,7 +29,7 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
           <sair-icon :color="'var(--cor-principal-1)'" />
         </q-btn>
         <q-avatar size="100px">
-          <img :src="userStore.perfil" alt="" v-if="userStore.logado" />
+          <img :src="userStore.foto" alt="" v-if="userStore.logado && userStore.foto"/>
           <perfil-icon />
         </q-avatar>
       </q-card-section>
@@ -41,19 +41,19 @@ import sairIcon from 'src/components/icons/sairIcon.vue';
           </div>
         </q-btn>
 
-        <q-btn name="favorito" @click="mudarRota('/favorito')">
+        <!-- <q-btn name="favorito" @click="mudarRota('/favorito')">
           <div class="grid-button">
             <q-icon name="favorite" />
             <q-item-label class="label">Favoritos</q-item-label>
           </div>
-        </q-btn>
+        </q-btn> -->
 
-        <q-btn name="historico" @click="mudarRota('/historico')">
+        <!-- <q-btn name="historico" @click="mudarRota('/historico')">
           <div class="grid-button">
             <q-icon name="history" />
             <q-item-label class="label">Histórico</q-item-label>
           </div>
-        </q-btn>
+        </q-btn> -->
 
         <q-btn name="config" @click="mudarRota('/config')">
           <div class="grid-button">

@@ -9,7 +9,7 @@ import useMateriaStore from 'src/stores/materias/materiaStore';
 import { ref, defineAsyncComponent } from 'vue';
 
 const slides = ref<Materia[]>([]);
-const modules = [Navigation];
+const modules = ref([Navigation]);
 const router = useRouter();
 const materiasStore = useMateriasStore();
 const materiaStore = useMateriaStore();

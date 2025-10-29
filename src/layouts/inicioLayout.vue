@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import navBottomComponent from 'src/components/navBottomComponent.vue';
+import useUserStore from 'src/stores/userStore';
+
+const userStore = useUserStore();
 </script>
 <template>
   <q-layout>
     <q-page-container>
       <router-view/>
     </q-page-container>
-    <q-fab class="btn-create" icon="edit" direction="up" flat>
+    <q-fab class="btn-create" icon="edit" direction="up" flat v-if="userStore.admin">
       <q-fab-action class="icon" icon="menu_book" to="/create/materia"/>
       <q-fab-action class="icon" icon="sym_o_swords" to="/create/item"/>
       <q-fab-action class="icon" icon="smart_display" to="/create/atividade"/>

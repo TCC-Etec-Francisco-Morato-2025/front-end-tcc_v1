@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import type { Questao } from 'src/types';
 
 const useQuestaoStore = defineStore('questao', {
   state: () => ({
@@ -10,20 +11,14 @@ const useQuestaoStore = defineStore('questao', {
     tempoCronometro: 0,
   }),
   actions: {
-    mudarQuestao(
-      id: number,
-      pergunta: string,
-      perguntaFacil: string,
-      tempo: number,
-      tempoCronometro: number,
-    ) {
-      this.id = id;
-      this.pergunta = pergunta;
-      this.perguntaFacil = perguntaFacil;
-      this.tempo = tempo;
-      this.tempoCronometro = tempoCronometro;
-      this.cronometro = tempoCronometro;
-    },
+    mudarQuestao(q: Questao) {
+      this.id = q.id;
+      this.pergunta = q.pergunta;
+      this.perguntaFacil = q.perguntaFacil;
+      this.tempo = q.tempo;
+      this.tempoCronometro = q.tempoCronometro;
+      this.cronometro = q.tempoCronometro;
+    }
   },
 });
 export default useQuestaoStore;

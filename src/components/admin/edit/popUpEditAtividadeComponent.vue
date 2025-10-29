@@ -34,6 +34,7 @@ interface Prop{
 
 const props = defineProps<Prop>()
 const $q = useQuasar();
+const atividade = props.atividade;
 const questaoDefault = ref<QuestaoCreate>({
   pergunta: '',
   perguntaFacil: '',
@@ -44,7 +45,7 @@ const questaoDefault = ref<QuestaoCreate>({
 // variaveis do video
 const inputVideo = ref<InstanceType<typeof QFile> | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
-const urlVideo = ref(props.atividade.video);
+const urlVideo = ref(atividade.video);
 const videoPreview = ref<HTMLVideoElement | null>(null);
 const tempoAtual = ref('00:00');
 const videoKey = ref(0);
@@ -79,9 +80,9 @@ aulasStore.aulas.map((e) => {
 const mensagemAlert = () => {
   let mensagem: string;
 
-  if (!props.atividade.titulo) {
+  if (!atividade.titulo) {
     mensagem = 'Você precisa dar um nome ao item';
-  } else if (!props.atividade.descricao) {
+  } else if (!atividade.descricao) {
     mensagem = 'você precisa dar uma descrição ao item';
   } else {
     return;
@@ -216,7 +217,7 @@ onBeforeUnmount(() => {
       <h2 ref="text4" class="titulo">Vamos criar uma nova Atividade</h2>
       <q-carousel v-model="slide" transition-prev="scale" transition-next="scale" animated>
         <q-carousel-slide name="fase1" class="box-carac center">
-          <q-select v-model="props.atividade.id_aula" :options="optionsAula" dark outlined bottom-slots>
+          <q-select v-model="atividade.id_aula" :options="optionsAula" dark outlined bottom-slots>
             <template v-slot:prepend>
               <span style="font-size: 1.2rem"> Aula: </span>
             </template>
@@ -225,12 +226,12 @@ onBeforeUnmount(() => {
             </template>
           </q-select>
 
-          <q-input class="nome" v-model="props.atividade.titulo" label="Nome:" dense outlined standout />
+          <q-input class="nome" v-model="atividade.titulo" label="Nome:" dense outlined standout />
 
-          <q-input class="descricao" label="descrição" v-model="props.atividade.descricao" autogrow outlined />
+          <q-input class="descricao" label="descrição" v-model="atividade.descricao" autogrow outlined />
 
           <q-select
-            v-model="props.atividade.vida"
+            v-model="atividade.vida"
             :options="optionsVida"
             label="Quantidade de vidas:"
             type="number"

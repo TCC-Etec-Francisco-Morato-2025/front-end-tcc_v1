@@ -88,7 +88,7 @@ onBeforeUnmount(() => {
 
           <div class="btn">
             <q-btn label="enviar" color="green" @click="mensagemAlert()" push rounded/>
-            <q-btn label="cancelar" color="red" @click="popUpStore.togglecreateItemPopUp()" push rounded/>
+            <q-btn label="cancelar" color="red" @click="popUpStore.toggleEditItemPopUp()" push rounded/>
           </div>
       </div>
     </div>

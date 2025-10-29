@@ -3,7 +3,7 @@ import type { Item } from 'src/types';
 
 const useEspecItemStore = defineStore('especItem',{
   state: (): Item => ({
-    id: 0,
+    id: '0',
     tipo: 3,
     nome: '',
     icon: '',
@@ -12,12 +12,13 @@ const useEspecItemStore = defineStore('especItem',{
     recarregando: false,
   }),
   actions: {
-    mudarItem(id: number, nome: string, icon: string, img: string, func: string) {
-      this.id = id;
-      this.nome = nome;
-      this.icon = icon;
-      this.img = img;
-      this.func = func;
+    mudarItem(item:Item) {
+      this.id = item.id;
+      this.nome = item.nome;
+      this.icon = item.icon;
+      this.img = item.img;
+      this.func = item.func;
+      this.recarregando = item.recarregando
     },
   },
 

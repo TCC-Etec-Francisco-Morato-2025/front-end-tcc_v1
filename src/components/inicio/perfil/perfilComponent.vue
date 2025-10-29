@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import usePopUpStore from 'src/stores/popUp';
 import useUserStore from 'src/stores/userStore';
 import useItensStore from 'src/stores/itens/itensStore';
+import { QFile } from 'quasar';
 
 const itensStore = useItensStore();
 const popUpStore = usePopUpStore();
@@ -12,34 +13,79 @@ const itensEspec = ref(itensStore.espec);
 const userStore = useUserStore();
 const newNome = ref(userStore.nome);
 
-itensStore.atac.forEach((el) => {
-  userStore.itens.some((el2, i) => {
-    if (el2.id === el.id) {
-      const item = itensAtac.value[i];
-      itensAtac.value.splice(i, 1);
-      if (item !== undefined) itensAtac.value.unshift(item);
+const editImage = ref(true);
+const imgPreview = ref('');
+const imgItem = ref<File | null>(null);
+const inputImg = ref<InstanceType<typeof QFile> | null>(null);
+
+const mudarNome = async () => {
+  userStore.nome = newNome.value;
+  if (newNome.value)
+    await userStore.mudarNome(newNome.value)
+}
+
+// mudar imagem
+const enviarImg = async()=>{
+  if(imgItem.value)
+  await userStore.mudarImg(imgItem.value);
+  editImage.value=false
+}
+
+const processImage = () => {
+  if (imgItem.value) {
+    if (imgPreview.value) {
+      URL.revokeObjectURL(imgPreview.value);
     }
-  });
+
+    imgPreview.value = URL.createObjectURL(imgItem.value);
+    console.log('🖼️ Imagem selecionada:', imgItem.value.name);
+  }
+};
+const selectImg = () => {
+  if (inputImg.value) {
+    inputImg.value.pickFiles();
+  }
+};
+watch(() => imgItem.value, processImage);
+
+itensStore.atac.forEach((el) => {
+  if (userStore.itens)
+    userStore.itens.some((el2, i) => {
+      if (el2.id === el.id) {
+        const item = itensAtac.value[i];
+        itensAtac.value.splice(i, 1);
+        if (item !== undefined) itensAtac.value.unshift(item);
+      }
+    });
 });
 
 itensStore.def.forEach((el) => {
-  userStore.itens.some((el2, i) => {
-    if (el2.id === el.id) {
-      const item = itensDef.value[i];
-      itensDef.value.splice(i, 1);
-      if (item !== undefined) itensDef.value.unshift(item);
-    }
-  });
+  if (userStore.itens)
+    userStore.itens.some((el2, i) => {
+      if (el2.id === el.id) {
+        const item = itensDef.value[i];
+        itensDef.value.splice(i, 1);
+        if (item !== undefined) itensDef.value.unshift(item);
+      }
+    });
 });
 
 itensStore.espec.forEach((el) => {
-  userStore.itens.some((el2, i) => {
-    if (el2.id === el.id) {
-      const item = itensEspec.value[i];
-      itensEspec.value.splice(i, 1);
-      if (item !== undefined) itensEspec.value.unshift(item);
-    }
-  });
+  if (userStore.itens)
+    userStore.itens.some((el2, i) => {
+      if (el2.id === el.id) {
+        const item = itensEspec.value[i];
+        itensEspec.value.splice(i, 1);
+        if (item !== undefined) itensEspec.value.unshift(item);
+      }
+    });
+});
+
+onBeforeUnmount(() => {
+  // Limpar URL da imagem
+  if (imgPreview.value) {
+    URL.revokeObjectURL(imgPreview.value);
+  }
 });
 </script>
 
@@ -51,16 +97,34 @@ itensStore.espec.forEach((el) => {
       </q-card-actions>
       <q-card-section align="center">
         <!-- avatar -->
-        <q-avatar size="100px">
+        <q-avatar size="100px" @click="editImage = true" style="cursor: pointer;">
           <!-- se o usuário estiver logado, ele mostra a imagem de perfil -->
-          <img :src="userStore.perfil" alt="" />
-          <!-- se não, ele mostra uma imagem padrão -->
+          <img :src="userStore.foto" alt="" v-if="userStore.foto" />
         </q-avatar>
+        <q-dialog v-model="editImage">
+          <q-card style="width: 300px;">
+            <q-btn icon="close" @click="editImage = false" align="right" dense flat rounded/>
+            <q-card-section align="center">
+              <q-file ref="inputImg" v-model="imgItem" style="display: none" type="file" accept=".png" />
+              <q-avatar size="150px">
+                <q-img :src="userStore.foto" alt="" v-if="userStore.foto && !imgPreview"/>
+                <q-img :src="imgPreview" v-if="imgPreview"/>
+              </q-avatar>
+              <q-card-actions align="center">
+                <q-btn label="Trocar Imagem" align="center" color="orange-6" icon-right="sync" @click="selectImg()" dense no-caps rounded/>
+              </q-card-actions>
+            </q-card-section>
+            <q-card-actions align="right">
+              <q-btn label="Cancelar" color="red" dense no-caps/>
+              <q-btn label="Pronto" color="green" @click="enviarImg()" dense no-caps/>
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
 
         <!-- nome de usuário -->
         <div style="cursor: pointer; margin-top: 10px">
-          {{ userStore.nome }}
-          <q-popup-edit v-model="newNome" auto-save v-slot="scope">
+          {{ userStore.nome }}<q-btn icon="sym_o_edit_square" dense size="10px" />
+          <q-popup-edit v-model="newNome" auto-save v-slot="scope" @before-hide="mudarNome()">
             <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
           </q-popup-edit>
         </div>
@@ -71,43 +135,22 @@ itensStore.espec.forEach((el) => {
           Itens de Ataque
         </div>
         <div class="box-item center">
-          <q-btn
-            class="itens"
-            v-for="(item, indexOf) in itensAtac"
-            :key="indexOf"
-            :icon="item.icon"
-            size="20px"
-            round
-            push
-          />
+          <q-btn class="itens" v-for="(item, indexOf) in itensAtac" :key="indexOf" :icon="item.icon" size="20px" round
+            push />
         </div>
         <div class="nome-itens def">
           Itens de Defesa
         </div>
         <div class="box-item center">
-          <q-btn
-            class="itens"
-            v-for="(item, indexOf) in itensDef"
-            :key="indexOf"
-            :icon="item.icon"
-            size="20px"
-            round
-            push
-          />
+          <q-btn class="itens" v-for="(item, indexOf) in itensDef" :key="indexOf" :icon="item.icon" size="20px" round
+            push />
         </div>
         <div class="nome-itens espec">
           Itens Especiais
         </div>
         <div class="box-item center">
-          <q-btn
-            class="itens"
-            v-for="(item, indexOf) in itensEspec"
-            :key="indexOf"
-            :icon="item.icon"
-            size="20px"
-            round
-            push
-          />
+          <q-btn class="itens" v-for="(item, indexOf) in itensEspec" :key="indexOf" :icon="item.icon" size="20px" round
+            push />
         </div>
       </q-card-actions>
     </q-card>
@@ -126,7 +169,7 @@ itensStore.espec.forEach((el) => {
   font-size: 1.5rem;
 }
 
-.box-itens{
+.box-itens {
   margin: 25px 0;
   font-size: 1.2rem;
   font-family: Handjet;
@@ -134,26 +177,30 @@ itensStore.espec.forEach((el) => {
   gap: 20px;
   padding: 0 20px;
 }
+
 .box-item {
   gap: 10px;
 }
 
-.q-btn.itens{
+.q-btn.itens {
   background-color: var(--color-background);
 }
 
 /* nomes das classes dos itens */
-.nome-itens{
+.nome-itens {
   text-align: center;
   width: 100%;
 }
-.nome-itens.atac{
+
+.nome-itens.atac {
   background-color: var(--cor-principal-1);
 }
-.nome-itens.def{
+
+.nome-itens.def {
   background-color: var(--cor-principal-3);
 }
-.nome-itens.espec{
+
+.nome-itens.espec {
   background-color: var(--cor-principal-2);
 }
 

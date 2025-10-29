@@ -14,7 +14,7 @@ interface QuestaoCreate {
   tempo: number;
   tempoCronometro?: number;
   cronometro?: number;
-  respostas: RespostaCreate[];
+  respostas?: RespostaCreate[];
 }
 
 interface Prop {
@@ -23,6 +23,7 @@ interface Prop {
 }
 
 const props = defineProps<Prop>();
+const questao = props.questao
 const emit = defineEmits<{
   questaoEditada: [QuestaoCreate, number];
 }>();
@@ -31,40 +32,42 @@ const popUpStore = usePopUpStore();
 const respostaCorreta = ref(0);
 
 const removeResposta = (key: number) => {
-  if (props.questao.respostas && key >= 0 && key < props.questao.respostas.length) {
-    props.questao.respostas.splice(key, 1);
+  if (questao.respostas && key >= 0 && key < questao.respostas.length) {
+    questao.respostas.splice(key, 1);
   }
 };
 
 const mudarCerta = (resposta: RespostaCreate) => {
-  props.questao.respostas.forEach((el) => (el.isTrue = false));
+  questao.respostas?.forEach((el) => (el.isTrue = false));
   resposta.isTrue = true;
 };
 
 const addResposta = () => {
-  if (props.questao.respostas.length >= 4) return;
+  if(!questao.respostas)return
+  if (questao.respostas.length >= 4) return;
   const newResposta: RespostaCreate = { resposta: '', isTrue: false };
-  props.questao.respostas.push(newResposta);
+  questao.respostas.push(newResposta);
 };
 
 const editQuestao = () => {
   let mensagem = '';
 
-  if (!props.questao.pergunta) {
+  if (!questao.pergunta) {
     mensagem = 'Falta escrever a pergunta';
-  } else if (!props.questao.perguntaFacil) {
+  } else if (!questao.perguntaFacil) {
     mensagem = 'Falta escrever a pergunta facilitada';
-  } else if (props.questao.respostas.some((a) => !a.resposta)) {
+  } else if (questao.respostas?.some((a) => !a.resposta)) {
     mensagem = 'Falta preencher alguma resposta';
   } else {
+  if(!questao.respostas)return
     const newQuestao: QuestaoCreate = {
-      pergunta: props.questao.pergunta,
-      perguntaFacil: props.questao.perguntaFacil,
-      respostas: props.questao.respostas,
-      tempo: props.questao.tempo,
+      pergunta: questao.pergunta,
+      perguntaFacil: questao.perguntaFacil,
+      respostas: questao.respostas,
+      tempo: questao.tempo,
     };
 
-    emit('questaoEditada', newQuestao, props.index);
+    emit('questaoEditada', newQuestao, 1);
     popUpStore.toggleEditQuestaoPopUp();
     return;
   }
@@ -83,12 +86,12 @@ const editQuestao = () => {
   <q-dialog v-model="popUpStore.editQuestaoPopUp" :maximized="popUpStore.editQuestaoPopUp">
     <div class="create-questao center">
       <h1>Crie a sua Questão</h1>
-      <q-input v-model="props.questao.pergunta" label="Pergunta:" outlined />
-      <q-input v-model="props.questao.perguntaFacil" label="Pergunta facilitada:" outlined />
+      <q-input v-model="questao.pergunta" label="Pergunta:" outlined />
+      <q-input v-model="questao.perguntaFacil" label="Pergunta facilitada:" outlined />
       <section class="respostas center">
         <div
           class="resposta center"
-          v-for="(resposta, indexOf) in props.questao.respostas"
+          v-for="(resposta, indexOf) in questao.respostas"
           :key="indexOf"
         >
           <q-input v-model="resposta.resposta" label="Resposta:" outlined />
@@ -99,18 +102,18 @@ const editQuestao = () => {
             icon="add"
             color="green"
             @click="addResposta()"
-            v-if="props.questao.respostas?.length < 4"
+            v-if="questao.respostas&&questao.respostas.length < 4"
           />
           <q-btn
             icon="remove"
             color="red"
-            @click="removeResposta(props.questao.respostas?.length - 1)"
-            v-if="props.questao.respostas?.length > 2"
+            @click="removeResposta(questao.respostas?.length - 1)"
+            v-if="questao.respostas&&questao.respostas?.length > 2"
           />
         </div>
-        <div class="box-resposta-correta">
+        <div class="box-resposta-correta" v-if="questao.respostas">
           Resposta Correta: {{
-            props.questao.respostas[respostaCorreta]?.resposta
+            questao.respostas[respostaCorreta]?.resposta
             }}
         </div>
       </section>

@@ -10,13 +10,13 @@ const $q = useQuasar();
 const popUpStore = usePopUpStore();
 
 // pegar a imagem
-const imgItem = ref<File | null>(null);
+const imgPreview = ref('');
 const inputImg = ref<InstanceType<typeof QFile> | null>(null);
 
 // variaveis para o que o usuário mandar
+const imgItem = ref<File | null>(null);
 const nome = ref('');
 const descricao = ref('');
-const imgPreview = ref('');
 
 const mensagemAlert = () => {
   let mensagem:string;
@@ -88,7 +88,7 @@ onBeforeUnmount(() => {
 
           <div class="btn">
             <q-btn label="enviar" color="green" @click="mensagemAlert()" push rounded/>
-            <q-btn label="cancelar" color="red" @click="popUpStore.togglecreateItemPopUp()" push rounded/>
+            <q-btn label="cancelar" color="red" @click="popUpStore.toggleCreateItemPopUp()" push rounded/>
           </div>
       </div>
     </div>

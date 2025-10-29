@@ -6,12 +6,42 @@ import { api } from 'src/boot/axios';
 import useFalasPersonagensStore from './falasPersonagensStore';
 import useQuestoesStore from './questoesStore';
 import usePersonagensStore from './personagensStore';
+import useUserStore from 'src/stores/userStore';
 // import { api } from 'src/boot/axios';
 // import useFalasPersonagensStore from './falasPersonagensStore';
 // import useQuestaoStore from './questaoStore';
 // import usePersonagensStore from './personagensStore';
 
 const popUpStore = usePopUpStore();
+
+interface PersonagemResponse {
+  id: string;
+  imagem: string;
+  cor: string;
+  materia: string;
+  nome: string;
+}
+
+interface FalaResponse {
+  id: string;
+  id_atividade: string;
+  fala: string;
+  personagem: PersonagemResponse[];
+}
+
+interface RespostaResponse {
+  id_questao: string;
+  resposta: string;
+  certa: boolean;
+}
+
+interface QuestaoResponse {
+  id: string;
+  id_atividade: string;
+  enunciado: string;
+  aparecer: number;
+  respostas: RespostaResponse[]
+}
 
 const useAtividadeStore = defineStore('atividade', {
   state: (): Atividade => ({
@@ -21,7 +51,7 @@ const useAtividadeStore = defineStore('atividade', {
     estrelas: 0,
     descricao: '',
     acertos: 0,
-    vida: 1,
+    vida: 3,
     video: '',
   }),
 
@@ -50,7 +80,7 @@ const useAtividadeStore = defineStore('atividade', {
     },
 
     resetarVidas() {
-      this.vida = 1;
+      this.vida = 3;
     },
 
     async getAtividadeRestante() {
@@ -94,11 +124,7 @@ const useAtividadeStore = defineStore('atividade', {
       const questoesStore = useQuestoesStore();
       const personagensStore = usePersonagensStore();
 
-      // limpar campos
-      questoesStore.questoes=[];
-      questoesStore.respostas=[];
-      personagensStore.personagens=[];
-      falasStore.falas=[];
+
 
       try {
         const response = await api.post('', {
@@ -106,9 +132,13 @@ const useAtividadeStore = defineStore('atividade', {
           variables,
         });
 
-        console.log(response)
+        // limpar campos
+        questoesStore.questoes = [];
+        questoesStore.respostas = [];
+        personagensStore.personagens = [];
+        falasStore.falas = [];
 
-        response.data.data.atividade.questoes.forEach((q) => {
+        response.data.data.atividade.questoes.forEach((q: QuestaoResponse) => {
           const newQuestao: Questao = {
             id: q.id,
             pergunta: q.enunciado,
@@ -117,9 +147,8 @@ const useAtividadeStore = defineStore('atividade', {
             tempoCronometro: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           };
 
-          
-          q.respostas.forEach((r)=>{
-            const newResposta:Resposta={
+          q.respostas.forEach((r) => {
+            const newResposta: Resposta = {
               id_pergunta: q.id,
               resposta: r.resposta,
               certa: r.certa
@@ -129,8 +158,14 @@ const useAtividadeStore = defineStore('atividade', {
           questoesStore.questoes.push(newQuestao)
         });
 
+        // organizar as questões
+        questoesStore.questoes.sort((q1, q2) => q1.tempo - q2.tempo)
+
         // add falas e personagens
-        response.data.data.atividade.falas.forEach((f) => {
+        response.data.data.atividade.falas.forEach((f: FalaResponse) => {
+
+          if(f.personagem[0]==null)return;
+
           // falas
           const newFala: Fala = {
             id: f.id,
@@ -139,7 +174,7 @@ const useAtividadeStore = defineStore('atividade', {
             fala: f.fala,
           };
           falasStore.falas.push(newFala);
-          
+
           // personagens
           const newPersonagem: Personagem = {
             id: f.personagem[0].id,
@@ -151,10 +186,10 @@ const useAtividadeStore = defineStore('atividade', {
           personagensStore.personagens.push(newPersonagem);
         });
 
-        console.table(personagensStore.personagens);
-        console.table(falasStore.falas)
-        console.table(questoesStore.questoes)
-        console.table(questoesStore.respostas)
+        // console.table(personagensStore.personagens);
+        // console.table(falasStore.falas)
+        // console.table(questoesStore.questoes)
+        // console.table(questoesStore.respostas)
 
 
       } catch (error) {
@@ -162,6 +197,48 @@ const useAtividadeStore = defineStore('atividade', {
         throw error;
       }
     },
+
+    async salvarAtividade() {
+
+      const userStore = useUserStore();
+
+      const query = `
+        mutation AddHistorico($id_atividade:ID!,$pontuacao:Int!){
+          addHistorico(id_assunto:$id_atividade,pontuacao:$pontuacao){
+            id
+          }
+        }
+      `
+
+      const variables = {
+        id_atividade: this.id,
+        pontuacao: 3
+      }
+
+      try {
+        const response = await api.post('', { query, variables }, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${userStore.token}`
+          }
+        })
+
+        console.log('resposta de salvar atividade: ', response)
+      } catch (error) {
+        console.error('Erro ao salvar a atividade: ', error);
+        throw error
+      }
+    }
+
+    // async createAtividade(questoes:Questao[],intro:Fala[],video:File){
+
+    //   const questoesStore = useQuestoesStore();
+    //   const falasStore = useFalasPersonagensStore();
+
+    //   try{
+    //     await questoesStore.
+    //   }
+    // }
   },
   persist: {
     storage: localStorage,

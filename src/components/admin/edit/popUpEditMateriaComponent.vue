@@ -3,7 +3,7 @@ import { useQuasar } from 'quasar';
 import type { QFile } from 'quasar';
 import { onBeforeUnmount, ref, watch } from 'vue';
 import usePopUpStore from 'src/stores/popUp';
-import { Materia } from 'src/types';
+import type { Materia } from 'src/types';
 
 const $q = useQuasar();
 
@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <q-dialog v-model="popUpStore.createPopUp" :maximized="popUpStore.createPopUp">
+  <q-dialog v-model="popUpStore.editMateriaPopUp" :maximized="popUpStore.editMateriaPopUp">
     <div class="popUp">
       <h2 ref="text4" class="titulo">Vamos criar uma matéria</h2>
       <div class="box-carac center">
@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
 
         <div class="btn">
           <q-btn label="enviar" color="green" @click="mensagemAlert()" push rounded />
-          <q-btn label="cancelar" color="red" @click="popUpStore.togglecreateItem()" push rounded />
+          <q-btn label="cancelar" color="red" @click="popUpStore.toggleEditMateriaPopUp()" push rounded />
         </div>
       </div>
     </div>

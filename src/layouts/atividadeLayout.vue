@@ -2,14 +2,21 @@
 import { useQuasar } from 'quasar';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUp from 'src/stores/popUp';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 const $q = useQuasar();
+const loading = ref(false);
 const popUpStore = usePopUp();
 const atividadeStore = useAtividadeStore();
 
-onBeforeMount(async()=>{
-  await atividadeStore.getAtividadeRestante();
+onBeforeMount(async () => {
+  try {
+    loading.value = true;
+    await atividadeStore.getAtividadeRestante();
+  }
+  finally {
+    loading.value = false
+  }
 })
 
 // onUnmounted(async()=>{
@@ -17,7 +24,7 @@ onBeforeMount(async()=>{
 // })
 
 const pausar = () => {
-  popUpStore.questoes.playVideo=false;
+  popUpStore.questoes.playVideo = false;
   popUpStore.togglePause();
 }
 
@@ -26,7 +33,7 @@ const autorizar = () => {
   void $q.fullscreen.request();
 }
 
-const bloquear = ()=>{
+const bloquear = () => {
   popUpStore.toggleNotFullScreen(true);
 }
 
@@ -63,9 +70,17 @@ document.addEventListener('fullscreenchange', () => {
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-btn icon="pause" class="btn-pause" size="15px" flat @click="pausar" v-show="!popUpStore.questoes.estado"/>
+    <q-btn icon="pause" class="btn-pause" size="15px" flat @click="pausar" v-show="!popUpStore.questoes.estado" />
     <q-page-container>
-      <router-view />
+      <div style="width: 100%;height: 100%;" v-if="loading">
+        <q-inner-loading :showing="true">
+          <q-spinner-hourglass
+            color="primary"
+            size="10em"
+          />
+        </q-inner-loading>
+      </div>
+      <router-view v-else/>
     </q-page-container>
   </q-layout>
 </template>

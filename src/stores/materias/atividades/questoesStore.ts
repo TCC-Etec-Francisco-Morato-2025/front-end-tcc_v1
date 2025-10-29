@@ -1,9 +1,21 @@
 import { defineStore } from 'pinia';
+import { api } from 'src/boot/axios';
 import type { Questao, Resposta } from 'src/types';
 
 interface QuestoesState{
   questoes: Questao[],
   respostas: Resposta[],
+}
+
+interface QuestaoInput{
+  pergunta: string;
+  perguntaFacil: string;
+  tempo: number;
+}
+
+interface RespostaInput{
+  resposta: string;
+  certa: boolean;
 }
 
 const useQuestoesStore = defineStore('questoes', {
@@ -37,5 +49,64 @@ const useQuestoesStore = defineStore('questoes', {
       // { id_pergunta: '6', resposta: 'resposta 2?', certa: false },
     ],
   }),
+  actions:{
+    async addQuestoes(questoes: QuestaoInput[], id_atividade: number, respostas: RespostaInput[]): Promise<boolean> {
+      const formData = new FormData();
+      try {
+        for (const q of questoes) {
+
+          const operations = {
+            query: `
+              mutation AddQuestao(
+                $idAtividade: ID!
+                $enunciado: String!
+                $aparecer: Int!
+                $respostas: [RespostaInput!]!
+              ) {
+                addQuestao(
+                  input: {
+                    id_atividade: $idAtividade
+                    enunciado: $enunciado
+                    aparecer: $aparecer
+                    respostas: $respostas
+                  }
+                ){
+                  id
+                }
+              }
+            `,
+            variables: {
+              idAtividade: id_atividade,
+              enunciado: q.pergunta,
+              aparecer: q.tempo,
+              respostas: respostas.map(r => ({
+                resposta: r.resposta,
+                certa: r.certa
+              }))
+            },
+          };
+
+          formData.append('operations', JSON.stringify(operations));
+          formData.append('map', JSON.stringify({}));
+
+          const response = await api.post('', formData, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+
+          // ⚠️ Evite fazer login aqui — parece ser código copiado de outra função.
+          // Provavelmente você só precisa verificar o retorno da mutation:
+          console.log('Questão criada:', response);
+        }
+
+        return true;
+      } catch (error) {
+        console.error('Erro ao adicionar questões:', error);
+        return false;
+      }
+    }
+  }
 });
 export default useQuestoesStore;

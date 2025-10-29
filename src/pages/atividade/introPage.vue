@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Personagem, Fala } from 'src/types';
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import useFalasPersonagensStore from 'src/stores/materias/atividades/falasPersonagensStore';
 import usePersonagensStore from 'src/stores/materias/atividades/personagensStore';
@@ -9,26 +9,28 @@ import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import Typed from 'typed.js';
 
 const router = useRouter();
-const ordem = ref(1);
+const ordem = ref(0);
 const falaStore = useFalasPersonagensStore();
+const falaAtual = ref<Fala | undefined>();
 const personagensStore = usePersonagensStore();
 const personagemAtual = ref<Personagem>();
-const falaAtual = ref<Fala|undefined>(falaStore.falas[ordem.value]);
 const corAtual = ref('');
 const typedElement = ref<HTMLSpanElement | null>(null);
 let typedInstance: Typed | null = null;
 
+
 // Executa quando o componente é montado
-onMounted(() => {
-  if (typedElement.value && falaAtual.value) {
+onMounted(async() => {
+    await nextTick();
+    console.log('chegou aqui')
     mudarFala();
+    if(falaAtual.value)
     typedInstance = new Typed(typedElement.value, {
       strings: [falaAtual.value.fala],
       typeSpeed: 50,
       loop: false,
       showCursor: false,
     });
-  }
 });
 
 onUnmounted(() => {
@@ -74,6 +76,7 @@ const proximaFala = () => {
 };
 
 const mudarFala = ()=>{
+  console.info(falaStore.falas[ordem.value])
   falaAtual.value = falaStore.falas[ordem.value];
   if (falaAtual.value) escolherPersonagem(falaAtual.value.id_personagem);
 }
@@ -114,7 +117,7 @@ const reiniciar = () => {
       v-if="ordem > 1"
     />
     <main>
-      <q-img :src="`src/assets/personagens/${personagemAtual?.img}.png`" />
+      <q-img :src="personagemAtual?.img" />
       <q-card class="caixa-fala center">
         <q-card-section>
           <span ref="typedElement"></span>

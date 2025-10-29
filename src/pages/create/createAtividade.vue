@@ -38,7 +38,7 @@ onBeforeMount(() => {
           .then(() => {
             const aulas = aulasStore.aulas.filter((al) => al.id_materia === m.id);
             aulas.map((al) => {
-              void atividadesStores.getAtividades(al.id, null, true);
+              void atividadesStores.getAtividades(al.id);
             });
           })
           .catch(() => {

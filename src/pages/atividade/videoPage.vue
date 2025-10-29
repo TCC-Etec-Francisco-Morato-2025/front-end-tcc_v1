@@ -19,6 +19,7 @@ const questaoStore = useQuestaoStore();
 // const materiaStore = useMateriaStore();
 // const corFundo = ref(materiaStore.cor);
 const sec = ref(0);
+const ordemQuestao = ref(0);
 const boxQuestoes = ref<HTMLElement | null>(null);
 const videoPlayer = ref<HTMLVideoElement | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
@@ -39,27 +40,25 @@ onMounted(() => {
     player.on('timeupdate', () => {
       // transforma em numero para depois arredondar
       const currentTime = player?.currentTime();
-      if (currentTime !== undefined) {
+      if (currentTime) {
         sec.value = Math.floor(currentTime);
-        // vasculha o store de questões para achar correspondente
-        questoesStore.questoes.forEach((el) => {
-          // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
-          if (el.tempo === sec.value && questaoStore.id != el.id) {
-            questaoStore.mudarQuestao(
-              el.id,
-              el.pergunta,
-              el.perguntaFacil,
-              el.tempo,
-              el.tempoCronometro
-            );
+
+        // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
+        if (questoesStore.questoes[ordemQuestao.value]?.tempo === sec.value && questoesStore.questoes[ordemQuestao.value]?.id != questaoStore.id) {
+
+          const newQuestao = questoesStore.questoes[ordemQuestao.value]
+
+          if (newQuestao) {
+            questaoStore.mudarQuestao(newQuestao);
             // função para ativar o popup
             popUpStore.toggleQuestoes();
+            ordemQuestao.value++
             // garante que a variavel que controla o video sempre esteja false quando ele for pausado
             popUpStore.questoes.playVideo = false;
             player?.pause();
             void animacaoQuestao();
           }
-        });
+        }
       }
     });
     // pausar o video quando o valor mudar
@@ -71,7 +70,6 @@ onMounted(() => {
           if (popUpStore.questoes.estado) {
             await animacaoQuestao();
             popUpStore.toggleQuestoes();
-            questoesStore.$reset();
           }
           void player?.play();
         } else {
@@ -93,7 +91,8 @@ onBeforeUnmount(() => {
 
 const resetarVideo = () => {
   player?.currentTime(0);
-  questaoStore.id = 0;
+  ordemQuestao.value=0;
+  questaoStore.id='-1';
   void player?.play();
   popUpStore.questoes.playVideo = true;
 };
@@ -136,19 +135,11 @@ const animacaoQuestao = (): Promise<boolean> => {
     <main class="center">
       <q-responsive ref="boxPlayer" :ratio="16 / 9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
-          <source
-            src="/src/assets/aulas/COSTA RICA IN 4K 60fps HDR (ULTRA HD).mp4"
-            type="video/mp4"
-          />
+          <source src="/src/assets/aulas/Mãe é tudo igual, só muda o endereço  IRMÃO DO JOREL - Cartoon Network Brasil (720p, h264, youtube).mp4" type="video/mp4" />
         </video>
       </q-responsive>
       <div ref="boxQuestoes" class="box-questoes">
         <questoes-component v-if="popUpStore.questoes.estado" />
-      </div>
-      <div class="box-itens">
-        <q-avatar rounded>
-          <q-img />
-        </q-avatar>
       </div>
     </main>
   </q-page>
@@ -177,8 +168,8 @@ main {
   height: auto;
   scale: 1;
 }
-@media (orientation: landscape) {
-}
+
+@media (orientation: landscape) {}
 
 /* config questões */
 .box-questoes {

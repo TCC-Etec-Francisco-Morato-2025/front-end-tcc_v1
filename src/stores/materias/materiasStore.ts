@@ -74,6 +74,62 @@ const useMateriasStore = defineStore('materias', {
         this.loading = false;
       }
     },
-  },
+    async addMateria(nome: string, icon: File, cor: string, textColor: string) {
+      const formData = new FormData();
+      try {
+        const operations = {
+          query: `
+            mutation AddMateria(
+              $nome: String!,
+              $cor: String!,
+              $textcolor: String!,
+              $path: String!,
+              $icon: Upload
+              ){
+                addMateria(
+                  nome: $nome,
+                  cor: $cor,
+                  textcolor: $textcolor,
+                  path: $path,
+                  icon: $icon
+                ){
+                  id
+                  nome
+                }
+              }
+            `,
+          variables: {
+            nome: nome,
+            icon: null,
+            cor: cor,
+            textcolor: textColor,
+            path: nome
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/\s+/g, '')
+                    .trim()
+                    .toLowerCase()
+          },
+        };
+        
+        formData.append('operations', JSON.stringify(operations));
+        formData.append('map', JSON.stringify({ 0: ['variables.icon'] }));
+        formData.append('0', icon);
+
+        const response = await api.post('', formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('Questão criada:', response);
+
+      } catch (error) {
+        console.error('Erro ao adicionar questões:', error);
+        return false;
+      }
+    },
+  }
 });
 export default useMateriasStore;
