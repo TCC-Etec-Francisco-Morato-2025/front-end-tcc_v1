@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
+// import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 // import useUserStore from 'src/stores/userStore';
 
@@ -13,7 +13,7 @@ import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
 import eventoComponent from 'src/components/inicio/eventos/eventoComponent.vue';
 
-const router = ref(useRouter());
+// const router = ref(useRouter());
 // const userStore = useUserStore();
 
 onMounted(()=>{
@@ -47,26 +47,22 @@ const animacaoEntrada = () => {
       <section class="secao-para-voce">
         <q-btn
           class="titulo-secao"
-          @click="router.push('para-voce')"
           no-caps
-          icon-right="chevron_right"
-          label="Para você"
+          label="Matérias"
           dense
         />
         <carrocel-component />
       </section>
 
-      <section class="secao-continuar">
+      <!-- <section class="secao-continuar">
         <q-btn
           class="titulo-secao"
-          @click="router.push('continuar')"
           no-caps
-          icon-right="chevron_right"
           label="Continuar"
           dense
         />
         <carrocel-component />
-      </section>
+      </section> -->
 
       <section class="secao-eventos">
         <evento-component/>

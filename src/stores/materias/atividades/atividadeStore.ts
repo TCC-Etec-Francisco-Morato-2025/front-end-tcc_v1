@@ -70,7 +70,7 @@ const useAtividadeStore = defineStore('atividade', {
           this.acertos++;
         } else {
           this.vida--;
-          if (this.vida <= 0) {
+          if (this.vida == 0) {
             setTimeout(() => {
               popUpStore.questoes.playVideo = false;
               popUpStore.toggleGameOver();

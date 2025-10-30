@@ -1,83 +1,150 @@
 <script setup lang="ts">
+import useAtividadesStore from 'src/stores/materias/atividadesStore';
+import useAulasStore from 'src/stores/materias/aulasStore';
+import useMateriasStore from 'src/stores/materias/materiasStore';
+import useUserStore from 'src/stores/userStore';
+import type { Atividade } from 'src/types';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
-import setaIcon from 'src/components/icons/setaIcon.vue';
 
 const router = useRouter();
+const materiasStore = useMateriasStore();
+const aulasStore = useAulasStore();
+const atividadesStore = useAtividadesStore();
+const userStore = useUserStore();
+const atividadesContinuar = ref<Atividade[]>([]);
 
-const exercicios = ref<Exercicio[]>([]);
-const quant = 2;
+onMounted(async()=>{
+  for( const m of materiasStore.materias){
+    await aulasStore.getAulas(m.id,userStore.token)
+    for(const a of aulasStore.aulas){
+      await atividadesStore.getAtividades(a.id,userStore.token,true);
 
-class Exercicio {
-  id: number;
-  nome: string;
-  descricao: string;
+      const atividadesIncompletas = atividadesStore.atividades.filter((at)=>at.estrelas==0);
 
-  constructor(num: number, nomeMateria: string, descricao: string) {
-    this.id = num;
-    this.nome = nomeMateria;
-    this.descricao = descricao;
+      const atividadeContinuar = atividadesIncompletas[0];
+
+      if(atividadeContinuar)
+      atividadesContinuar.value.push(atividadeContinuar)
+    }
   }
-}
+})
 
-const gerarExercicio = (quant: number) => {
-  for (let i = 1; i <= quant; i++) {
-    const nome = 'Multiplicação';
-    const loren =
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo enim voluptatem quis officia illo ducimus, laudantium repudiandae quae nobis velit consectetur itaque iusto quas, corporis eligendi, optio quo soluta? Aperiam?';
-    const exc = new Exercicio(i, nome, loren);
-    exercicios.value.push(exc);
-  }
-};
 
-gerarExercicio(quant);
 </script>
 
 <template>
   <q-page>
     <header>
-      <q-btn dense flat no-caps class="center" @click="router.push('/')">
-        <div>
-          <seta-icon :direcao="90" />
-        </div>
-        <h1>Continuar:</h1>
-      </q-btn>
+      <q-btn class="voltar" icon="arrow_back" label="Continuar" @click="router.push('/')" dense push no-caps />
     </header>
     <main>
-          <q-list>
+      <q-list class="materia">
+        <q-card flat>
+          <q-card-section align="center" :style="`background-color:`">
+            <h2 class="titulo">Matemática</h2>
+          </q-card-section>
+
+          <q-separator />
+
+          <q-list class="atividades">
+
+            <q-card class="card-atividade">
+              <q-card-section>
+                <h3>
+                  Leis de newton
+                </h3>
+                <h7>
+                  atividade II
+                </h7>
+              </q-card-section>
+              <q-card-actions align="right">
+                <q-btn class="btn-continuar" label="Continuar" push/>
+              </q-card-actions>
+            </q-card>
 
           </q-list>
+        </q-card>
+      </q-list>
     </main>
   </q-page>
 </template>
 
 <style scoped>
-header{
+header {
   margin: 25px 0 40px 0;
 }
 
-header .q-btn{
+.q-btn.voltar {
+  font-size: 20px;
   height: 45px;
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
-  background-color: var(--color-background-3);
-  color: var(--color-text-1);
-}
-header div{
-  margin-top: 5px;
-  margin-right: 10px;
-  width: 15px;
-}
-header h1{
-  font-size: 24px;
+  color: white;
+  background: linear-gradient(80deg, transparent 20%, var(--cor-principal-1)85%, transparent 100%);
+  background-size: 400% 100%;
+  box-shadow: 0 5px 5px 0px rgb(0, 0, 0);
+  animation: corPassando 3s ease infinite;
 }
 
-.q-list {
+@keyframes corPassando {
+  from {
+    background-position: 0% 0%;
+  }
+
+  to {
+    background-position: -134% 0%;
+  }
+}
+
+.q-list.materia {
   display: flex;
-  flex-direction: column;
   padding: 0 5%;
   gap: 15px;
 }
+
+.titulo,h2 {
+  font-size: 250%;
+  font-family: 'Baloo 2';
+}
+
+.q-card {
+  width: 100%;
+}
+
+.atividades {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  gap: 15px;
+}
+
+.card-atividade {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border-radius: 10px;
+  width: 200px;
+  background-color: rgb(219, 199, 12);
+  box-shadow: 0 3px 3px 2px rgba(0, 0, 0, 0.568);
+}
+
+.card-atividade h3{
+  font-size: 150%;
+}
+
+.card-atividade h7{
+  font-family: 'Pixelify Sans';
+}
+
+.btn-continuar{
+  font-family: 'Pixelify Sans';
+  color: rgb(0, 0, 0) ;
+  background-color: #fff0b1 ;
+}
+
 li {
   list-style: none;
 }

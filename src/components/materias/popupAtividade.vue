@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Item } from 'src/types';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 // import useUserStore from 'src/stores/userStore';
@@ -48,12 +48,6 @@ const itensUser = ref<Itens>({
   def: [],
   espec: [],
 });
-
-watch(() => popUpStore.atividade, async () => {
-  if (popUpStore.atividade) {
-    await atividadeStore.salvarAtividade();
-  }
-})
 
 // função para selecionar quais são os itens do usuário e quais não são
 

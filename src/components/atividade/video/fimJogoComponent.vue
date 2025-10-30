@@ -6,11 +6,9 @@ import useMateriaStore from 'src/stores/materias/materiaStore';
 import useAtividadesStore from 'src/stores/materias/atividadesStore';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import usePopUpStore from 'src/stores/popUp';
-import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
 
 const $q = useQuasar();
 const router = useRouter();
-const questoesStore = useQuestoesStore();
 const atividadesStore = useAtividadesStore();
 const materiaStore = useMateriaStore();
 const popUpStore = usePopUpStore();
@@ -18,17 +16,22 @@ const atividadeStore = useAtividadeStore();
 
 // calculo de estrelas
 if (atividadeStore.acertos != undefined)
-  if (atividadeStore.acertos === questoesStore.questoes.length) {
+  if (atividadeStore.vida === 3) {
     atividadeStore.estrelas = 3;
-  } else if (atividadeStore.acertos >= questoesStore.questoes.length * 0.6) {
+  } else if (atividadeStore.vida === 2) {
     atividadeStore.estrelas = 2;
   } else {
     atividadeStore.estrelas = 1;
   }
 
-const proxima = () => {
+const proxima = async () => {
+
+  // salvar atividade
+  await atividadeStore.salvarAtividade();
+
   // encontrar a próxima atividade e deixar o popUp ativo
-  const proximaAtividade = atividadesStore.atividades.find((el) => el.id === atividadeStore.id + 1);
+  const indexAtividadeAtual = atividadesStore.atividades.findIndex((el) => el.id === atividadeStore.id);
+  const proximaAtividade = atividadesStore.atividades[indexAtividadeAtual+1]
 
   if (!proximaAtividade) return;
 
@@ -44,6 +47,15 @@ const proxima = () => {
   });
 };
 
+const novamente = ()=>{
+  atividadeStore.vida=0;
+  atividadeStore.acertos=0;
+  popUpStore.fimJogo = false;
+  router.push('/atividade/introducao').catch((error) => {
+    console.error('Erro ao navegar:', error);
+  });
+}
+
 const sair = () => {
   popUpStore.atividade = false;
   popUpStore.fimJogo = false;
@@ -57,13 +69,8 @@ const sair = () => {
 </script>
 
 <template>
-  <q-dialog
-    v-if="popUpStore.fimJogo"
-    v-model="popUpStore.fimJogo"
-    persistent
-    backdrop-filter="blur(20px) brightness(0)"
-    :maximized="popUpStore.fimJogo"
-  >
+  <q-dialog v-if="popUpStore.fimJogo" v-model="popUpStore.fimJogo" persistent backdrop-filter="blur(20px) brightness(0)"
+    :maximized="popUpStore.fimJogo">
     <!-- <q-card class="top-card">
       <span> LOGARITIMO </span>
     </q-card> -->
@@ -75,46 +82,20 @@ const sair = () => {
         <q-btn class="btn-sair" icon="close" @click="sair" push />
       </q-card-section>
       <q-card-section class="center estrelas">
-        <q-rating
-          v-model="atividadeStore.estrelas"
-          :max="3"
-          class="estrela"
-          size="70px"
-          color="grey"
-          icon="img:src/assets/icons-pixel/star.svg"
-          icon-selected="img:src/assets/icons-pixel/star-solid.svg"
-          disable
-        />
+        <q-rating v-model="atividadeStore.estrelas" :max="3" class="estrela" size="70px" color="grey"
+          icon="img:/public/icons/icons-pixel/star.svg" icon-selected="img:/public/icons/icons-pixel/star-solid.svg"
+          disable />
       </q-card-section>
       <q-card-section class="animacao center">
-        <dot-lottie-vue
-          class="sol"
-          src="https://lottie.host/89de8449-8b30-4af0-ac2b-64cceff2ff6a/3D1vugTNAp.json"
-          loop
-          autoplay
-        />
-        <dot-lottie-vue
-          class="confete"
-          src="https://lottie.host/53c8947e-1829-49c2-a508-fce69bae936b/UmfKTLVqQy.json"
-          autoplay
-        />
+        <dot-lottie-vue class="sol" src="https://lottie.host/89de8449-8b30-4af0-ac2b-64cceff2ff6a/3D1vugTNAp.json" loop
+          autoplay />
+        <dot-lottie-vue class="confete" src="https://lottie.host/53c8947e-1829-49c2-a508-fce69bae936b/UmfKTLVqQy.json"
+          autoplay />
       </q-card-section>
       <q-card-actions align="right" class="caixa-botoes">
-        <q-btn
-          class="btn-novamente"
-          @click="proxima"
-          flat
-          label="Novamente"
-          v-if="atividadeStore.estrelas !== 3"
-        />
-        <q-btn
-          class="btn-proxima"
-          @click="proxima"
-          flat
-          label="proxima"
-          icon-right="keyboard_double_arrow_right"
-          v-if="atividadeStore.estrelas > 0"
-        />
+        <q-btn class="btn-novamente" @click="novamente" flat label="Novamente" v-if="atividadeStore.estrelas !== 3" />
+        <q-btn class="btn-proxima" @click="proxima" flat label="proxima" icon-right="keyboard_double_arrow_right"
+          v-if="atividadeStore.estrelas > 0" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -172,11 +153,12 @@ const sair = () => {
   grid: estrela;
   cursor: none;
 }
+
 .disabled,
 .disabled *,
 [disabled],
 [disabled] * {
-  opacity: 1 !important ;
+  opacity: 1 !important;
   cursor: pointer !important;
 }
 
@@ -184,10 +166,12 @@ const sair = () => {
   position: relative;
   overflow: hidden;
 }
+
 .confete {
   position: absolute;
   width: 540px;
 }
+
 .sol {
   z-index: 1;
 }
@@ -198,12 +182,14 @@ const sair = () => {
   justify-content: right;
   padding: 10px auto;
 }
+
 .btn-proxima {
   font-family: 'Pixelify Sans';
   text-shadow: 1px 1px 2px rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   background-color: #f1bf18;
 }
+
 .btn-novamente {
   font-family: 'Pixelify Sans';
   color: rgb(0, 0, 0);

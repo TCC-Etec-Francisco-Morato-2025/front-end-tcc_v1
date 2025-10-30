@@ -50,16 +50,16 @@ const routes: RouteRecordRaw[] = [
           timeout: 10000, // tempo máximo de espera antes de erro
         }),
       },
-      {
-        path: 'para-voce',
-        name: 'para-voce',
-        component: () => import('pages/ParaVcPage.vue'),
-      },
-      {
-        path: 'continuar',
-        name: 'continuar',
-        component: () => import('pages/continuarPage.vue'),
-      },
+      // {
+      //   path: 'para-voce',
+      //   name: 'para-voce',
+      //   component: () => import('pages/ParaVcPage.vue'),
+      // },
+      // {
+      //   path: 'continuar',
+      //   name: 'continuar',
+      //   component: () => import('pages/continuarPage.vue'),
+      // },
     ],
   },
   {

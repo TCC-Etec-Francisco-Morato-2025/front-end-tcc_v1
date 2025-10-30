@@ -11,8 +11,10 @@ import pauseComponent from 'src/components/atividade/pauseComponent.vue';
 import screenRotateComponent from 'src/components/atividade/video/screenRotateComponent.vue';
 import questoesComponent from 'src/components/atividade/video/questoesComponent.vue';
 import videojs from 'video.js';
+import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 
 const $q = useQuasar();
+const atividadeStore = useAtividadeStore();
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
 const questaoStore = useQuestaoStore();
@@ -25,6 +27,7 @@ const videoPlayer = ref<HTMLVideoElement | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
 
 onMounted(() => {
+  atividadeStore.vida=3;
   // configuração do player
   if (videoPlayer.value) {
     player = videojs(videoPlayer.value, {
@@ -91,8 +94,8 @@ onBeforeUnmount(() => {
 
 const resetarVideo = () => {
   player?.currentTime(0);
-  ordemQuestao.value=0;
-  questaoStore.id='-1';
+  ordemQuestao.value = 0;
+  questaoStore.id = '-1';
   void player?.play();
   popUpStore.questoes.playVideo = true;
 };
@@ -131,11 +134,17 @@ const animacaoQuestao = (): Promise<boolean> => {
   <fim-jogo-component />
   <pause-component @reiniciar="resetarVideo" />
   <q-page>
+    <q-rating v-model="atividadeStore.vida" :max="3" class="estrela" size="30px" color="grey"
+    style="left: 0; top:0; margin: 20px; position: absolute; z-index: 100;"
+      icon="img:/public/icons/icons-pixel/icons8-coração-de-pixel-100.png"
+      icon-selected="img:/public/icons/icons-pixel/icons8-coração-de-pixel-96.png" disable />
     <screen-rotate-component />
     <main class="center">
       <q-responsive ref="boxPlayer" :ratio="16 / 9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
-          <source src="/src/assets/aulas/Mãe é tudo igual, só muda o endereço  IRMÃO DO JOREL - Cartoon Network Brasil (720p, h264, youtube).mp4" type="video/mp4" />
+          <source
+            src="/src/assets/aulas/Mãe é tudo igual, só muda o endereço  IRMÃO DO JOREL - Cartoon Network Brasil (720p, h264, youtube).mp4"
+            type="video/mp4" />
         </video>
       </q-responsive>
       <div ref="boxQuestoes" class="box-questoes">
