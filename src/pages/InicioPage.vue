@@ -9,9 +9,13 @@ import iconPerfilComponent from 'src/components/inicio/perfil/iconPerfilComponen
 import btnMenuComponent from 'components/inicio/menu/btnMenuComponent.vue';
 // import useMenuStore from 'src/stores/menuStore';
 import menuComponent from 'components/inicio/menu/menuComponent.vue';
-import carrocelComponent from 'src/components/inicio/carrocels/carrocelComponent.vue';
-import carrocelEvento from 'src/components/inicio/carrocels/carrocelEvento.vue';
+import carrocelComponent from 'src/components/inicio/carrocels/carrocelMateriaComponent.vue';
+import carrocelEvento from 'src/components/inicio/carrocels/carrocelEventoComponent.vue';
 import eventoComponent from 'src/components/inicio/eventos/eventoComponent.vue';
+
+// importar imagens eventos
+import novosAssuntos from 'assets/eventos/novosAssuntos.jpeg'
+import novosEquipamentos from 'assets/eventos/novosEquipamentos.jpeg'
 
 // const router = ref(useRouter());
 // const userStore = useUserStore();
@@ -65,9 +69,8 @@ const animacaoEntrada = () => {
       </section> -->
 
       <section class="secao-eventos">
-        <evento-component/>
-        <evento-component/>
-        <evento-component/>
+        <evento-component :src-evento="novosEquipamentos"/>
+        <evento-component :src-evento="novosAssuntos"/>
       </section>
     </main>
   </q-layout>

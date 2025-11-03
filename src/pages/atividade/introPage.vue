@@ -20,10 +20,10 @@ let typedInstance: Typed | null = null;
 
 
 // Executa quando o componente é montado
-onMounted(async() => {
-    await nextTick();
-    mudarFala();
-    if(falaAtual.value)
+onMounted(async () => {
+  await nextTick();
+  mudarFala();
+  if (falaAtual.value)
     typedInstance = new Typed(typedElement.value, {
       strings: [falaAtual.value.fala],
       typeSpeed: 50,
@@ -74,7 +74,7 @@ const proximaFala = () => {
   }
 };
 
-const mudarFala = ()=>{
+const mudarFala = () => {
   console.info(falaStore.falas[ordem.value])
   falaAtual.value = falaStore.falas[ordem.value];
   if (falaAtual.value) escolherPersonagem(falaAtual.value.id_personagem);
@@ -101,19 +101,16 @@ const reiniciar = () => {
     });
   }
 };
+
+const skip = () => {
+  void router.push('/atividade/video');
+}
 </script>
 
 <template>
   <pause-component @reiniciar="reiniciar" />
   <q-page>
-    <q-btn
-      class="btn-voltar"
-      icon="arrow_back"
-      size="30"
-      rounded
-      @click="voltarFala"
-      v-if="ordem > 1"
-    />
+    <q-btn class="btn-voltar" icon="arrow_back" size="30" rounded @click="voltarFala" v-if="ordem > 1" />
     <main>
       <q-img :src="personagemAtual?.img" />
       <q-card class="caixa-fala center">
@@ -121,7 +118,10 @@ const reiniciar = () => {
           <span ref="typedElement"></span>
         </q-card-section>
       </q-card>
-      <q-btn class="next" @click="proximaFala" push> next </q-btn>
+      <div style="margin:30px 0; display: flex; gap: 15px; justify-content: flex-end; width: 100%;">
+        <q-btn label="skip" class="skip" @click="skip" icon-right="keyboard_double_arrow_right" dense push/>
+        <q-btn class="next" @click="proximaFala" icon-right="keyboard_arrow_right" push> next </q-btn>
+      </div>
     </main>
   </q-page>
 </template>
@@ -168,13 +168,18 @@ main {
 }
 
 .q-btn.next {
-  align-self: flex-end;
   right: 0;
   color: black;
   background-color: rgba(255, 255, 255, 0.486);
-  margin: 20px;
-  width: fit-content;
-  padding: 0 50px !important;
-  height: 40px !important;
+  padding: 0 50px ;
+  height: 40px ;
+}
+
+.q-btn.skip {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.486);
+  width: 80px;
+  height: 40px ;
+
 }
 </style>

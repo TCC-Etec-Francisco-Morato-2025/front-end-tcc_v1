@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import type { Materia } from 'src/types';
-import { defineProps , defineAsyncComponent } from 'vue';
+import { defineProps } from 'vue';
 import useMateriaStore from 'src/stores/materias/materiaStore';
 import { useRouter } from 'vue-router';
 
@@ -11,7 +11,6 @@ const materiaStore = useMateriaStore();
 
 const props = defineProps<Materia>();
 
-const icon_materia = defineAsyncComponent(()=>import(`../icons-materias/${props.icon}.vue`));
 
 const ativarMaterias = () => {
   materiaStore.mudarMateria(
@@ -30,7 +29,7 @@ const ativarMaterias = () => {
   <q-item class="center">
     <q-btn :style="`background-color: ${props.cor};`" size="40px" dense round push @click="ativarMaterias">
       <div>
-        <component :is="icon_materia"></component>
+        <q-img :src="props.icon" fit="contain"/>
       </div>
     </q-btn>
     <span>{{ props.nome }}</span>

@@ -13,7 +13,7 @@ const useMateriasStore = defineStore('materias', {
       {
         id: '1',
         nome: 'Fisíca',
-        icon: 'fisicaIcon',
+        icon: '/public/icons-materias/fisica.svg',
         cor: 'rgba(0, 128, 255, 1)',
         path: 'fisica',
         textColor: 'white',
@@ -21,7 +21,7 @@ const useMateriasStore = defineStore('materias', {
       {
         id: '2',
         nome: 'Química',
-        icon: 'quimicaIcon',
+        icon: '/public/icons-materias/quimica.svg',
         cor: '#9cdd82',
         path: 'quimica',
         textColor: 'white',
@@ -29,7 +29,7 @@ const useMateriasStore = defineStore('materias', {
       {
         id: '3',
         nome: 'Inglês',
-        icon: 'inglesIcon',
+        icon: '/public/icons-materias/lingua-inglesa.svg',
         cor: '#ffffff',
         path: 'ingles',
         textColor: 'black',

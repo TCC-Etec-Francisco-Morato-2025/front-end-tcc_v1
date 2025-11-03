@@ -168,18 +168,26 @@ const encerrar = () => {
 const ativarItem = (nomeFunc: string): void => {
   switch (nomeFunc) {
     case 'trombetaDosArcanjos':
+      if (atacStore.recarregando)
+        atacStore.recarregando = false;
       trombetaDosArcanjos();
       break;
 
     case 'espadaOndulatoriaDivina':
+      if (atacStore.recarregando)
+        atacStore.recarregando = false;
       espadaOndulatoriaDivina();
       break;
 
     case 'anelDoVazio':
+      if (defeStore.recarregando)
+        defeStore.recarregando = false;
       anelDoVazio();
       break;
 
     case 'ampulhetaDeZhonyas':
+      if (especStore.recarregando)
+        especStore.recarregando = false;
       ampulhetaDeZhonyas();
       break;
   }
@@ -218,11 +226,11 @@ const ativarItem = (nomeFunc: string): void => {
     </q-card-actions>
     <q-card-actions align="center">
       <q-btn v-if="atacStore.icon !== ''" style="background-color: var(--color-background-2)" :icon="atacStore.icon"
-        size="16px" @click="ativarItem(atacStore.func)" round push />
+        size="16px" @click="ativarItem(atacStore.func)" :disable="atacStore.recarregando" round push />
       <q-btn v-if="defeStore.icon !== ''" style="background-color: var(--color-background-2)" :icon="defeStore.icon"
-        size="16px" @click="ativarItem(defeStore.func)" round push />
+        size="16px" @click="ativarItem(defeStore.func)" :disable="defeStore.recarregando" round push />
       <q-btn v-if="especStore.icon !== ''" style="background-color: var(--color-background-2)" :icon="especStore.icon"
-        size="16px" @click="ativarItem(especStore.func)" round push />
+        size="16px" @click="ativarItem(especStore.func)" :disable="especStore.recarregando" round push />
     </q-card-actions>
   </q-card>
 </template>

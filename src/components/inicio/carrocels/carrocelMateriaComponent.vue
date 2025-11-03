@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import useMateriasStore from 'src/stores/materias/materiasStore';
 import useMateriaStore from 'src/stores/materias/materiaStore';
 
-import { ref, defineAsyncComponent } from 'vue';
+import { ref } from 'vue';
 
 const slides = ref<Materia[]>([]);
 const modules = ref([Navigation]);
@@ -18,7 +18,7 @@ materiasStore.materias.map((el) => {
   slides.value.push(el);
 });
 
-const irParaMateria = (slide:Materia) => {
+const irParaMateria = (slide: Materia) => {
 
   materiaStore.mudarMateria(slide)
 
@@ -28,31 +28,17 @@ const irParaMateria = (slide:Materia) => {
     // Lidar com o erro, talvez mostrar uma mensagem para o usuário
   });
 };
-
-const iconMateria = (icon: string) => {
-  return defineAsyncComponent(() => import(`components/icons-materias/${icon}.vue`));
-};
 </script>
 
 <template>
   <div style="position: relative">
-    <swiper
-      :slides-per-view="'auto'"
-      :centered-slides="true"
-      :modules="modules"
-      :loop="true"
-      :space-between="20"
-      class="carrocel"
-    >
-      <swiper-slide
-        v-for="slide in slides"
-        :key="slide.id"
-        :style="`background-color: ${slide.cor};`"
-        @click="irParaMateria(slide)"
-      >
+    <swiper :slides-per-view="'auto'" :centered-slides="true" :modules="modules" :loop="true" :space-between="20"
+      class="carrocel">
+      <swiper-slide v-for="slide in slides" :key="slide.id" :style="`background-color: ${slide.cor};`"
+        @click="irParaMateria(slide)">
         <div class="nome-slide">{{ slide.nome }}</div>
         <div class="img-slide">
-          <component :is="iconMateria(slide.icon)" />
+          <q-img :src="slide.icon" fit="contain" style="width: 90%; height: 90%;"/>
         </div>
         <!-- <q-img :src="slide.img" :radio="16/9" class="img-slide"/> -->
         <!-- <q-icon nome="science" size="100px"/> -->
@@ -80,7 +66,7 @@ const iconMateria = (icon: string) => {
   transition: all 500ms ease-in-out;
 }
 
-.swiper-slide::before{
+.swiper-slide::before {
   content: "";
   position: absolute;
   width: 100%;
@@ -95,10 +81,12 @@ const iconMateria = (icon: string) => {
   transform: translateY(-5px);
   box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.747);
 }
-.swiper-slide-active::before{
+
+.swiper-slide-active::before {
   background-color: rgba(0, 0, 0, 0.253);
 }
-.swiper-slide-active .nome-slide{
+
+.swiper-slide-active .nome-slide {
   z-index: 1;
 }
 

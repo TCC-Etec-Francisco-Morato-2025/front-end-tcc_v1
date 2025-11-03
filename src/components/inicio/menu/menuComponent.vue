@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import { useRouter } from 'vue-router';
 import useMenuStore from 'src/stores/menuStore';
@@ -26,8 +25,8 @@ const mudarRota = (path: string) => {
       <q-card-section class="topo">
         <q-btn flat round dense @click="menuStore.toggleMenu" size="20px" icon="close" class="sair"/>
         <q-avatar size="100px">
-          <img :src="userStore.foto" alt="" v-if="userStore.logado && userStore.foto"/>
-          <perfil-icon />
+          <q-img :src="userStore.foto" alt="" v-if="userStore.logado && userStore.foto"/>
+          <q-img src="/public/img/perfil.png" v-else/>
         </q-avatar>
       </q-card-section>
       <div class="navMenu center">

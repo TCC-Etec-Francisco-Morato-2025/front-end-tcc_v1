@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import usePopUpStore from 'src/stores/popUp';
-import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import { useRouter } from 'vue-router';
 
@@ -22,8 +21,8 @@ const logar = () => {
 <template>
   <q-btn align="left" no-caps flat id="perfil" @click="logar" class="nLogado">
     <q-avatar size="60px">
-      <img :src="userStore.foto??'/public/img/perfil_sem_img.jpeg'" alt="" v-if="userStore.logado" />
-      <perfil-icon v-else />
+      <q-img :src="userStore.foto??'/public/img/perfil.png'" alt="" v-if="userStore.logado" />
+      <q-img src="/public/img/perfil.png" v-else/>
     </q-avatar>
     <span id="nomeUser" v-if="userStore.logado">{{ userStore.nome }}</span>
     <span id="nomeUser" v-else>Entrar</span>

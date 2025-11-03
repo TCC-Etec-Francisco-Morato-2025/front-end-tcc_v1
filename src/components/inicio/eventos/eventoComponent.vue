@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import novosEquipamentos from 'assets/eventos/novosEquipamentos.jpeg'
+interface Prop{
+  srcEvento:string
+}
+
+const props = defineProps<Prop>();
 </script>
 
 <template>
   <q-card align="center" flat>
     <div class="filtro"></div>
-      <q-img :src="novosEquipamentos"/>
+      <q-img :src="props.srcEvento"/>
   </q-card>
 </template>
 
