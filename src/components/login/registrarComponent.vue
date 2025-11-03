@@ -41,7 +41,7 @@ const rules = {
 }
 
 const registrar = async () => {
-  await loginStore.register(txtNome.value, txtEmail.value, txtSenhaConfirm.value)
+  await loginStore.register(txtNome.value, txtEmail.value, txtSenhaConfirm.value, null)
   .then(()=>{
     router.push('/').catch((erro) => {
       console.error('Erro ao tentar acessar a página: ' + erro);

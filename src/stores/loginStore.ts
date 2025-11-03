@@ -70,24 +70,24 @@ const useLoginStore = defineStore('login', {
       }
     },
 
-    async register(nome: string, email: string, senha: string,uid?:string) {
+    async register(nome: string, email: string, senha: string, uid: string|null) {
 
       const formData = new FormData();
       const userStore = useUserStore();
 
       const operations = {
         query: `
-      mutation Register($email: String!, $senha: String!, $nome: String!, $uid:String) {
-        register(uuid:$uid,token:null,email: $email, password: $senha, username: $nome) {
-          token
-          user {
-            id
-            username
-            foto
+          mutation Register($email: String!, $senha: String!, $nome: String!, $uid:String) {
+            register(uuid:$uid,token:null,email: $email, password: $senha, username: $nome) {
+              token
+              user {
+                id
+                username
+                foto
+              }
+            }
           }
-        }
-      }
-    `,
+        `,
         variables: {
           nome,
           senha,

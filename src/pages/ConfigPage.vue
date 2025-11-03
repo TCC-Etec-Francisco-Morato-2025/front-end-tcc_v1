@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import usePopUpStore from 'src/stores/popUp';
-import perfilIcon from 'src/components/icons/perfilIcon.vue';
 import useUserStore from 'src/stores/userStore';
 import useLoginStore from 'src/stores/loginStore';
 import useConfig from 'src/stores/configStore';
@@ -31,9 +30,9 @@ watch(
         <!-- avatar -->
         <q-avatar size="150px">
           <!-- se o usuário estiver logado, ele mostra a imagem de perfil -->
-          <img :src="userStore.foto??'/public/img/perfil_sem_img.jpeg'" alt="" v-if="userStore.logado" />
+          <q-img :src="userStore.foto??'/public/img/perfil.png'" alt="" v-if="userStore.logado" />
           <!-- se não, ele mostra uma imagem padrão -->
-          <perfil-icon v-else />
+           <q-img src="/public/img/perfil.png" v-else/>
         </q-avatar>
 
         <!-- nome de usuário -->

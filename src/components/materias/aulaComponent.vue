@@ -8,6 +8,14 @@ import setaIcon from '../icons/setaIcon.vue';
 import atividadeComponent from './atividadeComponent.vue';
 import useUserStore from 'src/stores/userStore';
 
+interface Props {
+  id: string;
+  nome: string;
+  cor: string;
+  textColor: string;
+}
+
+const props = defineProps<Props>();
 const userStore = useUserStore();
 const atividadesStore = useAtividadesStore();
 const atividades = ref<Atividade[]>([]);
@@ -17,21 +25,9 @@ const isFirst = ref(true);
 
 const mutEstadoLista = async () => {
   if (isFirst.value) {
-    await atividadesStore.getAtividades(props.id,userStore.token);
+    await atividadesStore.getAtividades(props.id, userStore.token);
     procurarAtividade();
     isFirst.value = false;
-
-    for (let i = 0; i < atividades.value.length; i++) {
-      const atividade = atividades.value[i];
-      if (atividade) {
-        if (atividade.estrelas === 0) {
-          atividade.proxima = true;
-          break; // para no primeiro que encontrar
-        } else {
-          atividade.proxima = false;
-        }
-      }
-    }
   }
 
   const button = document.getElementById('btn-' + props.id);
@@ -39,31 +35,32 @@ const mutEstadoLista = async () => {
   button?.classList.toggle('ativo');
 };
 
-interface Props {
-  id: string;
-  nome: string;
-  cor: string;
-  textColor: string;
-}
-
-const props = defineProps<Props>();
 
 const corAtivo = ref(props.cor);
 const corTextAtivo = ref(props.textColor);
 
 // achar as ativiades dessa matéria em especifico, caso a pessoa já tenha entrado em outras matérias
 const procurarAtividade = () => {
-  atividadesStore.atividades.forEach((el) => {
-    if (el.id_aula == props.id) {
-      atividades.value.push(el);
+  atividades.value = atividadesStore.atividades.filter(at => at.id_aula == props.id);
+
+
+  for (const at of atividades.value) {
+    at.estrelas = at.estrelas || 0; // garante valor padrão
+
+    if (at.estrelas === 0) {
+      at.proxima = true;
+      break; // para o loop aqui
+    } else {
+      at.proxima = false;
     }
-  });
+  }
+
 };
 </script>
 
 <template>
   <q-item class="itens-assunto">
-    <q-btn ref="btn" @click="mutEstadoLista" push :id="'btn-' + props.id" class="assunto-expansion">
+    <q-btn ref="btn" @click="mutEstadoLista()" push :id="'btn-' + props.id" class="assunto-expansion">
       <div>
         <span>
           {{ props.nome }}
@@ -81,11 +78,7 @@ const procurarAtividade = () => {
           <q-list class="lista-atividades">
             <!-- informações sobre a atividade -->
             <!-- btn usando para dar a sensação de click para o usuário -->
-            <atividade-component
-              :atividade="atividade"
-              v-for="atividade in atividades"
-              :key="atividade.id"
-            />
+            <atividade-component :atividade="atividade" v-for="atividade in atividades" :key="atividade.id" />
           </q-list>
         </q-card-section>
       </q-card>
@@ -99,6 +92,7 @@ const procurarAtividade = () => {
   background-color: var(--color-background-2);
   border-radius: 0 0 5px 5px;
 }
+
 .ativo.q-btn {
   background-color: v-bind(corAtivo) !important;
   color: v-bind(corTextAtivo) !important;
@@ -120,15 +114,18 @@ const procurarAtividade = () => {
   color: var(--color-text-2);
   border-radius: 5px;
 }
+
 .q-btn div {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
+
 .q-btn div #seta {
   width: 15px;
 }
+
 .ativo.q-btn {
   border-radius: 7px 7px 0px 0px;
 }
@@ -143,6 +140,7 @@ const procurarAtividade = () => {
 .card-atividades {
   width: 100%;
 }
+
 .card-atividades .q-card__section--vert {
   padding: 10px !important;
 }

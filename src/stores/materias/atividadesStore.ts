@@ -210,6 +210,7 @@ const useAtividadesStore = defineStore('atividades', {
             titulo: a.nome,
             descricao: a.descricao,
             estrelas: a.pontuacao,
+            proxima: false,
             vida: 3,
             video: '',
           };

@@ -18,9 +18,9 @@ const ativarPopUp = (atividade: Atividade) => {
   popUpStore.toggleAtividade();
 };
 
-const descidirAnimacao = (quant_estrela: number) => {
+const descidirAnimacao = (quant_estrela: number,proxima?:boolean) => {
   let animacao = 'scale';
-  if (quant_estrela == 0) {
+  if (!quant_estrela && !proxima) {
     animacao = 'jump-right';
   }
   return animacao;
@@ -28,7 +28,7 @@ const descidirAnimacao = (quant_estrela: number) => {
 </script>
 
 <template>
-  <q-intersection :transition="descidirAnimacao(atividade.estrelas)" once>
+  <q-intersection :transition="descidirAnimacao(atividade.estrelas,atividade.proxima)" once>
     <q-btn
       class="atividade"
       :class="{
@@ -38,8 +38,8 @@ const descidirAnimacao = (quant_estrela: number) => {
       }"
       no-caps
       :push="atividade.estrelas > 0 || atividade.proxima"
-      :flat="atividade.estrelas == 0 && !atividade.proxima"
-      :disable="atividade.estrelas == 0 && !atividade.proxima"
+      :flat="!atividade.estrelas && !atividade.proxima"
+      :disable="!atividade.estrelas && !atividade.proxima"
       :icon-right="atividade.proxima ? 'chevron_right':''"
       @click="ativarPopUp(atividade)"
     >
