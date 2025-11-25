@@ -53,12 +53,18 @@ const loginWithGoogle = async () => {
     const token = await result.user.getIdToken();
 
     if (email && token) {
-      await loginStore.login(email, token).catch(async () => {
-        console.error('Usuário não existe');
-        if (displayName)
-          await loginStore.register(displayName, email, token, uid)
-      })
-      userStore.foto = photoURL;
+      await loginStore.login(email, token)
+        .then(() => {
+          if (userStore.foto === 'semImagem') {
+            userStore.foto = photoURL;
+            console.log(userStore.foto)
+          }
+        })
+        .catch(async () => {
+          console.error('Usuário não existe');
+          if (displayName)
+            await loginStore.register(displayName, email, token, uid)
+        })
     }
 
     void router.push('/');
