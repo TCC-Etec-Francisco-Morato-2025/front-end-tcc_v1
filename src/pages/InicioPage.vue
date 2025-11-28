@@ -45,10 +45,10 @@ const animacaoEntrada = () => {
       <btnMenuComponent />
     </q-header>
     <main>
-      <section class="secao-evento-carrocel">
+      <section class="secao-evento-carrocel q-mb-xl">
         <carrocel-evento />
       </section>
-      <section class="secao-para-voce">
+      <section class="secao-para-voce q-pb-xl">
         <q-btn
           class="titulo-secao"
           no-caps
@@ -134,7 +134,6 @@ main {
 .secao-eventos{
   display: flex;
   flex-direction: column;
-  margin-top: 60px;
-  gap: 100px;
+  gap: 40px;
 }
 </style>

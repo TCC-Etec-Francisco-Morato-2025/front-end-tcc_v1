@@ -32,7 +32,7 @@ const animacaoTroca = () => {
 
 <template>
   <q-layout class="center">
-    <q-card>
+    <q-card class="text-white">
       <q-carousel v-model="loginStore.slide">
         <q-carousel-slide name="entrar">
           <entrar-component v-if="loginStore.slide == 'entrar'" @registrar="animacaoTroca" />

@@ -43,7 +43,7 @@ for (let i = 0; i < quant; i++) {
 
 <template>
   <swiper :slides-per-view="'auto'" :centered-slides="true" :loop="true" class="carrocel">
-    <swiper-slide class="slide" @click="popUpStore.toggleEventoBoss()">
+    <swiper-slide class="q-px-md" @click="popUpStore.toggleEventoBoss()">
       <div class="slide-pai center">
         <div class="efeito"></div>
         <q-img ref="img" :src="boosSazonal" alt="Imagem da matéria" />
@@ -55,13 +55,8 @@ for (let i = 0; i < quant; i++) {
 </template>
 
 <style scoped>
-.swiper {
-  width: auto;
-  height: 540px;
-  padding: 30px 0;
-}
 .swiper-slide {
-  width: 96dvw !important;
+  height: 540px;
 }
 .slide-pai {
   position: relative;

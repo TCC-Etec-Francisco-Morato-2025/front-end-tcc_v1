@@ -104,7 +104,7 @@ onBeforeUnmount(() => {
           <q-card style="width: 300px;">
             <q-btn icon="close" @click="editImage = false" align="right" dense flat rounded/>
             <q-card-section align="center">
-              <q-file ref="inputImg" v-model="imgItem" style="display: none" type="file" accept=".png" />
+              <q-file ref="inputImg" v-model="imgItem" style="display: none" type="file" accept="image/*" />
               <q-avatar size="150px">
                 <q-img :src="userStore.foto" alt="" v-if="userStore.foto && !imgPreview"/>
                 <q-img :src="imgPreview" v-if="imgPreview"/>

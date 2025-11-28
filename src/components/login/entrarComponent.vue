@@ -55,9 +55,8 @@ const loginWithGoogle = async () => {
     if (email && token) {
       await loginStore.login(email, token)
         .then(() => {
-          if (userStore.foto === 'semImagem') {
+          if(userStore.foto?.trim()=='/public/img/perfil.png'){
             userStore.foto = photoURL;
-            console.log(userStore.foto)
           }
         })
         .catch(async () => {
@@ -108,15 +107,13 @@ const emit = defineEmits(['registrar']);
       <q-input label="Senha" type="password" v-model="txtSenha" :error="falha" :rules="[rules.senha]" />
       <div class="area-btn center">
         <q-btn label="Registrar-se" no-caps @click="emit('registrar')" id="btn-registrar" flat />
-        <q-btn type="submit" label="Entrar" no-caps id="btn-entrar" />
+        <q-btn type="submit" label="Entrar" no-caps id="btn-entrar" class="shadow-2" />
       </div>
     </q-form>
   </q-card-section>
   <q-card-section class="center login-rapido">
     <q-btn class="login-rapido-opcoes" id="login-google" icon="img:https://www.google.com/favicon.ico "
       @click="loginWithGoogle" label="Entrar com o Google" push no-caps />
-    <!-- <q-btn class="login-rapido-opcoes" id="login-facebook" icon="img:src\assets\Facebook_Logo_Secondary.png"
-      @click="loginWithFacebook" label="Entrar com o Facebook" push no-caps /> -->
   </q-card-section>
   <q-card-actions align="center">
     <q-btn flat label="Esqueci minha senha" no-caps />
@@ -132,13 +129,11 @@ const emit = defineEmits(['registrar']);
 }
 
 .login-topo h1 {
-  color: var(--color-text-3);
   text-align: center;
   font-size: 40px;
 }
 
 .login-topo .q-btn.sair {
-  color: white;
   top: 15px;
   right: 15px;
   position: absolute;
@@ -160,14 +155,12 @@ const emit = defineEmits(['registrar']);
 
 .area-btn #btn-entrar {
   background-color: var(--cor-principal-1);
-  box-shadow: 0 3px 2px 2px rgba(0, 0, 0, 0.432);
 }
 
 .area-btn #btn-registrar {
   padding: 0 10px;
-  color: var(--color-text-1);
   border-radius: 0;
-  border-bottom: 2px solid var(--color-text-1);
+  border-bottom: 2px solid white;
 }
 
 .login-rapido {
@@ -184,10 +177,5 @@ const emit = defineEmits(['registrar']);
 .login-rapido-opcoes#login-google {
   color: black;
   background-color: white;
-}
-
-.login-rapido-opcoes#login-facebook {
-  color: rgb(255, 255, 255);
-  background-color: rgb(66, 103, 178);
 }
 </style>

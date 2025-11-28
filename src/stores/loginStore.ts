@@ -53,6 +53,7 @@ const useLoginStore = defineStore('login', {
 
         const user = response.data.data.login.user
         const token = response.data.data.login.token;
+
         const newUser: User = {
           id: user.id,
           nome: user.username,
@@ -60,6 +61,7 @@ const useLoginStore = defineStore('login', {
           token: token,
           admin: false
         }
+        
         userStore.mudarUser(newUser);
 
       } catch (error: any) {
