@@ -28,10 +28,11 @@ const useUserStore = defineStore('user', {
       this.nome = newUser.nome;
       this.admin = newUser.admin;
       this.token = newUser.token;
-      if (newUser.foto?.trim() == 'semImagem') {
+      if (newUser.foto?.trim() === 'semImagem') {
         this.foto = '/public/img/perfil.png';
+      }else{
+        this.foto = newUser.foto
       }
-      // this.itens= newUser.itens;
     },
     logout() {
       this.id = ''
@@ -48,12 +49,12 @@ const useUserStore = defineStore('user', {
     async mudarNome(newNome: string) {
 
       const query = `
-  mutation EditNome($nome: String!) {
-    editUser(username: $nome, foto: null) {
-      username
-      foto
-    }
-  }
+        mutation EditNome($nome: String!) {
+          editUser(username: $nome, foto: null) {
+            username
+            foto
+          }
+        }
       `
       const variables = { nome: newNome }
 

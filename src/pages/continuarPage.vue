@@ -81,7 +81,7 @@ header {
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
   color: white;
-  background: linear-gradient(80deg, transparent 20%, var(--cor-principal-1)85%, transparent 100%);
+  background: linear-gradient(80deg, transparent 20%, rgb(var(--cor-principal-1))85%, transparent 100%);
   background-size: 400% 100%;
   box-shadow: 0 5px 5px 0px rgb(0, 0, 0);
   animation: corPassando 3s ease infinite;

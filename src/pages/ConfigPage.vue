@@ -153,7 +153,7 @@ header h1 {
   from {
   }
   to {
-    background-color: var(--cor-principal-1);
+    background-color: rgb(var(--cor-principal-1));
     box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.425);
     color: var(--color-text-3);
     transform: translatey(-2px);
@@ -200,7 +200,7 @@ section {
 }
 
 section .opcao {
-  color: var(--cor-principal-1);
+  color: rgb(var(--cor-principal-1));
   font-size: 14px;
 }
 </style>

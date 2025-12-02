@@ -1,9 +1,9 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   /* cores principais */
-  --cor-principal-1: rgb(0, 142, 218);
-  --cor-principal-2: rgb(227,132,255);
-  --cor-principal-3: rgb(172,150,243);
+  --cor-principal-1: 0, 142, 218;
+  --cor-principal-2: 227,132,255;
+  --cor-principal-3: 172,150,243;
 }
 
 :root {

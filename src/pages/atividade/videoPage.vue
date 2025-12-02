@@ -12,12 +12,22 @@ import screenRotateComponent from 'src/components/atividade/video/screenRotateCo
 import questoesComponent from 'src/components/atividade/video/questoesComponent.vue';
 import videojs from 'video.js';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
+import useAtacItemStore from 'src/stores/itens/atacStore';
+import useDefeItemStore from 'src/stores/itens/defeStore';
+import useEspecItemStore from 'src/stores/itens/especStore';
+import { onBeforeRouteLeave } from 'vue-router';
+import useAtividadesStore from 'src/stores/materias/atividadesStore';
 
 const $q = useQuasar();
+const atividadesStore = useAtividadesStore();
 const atividadeStore = useAtividadeStore();
 const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
 const questaoStore = useQuestaoStore();
+
+const atacStore = useAtacItemStore();
+const defeStore = useDefeItemStore();
+const especStore = useEspecItemStore();
 // const materiaStore = useMateriaStore();
 // const corFundo = ref(materiaStore.cor);
 const sec = ref(0);
@@ -27,7 +37,10 @@ const videoPlayer = ref<HTMLVideoElement | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
 
 onMounted(() => {
-  atividadeStore.vida=3;
+  atacStore.carregado = true;
+  defeStore.carregado = true;
+  especStore.carregado = true;
+  atividadeStore.vida = 3;
   // configuração do player
   if (videoPlayer.value) {
     player = videojs(videoPlayer.value, {
@@ -47,15 +60,17 @@ onMounted(() => {
         sec.value = Math.floor(currentTime);
 
         // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
-        if (questoesStore.questoes[ordemQuestao.value]?.tempo === sec.value && questoesStore.questoes[ordemQuestao.value]?.id != questaoStore.id) {
-
-          const newQuestao = questoesStore.questoes[ordemQuestao.value]
+        if (
+          questoesStore.questoes[ordemQuestao.value]?.tempo === sec.value &&
+          questoesStore.questoes[ordemQuestao.value]?.id != questaoStore.id
+        ) {
+          const newQuestao = questoesStore.questoes[ordemQuestao.value];
 
           if (newQuestao) {
             questaoStore.mudarQuestao(newQuestao);
             // função para ativar o popup
             popUpStore.toggleQuestoes();
-            ordemQuestao.value++
+            ordemQuestao.value++;
             // garante que a variavel que controla o video sempre esteja false quando ele for pausado
             popUpStore.questoes.playVideo = false;
             player?.pause();
@@ -78,7 +93,7 @@ onMounted(() => {
         } else {
           void player?.pause();
         }
-      }
+      },
     );
 
     //Finalizar quando o video acabar
@@ -127,6 +142,11 @@ const animacaoQuestao = (): Promise<boolean> => {
     }
   });
 };
+
+onBeforeRouteLeave(() => {
+  const atividadeOriginal = atividadesStore.atividades.find((at) => at.id === atividadeStore.id);
+  if (atividadeOriginal) atividadeStore.mudarAtividade(atividadeOriginal);
+});
 </script>
 
 <template>
@@ -134,17 +154,25 @@ const animacaoQuestao = (): Promise<boolean> => {
   <fim-jogo-component />
   <pause-component @reiniciar="resetarVideo" />
   <q-page>
-    <q-rating v-model="atividadeStore.vida" :max="3" class="estrela" size="30px" color="grey"
-    style="left: 0; top:0; margin: 20px; position: absolute; z-index: 100;"
+    <q-rating
+      v-model="atividadeStore.vida"
+      :max="3"
+      class="estrela"
+      size="30px"
+      color="grey"
+      style="left: 0; top: 0; margin: 20px; position: absolute; z-index: 100"
       icon="img:/public/icons/icons-pixel/icons8-coração-de-pixel-100.png"
-      icon-selected="img:/public/icons/icons-pixel/icons8-coração-de-pixel-96.png" disable />
+      icon-selected="img:/public/icons/icons-pixel/icons8-coração-de-pixel-96.png"
+      disable
+    />
     <screen-rotate-component />
     <main class="center">
       <q-responsive ref="boxPlayer" :ratio="16 / 9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
           <source
-            src="/src/assets/aulas/Mãe é tudo igual, só muda o endereço  IRMÃO DO JOREL - Cartoon Network Brasil (720p, h264, youtube).mp4"
-            type="video/mp4" />
+            :src="`https://api.enkie.com.br/atividades/${atividadeStore.video}`"
+            type="video/mp4"
+          />
         </video>
       </q-responsive>
       <div ref="boxQuestoes" class="box-questoes">
@@ -178,7 +206,8 @@ main {
   scale: 1;
 }
 
-@media (orientation: landscape) {}
+@media (orientation: landscape) {
+}
 
 /* config questões */
 .box-questoes {

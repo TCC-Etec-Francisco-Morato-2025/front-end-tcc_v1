@@ -58,7 +58,7 @@ const animacaoEntrada = () => {
 
 <style scoped>
 .q-tab--active{
-    color: var(--cor-principal-1);
+    color: rgb(var(--cor-principal-1));
 }
 .q-tab--active .q-icon {
   animation: subir 0.3s ease-in-out forwards;

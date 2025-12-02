@@ -5,7 +5,10 @@ export interface Item {
   icon: string;
   img: string;
   func: string;
-  recarregando: boolean;
+  carregado: boolean;
+  descricao: string;
+  habilidade: string;
+  habilidadeTitulo: string;
 }
 
 export interface Materia {
@@ -65,21 +68,21 @@ export interface Resposta {
   certa: boolean;
 }
 
-export interface itensUser{
-  id:string,
-  tipo:number,
+export interface itensUser {
+  id: string,
+  tipo: number,
 }
 
-export interface User{
-    primeiraVez?: boolean,
-    logado?: boolean,
-    id:string,
-    nome:string|null,
-    foto:string|null,
-    email?:string,
-    admin:boolean,
-    token?:string,
-    itens?:itensUser[]
+export interface User {
+  primeiraVez?: boolean,
+  logado?: boolean,
+  id: string,
+  nome: string | null,
+  foto: string | null,
+  email?: string,
+  admin: boolean,
+  token?: string,
+  itens?: itensUser[]
 }
 
-export {};
+export { };

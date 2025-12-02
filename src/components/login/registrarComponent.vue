@@ -43,7 +43,7 @@ const rules = {
 const registrar = async () => {
   await loginStore.register(txtNome.value, txtEmail.value, txtSenhaConfirm.value, null)
     .then(() => {
-      router.push('/').catch((erro) => {
+      router.replace('/').catch((erro) => {
         console.error('Erro ao tentar acessar a página: ' + erro);
       })
     })
@@ -60,7 +60,7 @@ const loginWithGoogle = async () => {
     if (email && token) {
       await loginStore.login(email, token)
         .then(() => {
-          if (userStore.foto?.trim() == '/public/img/perfil.png') {
+          if (userStore.foto?.trim() === '/public/img/perfil.png') {
             userStore.foto = photoURL;
           }
         })
@@ -72,7 +72,7 @@ const loginWithGoogle = async () => {
         })
     }
 
-    void router.push('/');
+    void router.replace('/');
     // Redirecione o usuário ou atualize a UI
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -160,7 +160,7 @@ const emit = defineEmits(['entrar']);
 }
 
 .area-btn #btn-registrar {
-  background-color: var(--cor-principal-1);
+  background-color: rgb(var(--cor-principal-1));
 }
 
 .area-btn #btn-entrar {

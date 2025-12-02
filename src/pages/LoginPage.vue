@@ -51,11 +51,11 @@ const animacaoTroca = () => {
 }
 
 .center {
-  background-color: var(--cor-principal-3);
+  background-color: rgb(var(--cor-principal-3));
 }
 
 .q-card {
-  background-color: var(--cor-principal-3);
+  background-color: rgb(var(--cor-principal-3));
   width: 90%;
   max-width: 400px;
   padding: 10px 0;

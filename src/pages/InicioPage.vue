@@ -12,6 +12,7 @@ import menuComponent from 'components/inicio/menu/menuComponent.vue';
 import carrocelComponent from 'src/components/inicio/carrocels/carrocelMateriaComponent.vue';
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEventoComponent.vue';
 import eventoComponent from 'src/components/inicio/eventos/eventoComponent.vue';
+import carrocelContinuarComponent from 'src/components/inicio/carrocels/carrocelContinuarComponent.vue';
 
 // importar imagens eventos
 import novosAssuntos from 'assets/eventos/novosAssuntos.jpeg'
@@ -58,15 +59,15 @@ const animacaoEntrada = () => {
         <carrocel-component />
       </section>
 
-      <!-- <section class="secao-continuar">
+      <section>
         <q-btn
           class="titulo-secao"
           no-caps
           label="Continuar"
           dense
         />
-        <carrocel-component />
-      </section> -->
+        <carrocel-continuar-component/>
+      </section>
 
       <section class="secao-eventos">
         <evento-component :src-evento="novosEquipamentos"/>
@@ -117,7 +118,7 @@ main {
   padding: 5px 20px;
   border-radius: 0 10px 10px 0;
   color: var(--color-text-1);
-  background: linear-gradient(80deg, transparent 20%, var(--cor-principal-1)85%, transparent 100%);
+  background: linear-gradient(80deg, transparent 20%, rgb(var(--cor-principal-1))85%, transparent 100%);
   background-size: 400% 100%;
   box-shadow: 0 5px 5px 0px rgb(0, 0, 0);
   animation: gradientShift 3s  ease infinite;

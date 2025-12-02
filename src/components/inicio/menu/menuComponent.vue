@@ -75,7 +75,7 @@ const mudarRota = (path: string) => {
 }
 
 .q-btn.sair {
-  color: var(--cor-principal-1);
+  color: rgb(var(--cor-principal-1));
   position: absolute;
   width: 50px;
   right: 10px;
@@ -95,7 +95,7 @@ const mudarRota = (path: string) => {
 }
 
 .navMenu .q-btn {
-  border-bottom: 2px solid var(--cor-principal-1);
+  border-bottom: 2px solid rgb(var(--cor-principal-1));
   width: 280px;
   height: 60px;
   border-radius: 0;
@@ -113,7 +113,7 @@ const mudarRota = (path: string) => {
     height: 60px;
   }
   to {
-    background-color: var(--cor-principal-1);
+    background-color: rgb(var(--cor-principal-1));
     box-shadow: 0 6px 3px 3px black;
     color: var(--color-text-3);
     transform: translatey(-5px);

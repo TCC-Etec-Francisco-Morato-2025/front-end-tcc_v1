@@ -136,6 +136,8 @@ const animacaoResultado = async (resposta: boolean) => {
 const tempoEsgotado = async () => {
   showTempoEsgotado.value = true;
 
+  atividadeStore.isCerto(false);
+
   await nextTick(); // garante que boxResultado existe no DOM
 
   if (boxTempoEsgotado.value) {
@@ -173,36 +175,43 @@ const encerrar = () => {
 };
 
 // func Itens
-const ativarItem = (nomeFunc: string): void => {
-  switch (nomeFunc) {
+const ativarItemAtac = () => {
+  if (!atacStore.carregado) return;
+  switch (atacStore.func.trim()) {
     case 'trombetaDosArcanjos':
-      if (atacStore.recarregando) {
-        atacStore.recarregando = false;
-        trombetaDosArcanjos();
-      }
+      trombetaDosArcanjos();
+      // atacStore.carregado = false;
       break;
 
     case 'espadaOndulatoriaDivina':
-      if (atacStore.recarregando) {
-        atacStore.recarregando = false;
-        espadaOndulatoriaDivina();
-      }
-      break;
+      espadaOndulatoriaDivina();
+      atacStore.carregado = false;
 
-    case 'anelDoVazio':
-      if (defeStore.recarregando) {
-        defeStore.recarregando = false;
-        anelDoVazio();
-      }
-      break;
-
-    case 'ampulhetaDeZhonyas':
-      if (especStore.recarregando) {
-        especStore.recarregando = false;
-        ampulhetaDeZhonyas();
-      }
       break;
   }
+  atacStore.carregado = false;
+};
+const ativarItemDefe = () => {
+  if (!defeStore.carregado) return;
+  switch (defeStore.func) {
+    case 'anelDoVazio':
+      anelDoVazio();
+      defeStore.carregado = false;
+      break;
+  }
+  defeStore.carregado = false;
+};
+
+const ativarItemEspec = () => {
+  if (!especStore.carregado) return;
+
+  switch (especStore.func) {
+    case 'ampulhetaDeZhonyas':
+      ampulhetaDeZhonyas();
+      especStore.carregado = false;
+      break;
+  }
+  especStore.carregado = false;
 };
 </script>
 
@@ -257,32 +266,31 @@ const ativarItem = (nomeFunc: string): void => {
     <q-card-actions align="center">
       <q-btn
         v-if="atacStore.icon !== ''"
-        style="background-color: var(--color-background-2)"
+        style="background-color: rgb(var(--color-background-2))"
         :icon="atacStore.icon"
         size="16px"
-        @click="ativarItem(atacStore.func)"
-        :disable="atacStore.recarregando"
-        :class="''"
+        @click="ativarItemAtac"
+        :class="{ disabled: !atacStore.carregado, 'no-pointer-events': !atacStore.carregado }"
         round
         push
       />
       <q-btn
         v-if="defeStore.icon !== ''"
-        style="background-color: var(--color-background-2)"
+        style="background-color: rgb(var(--color-background-2))"
         :icon="defeStore.icon"
         size="16px"
-        @click="ativarItem(defeStore.func)"
-        :disable="defeStore.recarregando"
+        @click="ativarItemDefe"
+        :class="{ disabled: !defeStore.carregado, 'no-pointer-events': !defeStore.carregado }"
         round
         push
       />
       <q-btn
         v-if="especStore.icon !== ''"
-        style="background-color: var(--color-background-2)"
+        style="background-color: rgb(var(--color-background-2))"
         :icon="especStore.icon"
         size="16px"
-        @click="ativarItem(especStore.func)"
-        :disable="especStore.recarregando"
+        @click="ativarItemEspec"
+        :class="{ disabled: !especStore.carregado, 'no-pointer-events': !especStore.carregado }"
         round
         push
       />
@@ -294,7 +302,7 @@ const ativarItem = (nomeFunc: string): void => {
 @media (orientation: portrait) {
   .questoes {
     border-radius: 0 !important;
-    height: 40dvh !important;
+    height: 55dvh !important;
     width: 100dvw !important;
     margin-right: 0 !important;
   }
@@ -307,7 +315,7 @@ const ativarItem = (nomeFunc: string): void => {
 
   .resultado {
     border-radius: 0 !important;
-    height: 40dvh !important;
+    height: 55dvh !important;
     width: 100dvw !important;
     margin-right: 0 !important;
   }
@@ -320,7 +328,7 @@ const ativarItem = (nomeFunc: string): void => {
 .q-knob {
   padding: 0;
   margin: 0;
-  color: var(--cor-principal-3);
+  color: rgb(var(--cor-principal-3));
 }
 
 .pergunta {
@@ -334,7 +342,7 @@ const ativarItem = (nomeFunc: string): void => {
     var(--color-background-4) 100%
   );
   border-radius: 10px;
-  height: 350px;
+  height: 400px;
   width: 400px;
   margin-right: 20px;
 }
@@ -351,7 +359,7 @@ const ativarItem = (nomeFunc: string): void => {
   min-height: 40px;
   width: 100%;
   border-radius: 20px;
-  background-color: var(--cor-principal-2) !important;
+  background-color: rgb(var(--cor-principal-2)) !important;
 }
 
 .numero-resposta {
@@ -370,7 +378,7 @@ const ativarItem = (nomeFunc: string): void => {
   border-radius: 100%;
   flex-direction: column;
   position: absolute;
-  height: 350px;
+  height: 400px;
   width: 400px;
   margin-right: 20px;
   scale: 0;

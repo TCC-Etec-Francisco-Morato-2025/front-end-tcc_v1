@@ -4,11 +4,13 @@ import { useRouter } from 'vue-router';
 import usePopUpStore from 'src/stores/popUp';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 import useMateriaStore from 'src/stores/materias/materiaStore';
+import useAtividadesStore from 'src/stores/materias/atividadesStore';
 
 const emits = defineEmits(['reiniciar']);
 
 const popUpStore = usePopUpStore();
 const atividadeStore = useAtividadeStore();
+const atividadesStore = useAtividadesStore();
 const materiaStore = useMateriaStore();
 const router = useRouter();
 
@@ -21,7 +23,7 @@ const confirmar = () => {
   popUpStore.togglePause();
   popUpStore.questoes.estado = false;
   popUpStore.toggleConfirmar();
-  void router.push(`/materias/${materiaStore.path}`);
+  void router.replace(`/materias/${materiaStore.path}`);
   document.exitFullscreen().catch(() => {
     return;
   });
@@ -33,7 +35,9 @@ const sair = () => {
   } else {
     popUpStore.togglePause();
     popUpStore.questoes.estado = false;
-    void router.push(`/materias/${materiaStore.path}`);
+    const atividadeOriginal = atividadesStore.atividades.find((at) => at.id == atividadeStore.id);
+    if (atividadeOriginal) atividadeStore.mudarAtividade(atividadeOriginal);
+    void router.replace(`/materias/${materiaStore.path}`);
     document.exitFullscreen().catch(() => {
       return;
     });
@@ -51,7 +55,7 @@ watch(
     if (popUpStore.pause == false) {
       popUpStore.questoes.playVideo = true;
     }
-  }
+  },
 );
 </script>
 

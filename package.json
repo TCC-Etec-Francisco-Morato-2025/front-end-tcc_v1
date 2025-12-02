@@ -28,6 +28,7 @@
     "split-type": "^0.3.4",
     "swiper": "^11.2.10",
     "typed.js": "^2.1.0",
+    "videojs-youtube": "^3.0.1",
     "vue": "^3.4.18",
     "vue-router": "^4.0.12",
     "vue3-tour": "^1.0.3"

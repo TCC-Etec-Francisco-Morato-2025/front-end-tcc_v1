@@ -18,7 +18,6 @@ const corAtual = ref('');
 const typedElement = ref<HTMLSpanElement | null>(null);
 let typedInstance: Typed | null = null;
 
-
 // Executa quando o componente é montado
 onMounted(async () => {
   await nextTick();
@@ -70,15 +69,18 @@ const proximaFala = () => {
       }
     }
   } else {
-    void router.push('/atividade/video');
+    if (typedInstance) {
+      typedInstance.destroy();
+    }
+    void router.replace('/atividade/video');
   }
 };
 
 const mudarFala = () => {
-  console.info(falaStore.falas[ordem.value])
+  console.info(falaStore.falas[ordem.value]);
   falaAtual.value = falaStore.falas[ordem.value];
   if (falaAtual.value) escolherPersonagem(falaAtual.value.id_personagem);
-}
+};
 
 const escolherPersonagem = (id: string) => {
   personagensStore.personagens.forEach((personagem) => {
@@ -103,14 +105,21 @@ const reiniciar = () => {
 };
 
 const skip = () => {
-  void router.push('/atividade/video');
-}
+  void router.replace('/atividade/video');
+};
 </script>
 
 <template>
   <pause-component @reiniciar="reiniciar" />
   <q-page>
-    <q-btn class="btn-voltar" icon="arrow_back" size="30" rounded @click="voltarFala" v-if="ordem > 1" />
+    <q-btn
+      class="btn-voltar"
+      icon="arrow_back"
+      size="30"
+      rounded
+      @click="voltarFala"
+      v-if="ordem > 1"
+    />
     <main>
       <q-img :src="personagemAtual?.img" />
       <q-card class="caixa-fala center">
@@ -118,9 +127,18 @@ const skip = () => {
           <span ref="typedElement"></span>
         </q-card-section>
       </q-card>
-      <div style="margin:30px 0; display: flex; gap: 15px; justify-content: flex-end; width: 100%;">
-        <q-btn label="skip" class="skip" @click="skip" icon-right="keyboard_double_arrow_right" dense push/>
-        <q-btn class="next" @click="proximaFala" icon-right="keyboard_arrow_right" push> next </q-btn>
+      <div style="margin: 30px 0; display: flex; gap: 15px; justify-content: flex-end; width: 100%">
+        <q-btn
+          label="skip"
+          class="skip"
+          @click="skip"
+          icon-right="keyboard_double_arrow_right"
+          dense
+          push
+        />
+        <q-btn class="next" @click="proximaFala" icon-right="keyboard_arrow_right" push>
+          next
+        </q-btn>
       </div>
     </main>
   </q-page>
@@ -164,22 +182,23 @@ main {
   color: black;
   background-color: white;
   border-radius: 20px;
-  box-shadow: 2px 4px 6px 3px v-bind(corAtual), 2px 4px 6px 5px rgba(0, 0, 0, 0.692);
+  box-shadow:
+    2px 4px 6px 3px v-bind(corAtual),
+    2px 4px 6px 5px rgba(0, 0, 0, 0.692);
 }
 
 .q-btn.next {
   right: 0;
   color: black;
   background-color: rgba(255, 255, 255, 0.486);
-  padding: 0 50px ;
-  height: 40px ;
+  padding: 0 50px;
+  height: 40px;
 }
 
 .q-btn.skip {
   color: black;
   background-color: rgba(255, 255, 255, 0.486);
   width: 80px;
-  height: 40px ;
-
+  height: 40px;
 }
 </style>

@@ -114,7 +114,7 @@ const descidirAnimacao = (quant_estrela: number,proxima?:boolean) => {
 }
 /* próxima atividade */
 .atividade-proxima {
-  background-color: var(--cor-principal-1);
+  background-color: rgb(var(--cor-principal-1));
 }
 
 /* status */

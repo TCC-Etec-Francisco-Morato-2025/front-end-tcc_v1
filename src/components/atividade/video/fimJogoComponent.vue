@@ -14,6 +14,11 @@ const materiaStore = useMateriaStore();
 const popUpStore = usePopUpStore();
 const atividadeStore = useAtividadeStore();
 
+const indexAtividadeAtual = atividadesStore.atividades.findIndex(
+  (el) => el.id === atividadeStore.id,
+);
+const proximaAtividade = atividadesStore.atividades[indexAtividadeAtual + 1];
+
 // calculo de estrelas
 if (atividadeStore.acertos != undefined)
   if (atividadeStore.vida === 3) {
@@ -25,13 +30,7 @@ if (atividadeStore.acertos != undefined)
   }
 
 const proxima = async () => {
-
-  // salvar atividade
   await atividadeStore.salvarAtividade();
-
-  // encontrar a próxima atividade e deixar o popUp ativo
-  const indexAtividadeAtual = atividadesStore.atividades.findIndex((el) => el.id === atividadeStore.id);
-  const proximaAtividade = atividadesStore.atividades[indexAtividadeAtual+1]
 
   if (!proximaAtividade) return;
 
@@ -42,19 +41,19 @@ const proxima = async () => {
 
   void $q.fullscreen.exit();
 
-  router.push(`/materias/${materiaStore.path}`).catch((error) => {
+  router.replace(`/materias/${materiaStore.path}`).catch((error) => {
     console.error('Erro ao navegar:', error);
   });
 };
 
-const novamente = ()=>{
-  atividadeStore.vida=0;
-  atividadeStore.acertos=0;
+const novamente = () => {
+  atividadeStore.vida = 0;
+  atividadeStore.acertos = 0;
   popUpStore.fimJogo = false;
   router.push('/atividade/introducao').catch((error) => {
     console.error('Erro ao navegar:', error);
   });
-}
+};
 
 const sair = () => {
   popUpStore.atividade = false;
@@ -62,15 +61,20 @@ const sair = () => {
 
   void $q.fullscreen.exit();
 
-  router.push(`/materias/${materiaStore.path}`).catch((error) => {
+  router.replace(`/materias/${materiaStore.path}`).catch((error) => {
     console.error('Erro ao navegar:', error);
   });
 };
 </script>
 
 <template>
-  <q-dialog v-if="popUpStore.fimJogo" v-model="popUpStore.fimJogo" persistent backdrop-filter="blur(20px) brightness(0)"
-    :maximized="popUpStore.fimJogo">
+  <q-dialog
+    v-if="popUpStore.fimJogo"
+    v-model="popUpStore.fimJogo"
+    persistent
+    backdrop-filter="blur(20px) brightness(0)"
+    :maximized="popUpStore.fimJogo"
+  >
     <!-- <q-card class="top-card">
       <span> LOGARITIMO </span>
     </q-card> -->
@@ -82,20 +86,54 @@ const sair = () => {
         <q-btn class="btn-sair" icon="close" @click="sair" push />
       </q-card-section>
       <q-card-section class="center estrelas">
-        <q-rating v-model="atividadeStore.estrelas" :max="3" class="estrela" size="70px" color="grey"
-          icon="img:/public/icons/icons-pixel/star.svg" icon-selected="img:/public/icons/icons-pixel/star-solid.svg"
-          disable />
+        <q-rating
+          v-model="atividadeStore.estrelas"
+          :max="3"
+          class="estrela"
+          size="70px"
+          color="grey"
+          icon="img:/public/icons/icons-pixel/star.svg"
+          icon-selected="img:/public/icons/icons-pixel/star-solid.svg"
+          disable
+        />
       </q-card-section>
       <q-card-section class="animacao center">
-        <dot-lottie-vue class="sol" src="https://lottie.host/89de8449-8b30-4af0-ac2b-64cceff2ff6a/3D1vugTNAp.json" loop
-          autoplay />
-        <dot-lottie-vue class="confete" src="https://lottie.host/53c8947e-1829-49c2-a508-fce69bae936b/UmfKTLVqQy.json"
-          autoplay />
+        <dot-lottie-vue
+          class="sol"
+          src="https://lottie.host/89de8449-8b30-4af0-ac2b-64cceff2ff6a/3D1vugTNAp.json"
+          loop
+          autoplay
+        />
+        <dot-lottie-vue
+          class="confete"
+          src="https://lottie.host/53c8947e-1829-49c2-a508-fce69bae936b/UmfKTLVqQy.json"
+          autoplay
+        />
       </q-card-section>
       <q-card-actions align="right" class="caixa-botoes">
-        <q-btn class="btn-novamente" @click="novamente" flat label="Novamente" v-if="atividadeStore.estrelas !== 3" />
-        <q-btn class="btn-proxima" @click="proxima" flat label="proxima" icon-right="keyboard_double_arrow_right"
-          v-if="atividadeStore.estrelas > 0" />
+        <q-btn
+          class="btn-novamente"
+          @click="novamente"
+          flat
+          label="Novamente"
+          v-if="atividadeStore.estrelas !== 3 && proximaAtividade"
+        />
+        <q-btn
+          class="btn-proxima"
+          @click="proxima"
+          flat
+          label="proxima"
+          icon-right="keyboard_double_arrow_right"
+          v-if="atividadeStore.estrelas > 0 && proximaAtividade"
+        />
+        <q-btn
+          class="btn-proxima"
+          @click="sair"
+          flat
+          label="concluir"
+          icon-right="keyboard_double_arrow_right"
+          v-if="!proximaAtividade"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>

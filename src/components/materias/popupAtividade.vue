@@ -26,7 +26,7 @@ interface Itens {
 const $q = useQuasar();
 const router = useRouter();
 const itensPadão: Item = {
-  id:'0', icon:'add', func:'', nome:'', img:'',recarregando:false
+  id:'0', icon:'add', func:'', nome:'', img:'', descricao:'',habilidade:'',habilidadeTitulo:'',carregado:false
 }
 
 // pinia para todos os itens no geral

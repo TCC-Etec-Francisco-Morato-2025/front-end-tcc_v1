@@ -29,7 +29,7 @@ const rules = {
 
 const login = async () => {
   await loginStore.login(txtEmail.value, txtSenha.value).then(() => {
-    router.push('/').catch((erro) => {
+    router.replace('/').catch((erro) => {
       console.error('Erro ao tentar acessar a página: ' + erro);
     })
   }).catch(() => {
@@ -55,7 +55,7 @@ const loginWithGoogle = async () => {
     if (email && token) {
       await loginStore.login(email, token)
         .then(() => {
-          if(userStore.foto?.trim()=='/public/img/perfil.png'){
+          if(userStore.foto?.trim()==='/public/img/perfil.png'){
             userStore.foto = photoURL;
           }
         })
@@ -66,7 +66,7 @@ const loginWithGoogle = async () => {
         })
     }
 
-    void router.push('/');
+    void router.replace('/');
     // Redirecione o usuário ou atualize a UI
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -154,7 +154,7 @@ const emit = defineEmits(['registrar']);
 }
 
 .area-btn #btn-entrar {
-  background-color: var(--cor-principal-1);
+  background-color: rgb(var(--cor-principal-1));
 }
 
 .area-btn #btn-registrar {

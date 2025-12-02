@@ -9,16 +9,22 @@ const useAtacItemStore = defineStore('atacItem', {
     icon: '',
     img: '',
     func: '',
-    recarregando: false,
+    carregado: false,
+    descricao: '',
+    habilidade: '',
+    habilidadeTitulo: ''
   }),
   actions: {
-    mudarItem(item:Item) {
+    mudarItem(item: Item) {
       this.id = item.id;
       this.nome = item.nome;
       this.icon = item.icon;
       this.img = item.img;
       this.func = item.func;
-      this.recarregando = item.recarregando
+      this.carregado = item.carregado;
+      this.descricao = item.descricao;
+      this.habilidade = item.habilidade;
+      this.habilidadeTitulo = item.habilidadeTitulo;
     },
   },
 

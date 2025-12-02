@@ -19,7 +19,7 @@ const sair = () => {
 
   void $q.fullscreen.exit();
 
-  router.push(`/materias/${materiaStore.path}`).catch((error) => {
+  router.replace(`/materias/${materiaStore.path}`).catch((error) => {
     console.error('Erro ao navegar:', error);
   });
 };

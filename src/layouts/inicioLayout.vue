@@ -32,7 +32,7 @@ footer {
 
 .btn-create{
   position: fixed;
-  background-color: var(--cor-principal-1);
+  background-color: rgb(var(--cor-principal-1));
   width: 60px;
   height: 60px;
   right: 20px;
@@ -41,6 +41,6 @@ footer {
   z-index: 20;
 }
 .btn-create .icon{
-  background-color: var(--cor-principal-1);
+  background-color: rgb(var(--cor-principal-1));
 }
 </style>

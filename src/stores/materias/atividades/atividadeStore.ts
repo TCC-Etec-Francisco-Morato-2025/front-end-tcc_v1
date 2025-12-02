@@ -138,6 +138,8 @@ const useAtividadeStore = defineStore('atividade', {
         personagensStore.personagens = [];
         falasStore.falas = [];
 
+        this.video=response.data.data.atividade.video;
+
         response.data.data.atividade.questoes.forEach((q: QuestaoResponse) => {
           const newQuestao: Questao = {
             id: q.id,
