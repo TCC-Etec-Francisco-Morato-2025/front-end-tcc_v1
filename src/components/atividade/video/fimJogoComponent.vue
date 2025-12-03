@@ -20,14 +20,18 @@ const indexAtividadeAtual = atividadesStore.atividades.findIndex(
 const proximaAtividade = atividadesStore.atividades[indexAtividadeAtual + 1];
 
 // calculo de estrelas
-if (atividadeStore.acertos != undefined)
-  if (atividadeStore.vida === 3) {
+if (atividadeStore.acertos != undefined){
+
+  atividadeStore.estrelas=0;
+
+  if (atividadeStore.vida == 3) {
     atividadeStore.estrelas = 3;
   } else if (atividadeStore.vida === 2) {
     atividadeStore.estrelas = 2;
   } else {
     atividadeStore.estrelas = 1;
   }
+}
 
 const proxima = async () => {
   await atividadeStore.salvarAtividade();
@@ -46,16 +50,23 @@ const proxima = async () => {
   });
 };
 
-const novamente = () => {
+const novamente = async() => {
+
+  await atividadeStore.salvarAtividade();
+
   atividadeStore.vida = 0;
   atividadeStore.acertos = 0;
   popUpStore.fimJogo = false;
-  router.push('/atividade/introducao').catch((error) => {
+
+  router.replace('/atividade/introducao').catch((error) => {
     console.error('Erro ao navegar:', error);
   });
 };
 
-const sair = () => {
+const sair = async() => {
+
+  await atividadeStore.salvarAtividade();
+
   popUpStore.atividade = false;
   popUpStore.fimJogo = false;
 

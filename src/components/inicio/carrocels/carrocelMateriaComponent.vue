@@ -28,83 +28,68 @@ const irParaMateria = async (slide: Materia) => {
 </script>
 
 <template>
-  <div style="position: relative">
-    <swiper
-      :slides-per-view="1.8"
-      centered-slides
-      loop
-      :space-between="20"
-      class="carrocel"
+  <swiper :slides-per-view="'auto'" loop>
+    <swiper-slide
+    class="q-ml-md"
+      v-for="slide in slides"
+      :key="slide.id"
+      :style="{ backgroundColor: slide.cor }"
+      @click="irParaMateria(slide)"
     >
-      <swiper-slide
-        v-for="slide in slides"
-        :key="slide.id"
-        :style="{ backgroundColor: slide.cor }"
-        @click="irParaMateria(slide)"
-      >
-        <div class="nome-slide">{{ slide.nome }}</div>
+      <div class="nome-slide z-top">{{ slide.nome }}</div>
 
-        <div class="img-slide">
+      <div class="content-img absolute-center">
           <q-img
             :src="slide.icon"
-            fit="contain"
-            style="width: 90%; height: 90%"
           />
         </div>
-      </swiper-slide>
-    </swiper>
-  </div>
+    </swiper-slide>
+  </swiper>
 </template>
 
 <style scoped>
-.carrocel {
+.swiper {
+  width: 100%;
   height: 200px;
   padding: 30px 0;
 }
 
 .swiper-slide {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 250px;
+
   border-radius: 10px;
   cursor: pointer;
   transition: all 300ms ease-in-out;
 }
 
-.swiper-slide::before {
+.content-img{
+  width: 120px;
+}
+
+/* .swiper-slide::before {
   content: "";
-  position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.411);
   transition: all 400ms ease-in-out;
   border-radius: 10px;
-}
+} */
 
-.swiper-slide-active {
+/* .swiper-slide-active {
   transform: translateY(-5px);
   box-shadow: 0 4px 5px 2px rgba(0, 0, 0, 0.418);
-}
+} */
 
-.swiper-slide-active::before {
+/* .swiper-slide-active::before {
   background-color: rgba(0, 0, 0, 0);
-}
+} */
 
-.swiper-slide-active .nome-slide {
+/* .swiper-slide-active .nome-slide {
   z-index: 1;
-}
-
-.img-slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  border-radius: 10px;
-  width: 230px;
-  height: 140px;
-  z-index: -1;
-}
+} */
 
 .nome-slide {
   color: white;

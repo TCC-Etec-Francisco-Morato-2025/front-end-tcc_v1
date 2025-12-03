@@ -214,7 +214,7 @@ const useAtividadeStore = defineStore('atividade', {
 
       const variables = {
         id_atividade: this.id,
-        pontuacao: this.vida
+        pontuacao: this.estrelas
       }
 
       try {

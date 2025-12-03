@@ -34,13 +34,38 @@ const useUserStore = defineStore('user', {
         this.foto = newUser.foto
       }
     },
-    logout() {
-      this.id = ''
-      this.nome = ''
-      this.foto = ''
-      this.email = ''
-      this.token = ''
-      this.logado = false
+    async logout() {
+      const query = `
+        mutation{
+          logout{
+            status
+            msg
+          }
+        }
+      `
+      try {
+        await api.post(
+          '',
+          {
+            query,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          },
+        )
+      }catch (error: any) {
+        console.error("erro no logout:", error);
+        throw error;
+      }finally{
+        this.id = ''
+        this.nome = ''
+        this.foto = ''
+        this.email = ''
+        this.token = ''
+        this.logado = false
+      }
     },
     jaAcessou() {
       this.primeiraVez = !this.primeiraVez;
@@ -96,7 +121,6 @@ const useUserStore = defineStore('user', {
       try {
         Loading.show();
         const response = await api.post('', formData, {
-          withCredentials: true,
           headers: {
             Authorization: `Bearer ${this.token}`
           },

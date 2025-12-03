@@ -8,6 +8,7 @@ interface AssuntoBanco {
   nome: string;
   descricao: string;
   pontuacao: number;
+  dt_conclusao:number;
 }
 
 interface AtividadesState {
@@ -161,6 +162,23 @@ const useAtividadesStore = defineStore('atividades', {
     ],
     loading: false,
   }),
+  getters: {
+    ativContinuar: (state) => {
+      const atividadesMap = new Map();
+
+      for (const at of state.atividades) {
+        if (at.estrelas <= 0 && !atividadesMap.has(at.id_aula)) {
+          atividadesMap.set(at.id_aula, at);
+        }
+      }
+
+      return Array.from(atividadesMap.values());
+    },
+    ativConcluidas: (state) => {
+      const ativConcluidas = state.atividades.filter(at=>at.estrelas>0);
+      return ativConcluidas;
+    }
+  },
   actions: {
     async getAtividades(idAula: string, token?: string, editMode?: boolean) {
 
@@ -179,6 +197,7 @@ const useAtividadesStore = defineStore('atividades', {
             nome
             descricao
             pontuacao
+            dt_conclusao
           }
         }
       }
@@ -213,9 +232,11 @@ const useAtividadesStore = defineStore('atividades', {
             proxima: false,
             vida: 3,
             video: '',
+            dt_conclusao: a.dt_conclusao,
           };
           this.atividades.push(newAtividade)
         });
+
       } catch (error) {
         console.error('Erro ao buscar aulas:', error);
         throw error;
@@ -223,6 +244,10 @@ const useAtividadesStore = defineStore('atividades', {
         this.loading = false;
       }
     },
+
+    async getAllAtividades(){
+      
+    }
   },
 });
 

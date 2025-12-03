@@ -170,7 +170,7 @@ onBeforeRouteLeave(() => {
       <q-responsive ref="boxPlayer" :ratio="16 / 9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
           <source
-            :src="`https://api.enkie.com.br/atividades/${atividadeStore.video}`"
+            :src="atividadeStore.video"
             type="video/mp4"
           />
         </video>

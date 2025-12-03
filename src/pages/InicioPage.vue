@@ -12,12 +12,13 @@ import menuComponent from 'components/inicio/menu/menuComponent.vue';
 import carrocelComponent from 'src/components/inicio/carrocels/carrocelMateriaComponent.vue';
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEventoComponent.vue';
 import eventoComponent from 'src/components/inicio/eventos/eventoComponent.vue';
-import carrocelContinuarComponent from 'src/components/inicio/carrocels/carrocelContinuarComponent.vue';
+import carrocelContinuarComponent from 'src/components/inicio/carrocels/continuar/carrocelContinuarComponent.vue';
 
-// importar imagens eventos
 import novosAssuntos from 'assets/eventos/novosAssuntos.jpeg'
 import novosEquipamentos from 'assets/eventos/novosEquipamentos.jpeg'
+import useAtividadesStore from 'src/stores/materias/atividadesStore';
 
+const atividadesStore = useAtividadesStore();
 // const router = ref(useRouter());
 // const userStore = useUserStore();
 
@@ -50,20 +51,16 @@ const animacaoEntrada = () => {
         <carrocel-evento />
       </section>
       <section class="secao-para-voce q-pb-xl">
-        <q-btn
-          class="titulo-secao"
-          no-caps
-          label="Matérias"
-          dense
-        />
+        <div class="text-h5 q-pl-md">Matérias</div>
         <carrocel-component />
       </section>
 
-      <section>
+      <section v-if="atividadesStore.ativContinuar.length>0">
         <q-btn
           class="titulo-secao"
           no-caps
-          label="Continuar"
+          icon-right="sym_o_keyboard_double_arrow_right"
+          label=""
           dense
         />
         <carrocel-continuar-component/>
@@ -108,28 +105,6 @@ main {
 .secao-para-voce,
 .secao-continuar {
   width: 100%;
-}
-
-.titulo-secao {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  padding: 5px 20px;
-  border-radius: 0 10px 10px 0;
-  color: var(--color-text-1);
-  background: linear-gradient(80deg, transparent 20%, rgb(var(--cor-principal-1))85%, transparent 100%);
-  background-size: 400% 100%;
-  box-shadow: 0 5px 5px 0px rgb(0, 0, 0);
-  animation: gradientShift 3s  ease infinite;
-}
-@keyframes gradientShift {
-  from {
-    background-position: 0% 0%; /* Começa com o gradiente totalmente à esquerda */
-  }
-  to {
-    background-position: -134% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
-  }
 }
 
 .secao-eventos{

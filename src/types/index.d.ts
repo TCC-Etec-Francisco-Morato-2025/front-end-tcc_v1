@@ -36,6 +36,7 @@ export interface Atividade {
   acertos?: number;
   vida: number;
   video: string;
+  dt_conclusao?:number;
 }
 
 export interface Fala {

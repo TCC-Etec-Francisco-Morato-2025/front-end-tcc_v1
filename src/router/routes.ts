@@ -55,11 +55,11 @@ const routes: RouteRecordRaw[] = [
       //   name: 'para-voce',
       //   component: () => import('pages/ParaVcPage.vue'),
       // },
-      // {
-      //   path: 'continuar',
-      //   name: 'continuar',
-      //   component: () => import('pages/continuarPage.vue'),
-      // },
+      {
+        path: 'historico',
+        name: 'historico',
+        component: () => import('src/pages/historicoPage.vue'),
+      },
     ],
   },
   {
