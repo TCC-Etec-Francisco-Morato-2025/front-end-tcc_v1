@@ -67,9 +67,6 @@ const useFalasPersonagensStore = defineStore('falas', {
               'Content-Type': 'multipart/form-data',
             },
           });
-
-          // ⚠️ Evite fazer login aqui — parece ser código copiado de outra função.
-          // Provavelmente você só precisa verificar o retorno da mutation:
         }
 
         return true;

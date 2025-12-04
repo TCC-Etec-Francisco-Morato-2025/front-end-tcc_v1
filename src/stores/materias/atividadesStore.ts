@@ -223,6 +223,9 @@ const useAtividadesStore = defineStore('atividades', {
           },
         );
         response.data.data.assuntos.items.forEach((a) => {
+
+          const tempoConclusao = new Date(a.dt_conclusao);
+
           const newAtividade: Atividade = {
             id: a.id,
             id_aula: a.id_aula,
@@ -232,7 +235,7 @@ const useAtividadesStore = defineStore('atividades', {
             proxima: false,
             vida: 3,
             video: '',
-            dt_conclusao: a.dt_conclusao,
+            dt_conclusao: tempoConclusao.getMinutes(),
           };
           this.atividades.push(newAtividade)
         });
@@ -246,7 +249,7 @@ const useAtividadesStore = defineStore('atividades', {
     },
 
     async getAllAtividades(){
-      
+
     }
   },
 });

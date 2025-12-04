@@ -15,14 +15,13 @@ const popUpStore = usePopUpStore();
 const atividadeStore = useAtividadeStore();
 
 const indexAtividadeAtual = atividadesStore.atividades.findIndex(
-  (el) => el.id === atividadeStore.id,
+  (el) => el.id === atividadeStore.id
 );
 const proximaAtividade = atividadesStore.atividades[indexAtividadeAtual + 1];
 
 // calculo de estrelas
-if (atividadeStore.acertos != undefined){
-
-  atividadeStore.estrelas=0;
+if (atividadeStore.acertos != undefined) {
+  atividadeStore.estrelas = 0;
 
   if (atividadeStore.vida == 3) {
     atividadeStore.estrelas = 3;
@@ -34,7 +33,11 @@ if (atividadeStore.acertos != undefined){
 }
 
 const proxima = async () => {
-  await atividadeStore.salvarAtividade();
+  await atividadeStore.salvarAtividade().catch(() => {
+    router.replace(`/materias/${materiaStore.path}`).catch((error) => {
+      console.error('Erro ao navegar:', error);
+    });
+  });
 
   if (!proximaAtividade) return;
 
@@ -50,9 +53,12 @@ const proxima = async () => {
   });
 };
 
-const novamente = async() => {
-
-  await atividadeStore.salvarAtividade();
+const novamente = async () => {
+  await atividadeStore.salvarAtividade().catch(() => {
+    router.replace(`/materias/${materiaStore.path}`).catch((error) => {
+      console.error('Erro ao navegar:', error);
+    });
+  });
 
   atividadeStore.vida = 0;
   atividadeStore.acertos = 0;
@@ -63,9 +69,12 @@ const novamente = async() => {
   });
 };
 
-const sair = async() => {
-
-  await atividadeStore.salvarAtividade();
+const sair = async () => {
+  await atividadeStore.salvarAtividade().catch(() => {
+    router.replace(`/materias/${materiaStore.path}`).catch((error) => {
+      console.error('Erro ao navegar:', error);
+    });
+  });
 
   popUpStore.atividade = false;
   popUpStore.fimJogo = false;

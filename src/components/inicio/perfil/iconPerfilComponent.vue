@@ -16,8 +16,6 @@ const logar = () => {
     });
   }
 };
-
-console.info(userStore.foto)
 </script>
 
 <template>

@@ -12,13 +12,13 @@ import menuComponent from 'components/inicio/menu/menuComponent.vue';
 import carrocelComponent from 'src/components/inicio/carrocels/carrocelMateriaComponent.vue';
 import carrocelEvento from 'src/components/inicio/carrocels/carrocelEventoComponent.vue';
 import eventoComponent from 'src/components/inicio/eventos/eventoComponent.vue';
-import carrocelContinuarComponent from 'src/components/inicio/carrocels/continuar/carrocelContinuarComponent.vue';
+// import carrocelContinuarComponent from 'src/components/inicio/carrocels/continuar/carrocelContinuarComponent.vue';
 
 import novosAssuntos from 'assets/eventos/novosAssuntos.jpeg'
 import novosEquipamentos from 'assets/eventos/novosEquipamentos.jpeg'
-import useAtividadesStore from 'src/stores/materias/atividadesStore';
+// import useAtividadesStore from 'src/stores/materias/atividadesStore';
 
-const atividadesStore = useAtividadesStore();
+// const atividadesStore = useAtividadesStore();
 // const router = ref(useRouter());
 // const userStore = useUserStore();
 
@@ -32,7 +32,7 @@ onMounted(()=>{
 const animacaoEntrada = () => {
   const tml = gsap.timeline();
 
-  tml.from('.titulo-secao', { x: -300 , duration: 0.8 , ease: 'bounce.out' });
+  tml.from('.titulo-sessao', { x: -300 , duration: 0.8 , ease: 'bounce.out' });
 };
 </script>
 
@@ -51,11 +51,11 @@ const animacaoEntrada = () => {
         <carrocel-evento />
       </section>
       <section class="secao-para-voce q-pb-xl">
-        <div class="text-h5 q-pl-md">Matérias</div>
+        <div class="titulo-sessao text-h5 q-pl-md q-py-sm">Matérias</div>
         <carrocel-component />
       </section>
 
-      <section v-if="atividadesStore.ativContinuar.length>0">
+      <!-- <section v-if="atividadesStore.ativContinuar.length>0">
         <q-btn
           class="titulo-secao"
           no-caps
@@ -64,7 +64,7 @@ const animacaoEntrada = () => {
           dense
         />
         <carrocel-continuar-component/>
-      </section>
+      </section> -->
 
       <section class="secao-eventos">
         <evento-component :src-evento="novosEquipamentos"/>
@@ -102,14 +102,26 @@ main {
   gap: 50px;
 }
 
-.secao-para-voce,
-.secao-continuar {
-  width: 100%;
-}
+  .titulo-sessao {
+    width: 130px;
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(
+      80deg,
+      transparent 25%,
+      rgb(var(--cor-principal-1)) 85%,
+      transparent 100%
+    );
+    background-size: 400% 100%;
+    box-shadow: 0 5px 5px 0px rgb(0, 0, 0);
+    animation: gradientShift 3s ease infinite;
+  }
 
-.secao-eventos{
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
+  @keyframes gradientShift {
+    from {
+      background-position: 0% 0%; /* Começa com o gradiente totalmente à esquerda */
+    }
+    to {
+      background-position: -135% 0%; /* Move o gradiente para a esquerda, revelando o "novo" da direita */
+    }
+  }
 </style>

@@ -25,6 +25,8 @@ const descidirAnimacao = (quant_estrela: number,proxima?:boolean) => {
   }
   return animacao;
 };
+
+console.info(atividade.dt_conclusao)
 </script>
 
 <template>
@@ -61,7 +63,12 @@ const descidirAnimacao = (quant_estrela: number,proxima?:boolean) => {
         <q-item-section side top class="atividade-status" v-if="atividade.estrelas">
           <!-- mostrar quando foi a ultima vez que a atividade foi acessada -->
           <!-- talvez seja removido -->
-          <!-- <q-item-label caption>2 min ago</q-item-label> -->
+          <div v-if="atividade.dt_conclusao">
+            <q-item-label v-if="atividade.dt_conclusao/60<1" class="minutos" caption>{{ (atividade.dt_conclusao/60).toFixed() }} sec atrás</q-item-label>
+            <q-item-label v-if="atividade.dt_conclusao<60&&atividade.dt_conclusao/60>=1" class="minutos" caption>{{ atividade.dt_conclusao }} min atrás</q-item-label>
+            <q-item-label class="horas" v-if="atividade.dt_conclusao>59" caption>{{ (atividade.dt_conclusao/60).toFixed() }}h atrás</q-item-label>
+            <q-item-label class="dias" v-if="atividade.dt_conclusao>1439" caption>{{ ((atividade.dt_conclusao/60)/24).toFixed() }}d atrás</q-item-label>
+          </div>
           <!-- mostra qual foi a maestria do usuário na atividade -->
           <div class="atividade-estrelas">
             <q-rating

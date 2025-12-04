@@ -54,8 +54,8 @@ const voltarFala = () => {
 };
 
 const proximaFala = () => {
+  ordem.value++;
   if (ordem.value < falaStore.falas.length) {
-    ordem.value++;
     mudarFala();
     if (typedInstance) {
       typedInstance.destroy();
@@ -77,7 +77,6 @@ const proximaFala = () => {
 };
 
 const mudarFala = () => {
-  console.info(falaStore.falas[ordem.value]);
   falaAtual.value = falaStore.falas[ordem.value];
   if (falaAtual.value) escolherPersonagem(falaAtual.value.id_personagem);
 };
@@ -122,7 +121,8 @@ const skip = () => {
     />
     <main>
       <q-img :src="personagemAtual?.img" />
-      <q-card class="caixa-fala center">
+      <q-card class="caixa-fala center q-pt-md">
+        <div class="absolute-top-left text-h5 q-ml-md q-mt-md" :style="`color:${corAtual}`">{{ personagemAtual?.nome }}:</div>
         <q-card-section>
           <span ref="typedElement"></span>
         </q-card-section>
@@ -173,12 +173,14 @@ main {
 }
 
 .caixa-fala {
+  position: relative;
+  padding: 30px 0 0 0 ;
   text-align: center;
   min-height: 200px;
   width: 90dvw;
   max-width: 400px;
   font-family: 'Pixelify Sans';
-  font-size: 200%;
+  font-size: 3dvh;
   color: black;
   background-color: white;
   border-radius: 20px;

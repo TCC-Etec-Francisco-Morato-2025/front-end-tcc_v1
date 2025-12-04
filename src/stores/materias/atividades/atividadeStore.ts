@@ -26,7 +26,7 @@ interface FalaResponse {
   id: string;
   id_atividade: string;
   fala: string;
-  personagem: PersonagemResponse[];
+  personagem: PersonagemResponse;
 }
 
 interface RespostaResponse {
@@ -120,10 +120,10 @@ const useAtividadeStore = defineStore('atividade', {
         id_atividade: this.id,
       };
 
+
       const falasStore = useFalasPersonagensStore();
       const questoesStore = useQuestoesStore();
       const personagensStore = usePersonagensStore();
-
 
 
       try {
@@ -138,7 +138,7 @@ const useAtividadeStore = defineStore('atividade', {
         personagensStore.personagens = [];
         falasStore.falas = [];
 
-        this.video=response.data.data.atividade.video;
+        this.video = response.data.data.atividade.video;
 
         response.data.data.atividade.questoes.forEach((q: QuestaoResponse) => {
           const newQuestao: Questao = {
@@ -166,24 +166,29 @@ const useAtividadeStore = defineStore('atividade', {
         // add falas e personagens
         response.data.data.atividade.falas.forEach((f: FalaResponse) => {
 
-          if(f.personagem[0]==null)return;
+          console.log(f.personagem)
+
+          if (f.personagem == null) return;
 
           // falas
           const newFala: Fala = {
             id: f.id,
-            id_personagem: f.personagem[0].id,
+            id_personagem: f.personagem.id,
             id_atividade: f.id_atividade,
             fala: f.fala,
           };
+
+          console.log(newFala)
+
           falasStore.falas.push(newFala);
 
           // personagens
           const newPersonagem: Personagem = {
-            id: f.personagem[0].id,
-            nome: f.personagem[0].nome,
-            materia: f.personagem[0].materia,
-            cor: f.personagem[0].cor,
-            img: f.personagem[0].imagem,
+            id: f.personagem.id,
+            nome: f.personagem.nome,
+            materia: f.personagem.materia,
+            cor: f.personagem.cor,
+            img: f.personagem.imagem,
           };
           personagensStore.personagens.push(newPersonagem);
         });
@@ -225,8 +230,8 @@ const useAtividadeStore = defineStore('atividade', {
           }
         })
       } catch (error) {
-        console.error('Erro ao salvar a atividade: ', error);
-        throw error
+        console.error('opa, parece que você não está logado');
+        throw error;
       }
     }
 

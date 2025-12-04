@@ -9,7 +9,7 @@ const loading = ref(false);
 const popUpStore = usePopUp();
 const atividadeStore = useAtividadeStore();
 
-onBeforeMount(async () => {
+onBeforeMount(async()=>{
   try {
     loading.value = true;
     await atividadeStore.getAtividadeRestante();

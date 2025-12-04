@@ -28,7 +28,7 @@ const useUserStore = defineStore('user', {
       this.nome = newUser.nome;
       this.admin = newUser.admin;
       this.token = newUser.token;
-      if (newUser.foto?.trim() === 'semImagem') {
+      if (newUser.foto?.trim() === 'semImagem'||!newUser.foto||newUser.foto==='') {
         this.foto = '/public/img/perfil.png';
       }else{
         this.foto = newUser.foto

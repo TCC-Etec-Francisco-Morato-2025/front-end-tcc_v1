@@ -71,7 +71,6 @@ watch(
         <h2>
           {{ atividadeStore.titulo }}
         </h2>
-        Introdução<br />
       </q-card-section>
       <q-card-actions align="center" vertical style="gap: 5px">
         <q-btn
