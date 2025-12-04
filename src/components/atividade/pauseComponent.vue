@@ -15,6 +15,7 @@ const materiaStore = useMateriaStore();
 const router = useRouter();
 
 const continuar = () => {
+atividadeStore.videoExtraAcionado=false;
   popUpStore.questoes.playVideo = true;
   popUpStore.togglePause();
 };
@@ -30,6 +31,7 @@ const confirmar = () => {
 };
 
 const sair = () => {
+
   if (!popUpStore.confirmar.naoAparecerNovamente) {
     popUpStore.toggleConfirmar();
   } else {
@@ -37,6 +39,8 @@ const sair = () => {
     popUpStore.questoes.estado = false;
     const atividadeOriginal = atividadesStore.atividades.find((at) => at.id == atividadeStore.id);
     if (atividadeOriginal) atividadeStore.mudarAtividade(atividadeOriginal);
+atividadeStore.videoExtraAcionado=false;
+
     void router.replace(`/materias/${materiaStore.path}`);
     document.exitFullscreen().catch(() => {
       return;
@@ -47,6 +51,7 @@ const sair = () => {
 const reiniciar = () => {
   emits('reiniciar');
   popUpStore.togglePause();
+atividadeStore.videoExtraAcionado=false;
 };
 
 watch(

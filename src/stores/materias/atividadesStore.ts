@@ -236,6 +236,8 @@ const useAtividadesStore = defineStore('atividades', {
             vida: 3,
             video: '',
             dt_conclusao: tempoConclusao.getMinutes(),
+            videoExtraAcionado:false,
+            videoExtraUrl:'',
           };
           this.atividades.push(newAtividade)
         });
@@ -247,10 +249,6 @@ const useAtividadesStore = defineStore('atividades', {
         this.loading = false;
       }
     },
-
-    async getAllAtividades(){
-
-    }
   },
 });
 

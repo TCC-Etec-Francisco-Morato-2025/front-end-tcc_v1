@@ -36,7 +36,9 @@ export interface Atividade {
   acertos?: number;
   vida: number;
   video: string;
-  dt_conclusao?:number;
+  dt_conclusao?: number;
+  videoExtraUrl:string;
+  videoExtraAcionado:boolean;
 }
 
 export interface Fala {
@@ -61,6 +63,8 @@ export interface Questao {
   tempo: number;
   tempoCronometro: number;
   cronometro?: number;
+  url_morte: string;
+  url_quase_morte: string;
 }
 
 export interface Resposta {

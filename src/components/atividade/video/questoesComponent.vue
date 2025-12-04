@@ -16,7 +16,6 @@ import useDefeItemStore from 'src/stores/itens/defeStore';
 import useEspecItemStore from 'src/stores/itens/especStore';
 import useQuestaoStore from 'src/stores/materias/atividades/questaoStore';
 import useQuestoesStore from 'src/stores/materias/atividades/questoesStore';
-import usePopUpStore from 'src/stores/popUp';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 
 // funcGlobal Itens
@@ -27,7 +26,6 @@ const { ampulhetaDeZhonyas } = useEspecFunc();
 // variaveis pinia
 const atividadeStore = useAtividadeStore();
 const questaoStore = useQuestaoStore();
-const popUpStore = usePopUpStore();
 const questoesStore = useQuestoesStore();
 // itens
 const atacStore = useAtacItemStore();
@@ -171,7 +169,6 @@ const tempoEsgotado = async () => {
 const encerrar = () => {
   clearInterval(intervalId!);
   intervalId = null;
-  popUpStore.questoes.playVideo = true;
 };
 
 // func Itens

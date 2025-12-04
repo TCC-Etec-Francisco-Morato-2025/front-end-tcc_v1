@@ -7,6 +7,7 @@ import useFalasPersonagensStore from './falasPersonagensStore';
 import useQuestoesStore from './questoesStore';
 import usePersonagensStore from './personagensStore';
 import useUserStore from 'src/stores/userStore';
+import useQuestaoStore from './questaoStore';
 // import { api } from 'src/boot/axios';
 // import useFalasPersonagensStore from './falasPersonagensStore';
 // import useQuestaoStore from './questaoStore';
@@ -40,7 +41,9 @@ interface QuestaoResponse {
   id_atividade: string;
   enunciado: string;
   aparecer: number;
-  respostas: RespostaResponse[]
+  respostas: RespostaResponse[];
+  url_morte:'';
+  url_quase_morte:'';
 }
 
 const useAtividadeStore = defineStore('atividade', {
@@ -53,6 +56,8 @@ const useAtividadeStore = defineStore('atividade', {
     acertos: 0,
     vida: 3,
     video: '',
+    videoExtraUrl:'',
+    videoExtraAcionado:false
   }),
 
   actions: {
@@ -65,17 +70,24 @@ const useAtividadeStore = defineStore('atividade', {
     },
 
     isCerto(resposta: boolean) {
+      const questaoStore = useQuestaoStore();
       if (this.acertos != undefined && this.vida != undefined)
         if (resposta) {
           this.acertos++;
+          popUpStore.questoes.playVideo = true;
         } else {
           this.vida--;
+
           if (this.vida == 0) {
+            this.videoExtraUrl=questaoStore.url_morte;
             setTimeout(() => {
-              popUpStore.questoes.playVideo = false;
               popUpStore.toggleGameOver();
-            }, 3000);
+            }, 10000);
+          }else{
+            this.videoExtraUrl=questaoStore.url_quase_morte;
           }
+          popUpStore.questoes.playVideo = true;
+          this.videoExtraAcionado=true
         }
     },
 
@@ -147,6 +159,8 @@ const useAtividadeStore = defineStore('atividade', {
             perguntaFacil: '',
             tempo: q.aparecer,
             tempoCronometro: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
+            url_morte:q.url_morte,
+            url_quase_morte:q.url_quase_morte
           };
 
           q.respostas.forEach((r) => {

@@ -9,6 +9,8 @@ const useQuestaoStore = defineStore('questao', {
     tempo: 0,
     cronometro: 0,
     tempoCronometro: 0,
+    url_morte: '',
+    url_quase_morte: ''
   }),
   actions: {
     mudarQuestao(q: Questao) {
@@ -18,6 +20,8 @@ const useQuestaoStore = defineStore('questao', {
       this.tempo = q.tempo;
       this.tempoCronometro = q.tempoCronometro;
       this.cronometro = q.tempoCronometro;
+      this.url_morte=q.url_morte;
+      this.url_quase_morte=q.url_quase_morte;
     }
   },
 });

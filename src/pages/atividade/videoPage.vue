@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, nextTick, computed } from 'vue';
 import { gsap } from 'gsap';
 import useQuestaoStore from 'src/stores/materias/atividades/questaoStore';
 import usePopUpStore from 'src/stores/popUp';
@@ -28,20 +28,30 @@ const questaoStore = useQuestaoStore();
 const atacStore = useAtacItemStore();
 const defeStore = useDefeItemStore();
 const especStore = useEspecItemStore();
-// const materiaStore = useMateriaStore();
-// const corFundo = ref(materiaStore.cor);
+
 const sec = ref(0);
 const ordemQuestao = ref(0);
 const boxQuestoes = ref<HTMLElement | null>(null);
 const videoPlayer = ref<HTMLVideoElement | null>(null);
 let player: ReturnType<typeof videojs> | null = null;
 
+// --- CONFIGURAÇÃO DO VÍDEO EXTRA (DINÂMICO) ---
+const videoOverlayRef = ref<HTMLVideoElement | null>(null);
+let playerOverlay: ReturnType<typeof videojs> | null = null;
+
+// Variáveis reativas que devem ser controladas pela Store externa
+const urlVideoExtra = computed(() => atividadeStore.videoExtraUrl || '');
+// Esta variável booleana será modificada pelo botão da outra página (ex: store.videoExtraAcionado = true)
+const videoExtraAcionado = computed(() => atividadeStore.videoExtraAcionado || false);
+const mostrarVideo = ref(false);
+// ----------------------------------------------
+
 onMounted(() => {
   atacStore.carregado = true;
   defeStore.carregado = true;
   especStore.carregado = true;
   atividadeStore.vida = 3;
-  // configuração do player
+
   if (videoPlayer.value) {
     player = videojs(videoPlayer.value, {
       controls: false,
@@ -52,26 +62,22 @@ onMounted(() => {
     if ($q.screen.height < $q.screen.width) {
       player.autoplay(true);
     }
-    // verifica a cada segundo o tempo do video
+
     player.on('timeupdate', () => {
-      // transforma em numero para depois arredondar
       const currentTime = player?.currentTime();
       if (currentTime) {
         sec.value = Math.floor(currentTime);
 
-        // necessário verificar se a questão atual é diferente da que ele está mostrando agora porque a função é tão rápida que repete 3 vezes por segundo
+        // Lógica das Questões (Original)
         if (
           questoesStore.questoes[ordemQuestao.value]?.tempo === sec.value &&
           questoesStore.questoes[ordemQuestao.value]?.id != questaoStore.id
         ) {
           const newQuestao = questoesStore.questoes[ordemQuestao.value];
-
           if (newQuestao) {
             questaoStore.mudarQuestao(newQuestao);
-            // função para ativar o popup
             popUpStore.toggleQuestoes();
             ordemQuestao.value++;
-            // garante que a variavel que controla o video sempre esteja false quando ele for pausado
             popUpStore.questoes.playVideo = false;
             player?.pause();
             void animacaoQuestao();
@@ -79,51 +85,120 @@ onMounted(() => {
         }
       }
     });
-    // pausar o video quando o valor mudar
+
+    // Watcher de controle de Play/Pause das Questões
     watch(
       () => popUpStore.questoes.playVideo,
-      async () => {
+      () => {
         if (popUpStore.questoes.playVideo) {
-          // esperar animação de voltar
           if (popUpStore.questoes.estado) {
-            await animacaoQuestao();
-            popUpStore.toggleQuestoes();
+            setTimeout(() => {
+              void (async () => {
+                const sucesso = await animacaoQuestao().catch((err) => {
+                  console.error(err);
+                  return false;
+                });
+
+                if (!sucesso) return;
+
+                popUpStore.toggleQuestoes();
+                mostrarVideo.value = atividadeStore.videoExtraAcionado;
+
+                if (atividadeStore.videoExtraAcionado) {
+                  await acionarVideoExtra(atividadeStore.videoExtraAcionado);
+                }
+              })();
+            }, 2000);
           }
-          void player?.play();
+          // Só dá play se o vídeo extra não estiver acionado
+          if (!videoExtraAcionado.value) {
+            void player?.play();
+          }
         } else {
           void player?.pause();
         }
-      },
+      }
     );
 
-    //Finalizar quando o video acabar
     player.on('ended', () => {
       popUpStore.fimJogo = true;
     });
   }
 });
 
+// --- NOVO WATCHER PARA ACIONAMENTO EXTERNO (BOTÃO DE OUTRA PÁGINA) ---
+const acionarVideoExtra = async (isAcionado: boolean) => {
+  if (isAcionado) {
+    // 2. Garante que há uma URL para tocar
+    if (!urlVideoExtra.value) {
+      console.warn('URL do vídeo extra não definida na store!');
+      // Se não tiver URL, desaciona e não faz nada, ou você pode tratar o erro aqui.
+      atividadeStore.videoExtraAcionado = false;
+      return;
+    }
+
+    // 3. Aguarda renderização do v-if
+    await nextTick();
+
+    if (videoOverlayRef.value) {
+      playerOverlay = videojs(videoOverlayRef.value, {
+        controls: false,
+        autoplay: true,
+        playsinline: true,
+      });
+
+      // Ao terminar o vídeo extra
+      playerOverlay.on('ended', () => {
+        // Notifica a Store que o vídeo acabou
+        atividadeStore.videoExtraAcionado = false;
+        mostrarVideo.value = false;
+        void player?.play();
+      });
+    }
+  } else {
+    // Desacionado pela Store (o vídeo extra acabou):
+
+    // 4. Limpeza
+    if (playerOverlay) {
+      playerOverlay.dispose();
+      playerOverlay = null;
+    }
+
+    // 5. Lógica de Pular 4s e Retomar
+    if (player) {
+      const tempoAtual = player.currentTime() || 0;
+      player.currentTime(tempoAtual + 4); // Pula 4s
+      popUpStore.questoes.playVideo = true;
+    }
+  }
+};
+// -------------------------------------------------------------------
+
 onBeforeUnmount(() => {
   if (player) player.dispose();
+  if (playerOverlay) playerOverlay.dispose();
 });
 
 const resetarVideo = () => {
   player?.currentTime(0);
   ordemQuestao.value = 0;
   questaoStore.id = '-1';
+
+  // Reseta estado da Store
+  atividadeStore.videoExtraAcionado = false;
+  // Você também pode resetar a URL e o tempo aqui se necessário:
+  // atividadeStore.videoExtraUrl = '';
+
   void player?.play();
   popUpStore.questoes.playVideo = true;
 };
 
 // animação
 const tml = gsap.timeline({ paused: true });
-
-const animacaoQuestao = (): Promise<boolean> => {
+const animacaoQuestao = (): Promise<true> => {
   return new Promise((resolve) => {
     if (!popUpStore.questoes.playVideo) {
-      // constrói animação se ainda não foi montada
       tml.clear();
-
       if ($q.screen.height < $q.screen.width) {
         tml
           .fromTo('.q-responsive', { x: 0 }, { x: '-24dvw', scale: '0.4', duration: 1 })
@@ -133,7 +208,6 @@ const animacaoQuestao = (): Promise<boolean> => {
           .fromTo('.q-responsive', { y: 0 }, { y: '-15dvh', duration: 1 })
           .fromTo(boxQuestoes.value, { y: '100dvh' }, { y: '30dvh', duration: 1 }, '-=1');
       }
-
       tml.eventCallback('onComplete', () => resolve(true));
       tml.play();
     } else {
@@ -169,12 +243,18 @@ onBeforeRouteLeave(() => {
     <main class="center">
       <q-responsive ref="boxPlayer" :ratio="16 / 9">
         <video ref="videoPlayer" class="video-js vjs-big-play-centered">
-          <source
-            :src="atividadeStore.video"
-            type="video/mp4"
-          />
+          <source :src="atividadeStore.video" type="video/mp4" />
         </video>
       </q-responsive>
+
+      <div v-if="mostrarVideo" class="video-overlay-container">
+        <q-responsive :ratio="16 / 9" style="width: 100%">
+          <video ref="videoOverlayRef" class="video-js vjs-big-play-centered">
+            <source :src="urlVideoExtra" type="video/mp4" />
+          </video>
+        </q-responsive>
+      </div>
+
       <div ref="boxQuestoes" class="box-questoes">
         <questoes-component v-if="popUpStore.questoes.estado" />
       </div>
@@ -189,16 +269,7 @@ main {
   width: 100dvw;
   height: 100dvh;
   background-color: black;
-  /* background: linear-gradient(to bottom, rgba(255, 255, 255, 0.281), transparent 80%); */
-  /* background-color: v-bind(corFundo); */
 }
-
-/* celular em pé */
-/* @media (orientation: portrait) {
-  .video-js {
-    scale: 1;
-  }
-} */
 
 .q-responsive {
   width: 100dvw;
@@ -206,10 +277,19 @@ main {
   scale: 1;
 }
 
-@media (orientation: landscape) {
+.video-overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
 }
 
-/* config questões */
 .box-questoes {
   position: absolute;
   z-index: 1;

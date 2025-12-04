@@ -13,6 +13,8 @@ const router = useRouter();
 const materiaStore = useMateriaStore();
 const popUpStore = usePopUpStore();
 
+atividadeStore.videoExtraAcionado=false;
+
 const sair = () => {
   popUpStore.atividade = false;
   popUpStore.gameOver = false;
