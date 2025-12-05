@@ -69,7 +69,7 @@ watch(
         </div>
 
         <!-- ativar aviso nas atividades -->
-        <div class="opcoes" :class="{ ativo: !configStore.aviso }">
+        <div class="opcoes" :class="{ ativo: configStore.aviso }">
           <span>Aviso</span>
           <q-toggle color="blue" v-model="configStore.aviso" val="battery" />
         </div>
