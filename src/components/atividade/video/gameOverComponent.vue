@@ -7,13 +7,13 @@ import usePopUpStore from 'src/stores/popUp';
 import useAtividadeStore from 'src/stores/materias/atividades/atividadeStore';
 
 const atividadeStore = useAtividadeStore();
-const emits = defineEmits(['reiniciar'])
+const emits = defineEmits(['reiniciar']);
 const $q = useQuasar();
 const router = useRouter();
 const materiaStore = useMateriaStore();
 const popUpStore = usePopUpStore();
 
-atividadeStore.videoExtraAcionado=false;
+atividadeStore.videoExtraAcionado = false;
 
 const sair = () => {
   popUpStore.atividade = false;
@@ -26,11 +26,11 @@ const sair = () => {
   });
 };
 
-const reiniciar = ()=>{
+const reiniciar = () => {
   atividadeStore.resetarVidas();
   popUpStore.toggleGameOver();
-  emits('reiniciar')
-}
+  emits('reiniciar');
+};
 </script>
 
 <template>
@@ -57,7 +57,7 @@ const reiniciar = ()=>{
         />
       </q-card-section>
       <q-card-actions align="center">
-        <q-btn class="btn-novamente" label="Novamente" @click="reiniciar"/>
+        <q-btn class="btn-novamente" label="Novamente" @click="reiniciar" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -78,11 +78,11 @@ const reiniciar = ()=>{
   text-align: center;
   animation: animacao 700ms ease-in-out alternate infinite;
 }
-@keyframes animacao{
-  from{
+@keyframes animacao {
+  from {
     color: white;
   }
-  to{
+  to {
     color: red;
   }
 }

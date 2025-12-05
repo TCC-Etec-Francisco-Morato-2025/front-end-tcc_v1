@@ -25,8 +25,6 @@ const descidirAnimacao = (quant_estrela: number,proxima?:boolean) => {
   }
   return animacao;
 };
-
-console.info(atividade.dt_conclusao)
 </script>
 
 <template>

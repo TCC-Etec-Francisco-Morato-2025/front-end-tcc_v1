@@ -94,12 +94,10 @@ onMounted(() => {
           if (popUpStore.questoes.estado) {
             setTimeout(() => {
               void (async () => {
-                const sucesso = await animacaoQuestao().catch((err) => {
+                await animacaoQuestao().catch((err) => {
                   console.error(err);
                   return false;
                 });
-
-                if (!sucesso) return;
 
                 popUpStore.toggleQuestoes();
                 mostrarVideo.value = atividadeStore.videoExtraAcionado;
@@ -146,6 +144,8 @@ const acionarVideoExtra = async (isAcionado: boolean) => {
         autoplay: true,
         playsinline: true,
       });
+
+      void playerOverlay.play()
 
       // Ao terminar o vídeo extra
       playerOverlay.on('ended', () => {

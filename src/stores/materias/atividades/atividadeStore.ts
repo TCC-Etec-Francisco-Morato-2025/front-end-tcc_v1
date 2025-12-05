@@ -42,8 +42,8 @@ interface QuestaoResponse {
   enunciado: string;
   aparecer: number;
   respostas: RespostaResponse[];
-  url_morte:'';
-  url_quase_morte:'';
+  url_morte: '';
+  url_quase_morte: '';
 }
 
 const useAtividadeStore = defineStore('atividade', {
@@ -56,8 +56,8 @@ const useAtividadeStore = defineStore('atividade', {
     acertos: 0,
     vida: 3,
     video: '',
-    videoExtraUrl:'',
-    videoExtraAcionado:false
+    videoExtraUrl: '',
+    videoExtraAcionado: false
   }),
 
   actions: {
@@ -79,15 +79,17 @@ const useAtividadeStore = defineStore('atividade', {
           this.vida--;
 
           if (this.vida == 0) {
-            this.videoExtraUrl=questaoStore.url_morte;
+            this.videoExtraUrl = questaoStore.url_morte;
             setTimeout(() => {
               popUpStore.toggleGameOver();
-            }, 10000);
-          }else{
-            this.videoExtraUrl=questaoStore.url_quase_morte;
+              popUpStore.questoes.playVideo = false;
+              this.videoExtraAcionado = false
+            }, 7000);
+          } else {
+            this.videoExtraUrl = questaoStore.url_quase_morte;
           }
           popUpStore.questoes.playVideo = true;
-          this.videoExtraAcionado=true
+          this.videoExtraAcionado = true
         }
     },
 
@@ -119,6 +121,8 @@ const useAtividadeStore = defineStore('atividade', {
             id_atividade
             enunciado
             aparecer
+            url_morte
+            url_quase_morte
             respostas{
               id_questao
               resposta
@@ -153,14 +157,15 @@ const useAtividadeStore = defineStore('atividade', {
         this.video = response.data.data.atividade.video;
 
         response.data.data.atividade.questoes.forEach((q: QuestaoResponse) => {
+          if (questoesStore.questoes.some(qt => qt.id == q.id)) return;
           const newQuestao: Questao = {
             id: q.id,
             pergunta: q.enunciado,
             perguntaFacil: '',
             tempo: q.aparecer,
             tempoCronometro: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
-            url_morte:q.url_morte,
-            url_quase_morte:q.url_quase_morte
+            url_morte: q.url_morte,
+            url_quase_morte: q.url_quase_morte
           };
 
           q.respostas.forEach((r) => {
@@ -180,7 +185,6 @@ const useAtividadeStore = defineStore('atividade', {
         // add falas e personagens
         response.data.data.atividade.falas.forEach((f: FalaResponse) => {
 
-          console.log(f.personagem)
 
           if (f.personagem == null) return;
 
@@ -191,8 +195,6 @@ const useAtividadeStore = defineStore('atividade', {
             id_atividade: f.id_atividade,
             fala: f.fala,
           };
-
-          console.log(newFala)
 
           falasStore.falas.push(newFala);
 
