@@ -97,8 +97,6 @@ onMounted(() => {
             player?.pause();
 
             setTimeout(() => {
-              // Verificação de segurança: O componente ainda está montado?
-              if (!videoPlayer.value) return;
 
               void (async () => {
                 await animacaoQuestao().catch((err) => {
