@@ -103,7 +103,7 @@ onMounted(() => {
                 mostrarVideo.value = atividadeStore.videoExtraAcionado;
 
                 if (atividadeStore.videoExtraAcionado) {
-                  await acionarVideoExtra(atividadeStore.videoExtraAcionado);
+                  await acionarVideoExtra();
                 }
               })();
             }, 2000);
@@ -125,51 +125,37 @@ onMounted(() => {
 });
 
 // --- NOVO WATCHER PARA ACIONAMENTO EXTERNO (BOTÃO DE OUTRA PÁGINA) ---
-const acionarVideoExtra = async (isAcionado: boolean) => {
-  if (isAcionado) {
-    // 2. Garante que há uma URL para tocar
-    if (!urlVideoExtra.value) {
-      console.warn('URL do vídeo extra não definida na store!');
-      // Se não tiver URL, desaciona e não faz nada, ou você pode tratar o erro aqui.
+const acionarVideoExtra = async () => {
+  if (!urlVideoExtra.value) {
+    console.warn('URL do vídeo extra não definida na store!');
+    // Se não tiver URL, desaciona e não faz nada, ou você pode tratar o erro aqui.
+    atividadeStore.videoExtraAcionado = false;
+    return;
+  }
+
+  // 3. Aguarda renderização do v-if
+  await nextTick();
+
+  if (videoOverlayRef.value) {
+    playerOverlay = videojs(videoOverlayRef.value, {
+      controls: false,
+      autoplay: true,
+      playsinline: true,
+    });
+
+    void playerOverlay.play();
+
+    // Ao terminar o vídeo extra
+    playerOverlay.on('ended', () => {
+      if (player) {
+        const tempoAtual = player.currentTime() || 0;
+        player.currentTime(tempoAtual + 4);
+      }
+      // Notifica a Store que o vídeo acabou
       atividadeStore.videoExtraAcionado = false;
-      return;
-    }
-
-    // 3. Aguarda renderização do v-if
-    await nextTick();
-
-    if (videoOverlayRef.value) {
-      playerOverlay = videojs(videoOverlayRef.value, {
-        controls: false,
-        autoplay: true,
-        playsinline: true,
-      });
-
-      void playerOverlay.play()
-
-      // Ao terminar o vídeo extra
-      playerOverlay.on('ended', () => {
-        // Notifica a Store que o vídeo acabou
-        atividadeStore.videoExtraAcionado = false;
-        mostrarVideo.value = false;
-        void player?.play();
-      });
-    }
-  } else {
-    // Desacionado pela Store (o vídeo extra acabou):
-
-    // 4. Limpeza
-    if (playerOverlay) {
-      playerOverlay.dispose();
-      playerOverlay = null;
-    }
-
-    // 5. Lógica de Pular 4s e Retomar
-    if (player) {
-      const tempoAtual = player.currentTime() || 0;
-      player.currentTime(tempoAtual + 4); // Pula 4s
-      popUpStore.questoes.playVideo = true;
-    }
+      mostrarVideo.value = false;
+      void player?.play();
+    });
   }
 };
 // -------------------------------------------------------------------
