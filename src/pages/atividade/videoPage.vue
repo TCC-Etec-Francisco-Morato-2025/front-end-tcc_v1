@@ -42,7 +42,6 @@ let playerOverlay: ReturnType<typeof videojs> | null = null;
 // Variáveis reativas que devem ser controladas pela Store externa
 const urlVideoExtra = computed(() => atividadeStore.videoExtraUrl || '');
 // Esta variável booleana será modificada pelo botão da outra página (ex: store.videoExtraAcionado = true)
-const videoExtraAcionado = computed(() => atividadeStore.videoExtraAcionado || false);
 const mostrarVideo = ref(false);
 // ----------------------------------------------
 
@@ -87,12 +86,20 @@ onMounted(() => {
     });
 
     // Watcher de controle de Play/Pause das Questões
+    // Watcher de controle de Play/Pause das Questões
     watch(
       () => popUpStore.questoes.playVideo,
       () => {
         if (popUpStore.questoes.playVideo) {
+          // Se estava com as questões abertas (fluxo de retorno)
           if (popUpStore.questoes.estado) {
+            // 1. Garante que o principal continua pausado enquanto esperamos
+            player?.pause();
+
             setTimeout(() => {
+              // Verificação de segurança: O componente ainda está montado?
+              if (!videoPlayer.value) return;
+
               void (async () => {
                 await animacaoQuestao().catch((err) => {
                   console.error(err);
@@ -100,17 +107,22 @@ onMounted(() => {
                 });
 
                 popUpStore.toggleQuestoes();
-                mostrarVideo.value = atividadeStore.videoExtraAcionado;
 
+                // Só verificamos a store AGORA, no momento exato de decidir
                 if (atividadeStore.videoExtraAcionado) {
+                  mostrarVideo.value = true;
                   await acionarVideoExtra();
+                } else {
+                  // Se NÃO tem video extra, damos play no principal agora
+                  void player?.play();
                 }
               })();
             }, 2000);
-          }
-          // Só dá play se o vídeo extra não estiver acionado
-          if (!videoExtraAcionado.value) {
-            void player?.play();
+          } else {
+            // Se não estava no estado de questão (ex: pause normal), segue fluxo padrão
+            if (!atividadeStore.videoExtraAcionado) {
+              void player?.play();
+            }
           }
         } else {
           void player?.pause();
@@ -145,16 +157,17 @@ const acionarVideoExtra = async () => {
 
     void playerOverlay.play();
 
+    if (player) {
+      const tempoAtual = player.currentTime() || 0;
+      player.currentTime(tempoAtual + 9);
+    }
+
     // Ao terminar o vídeo extra
     playerOverlay.on('ended', () => {
-      if (player) {
-        const tempoAtual = player.currentTime() || 0;
-        player.currentTime(tempoAtual + 4);
-      }
       // Notifica a Store que o vídeo acabou
+      void player?.play();
       atividadeStore.videoExtraAcionado = false;
       mostrarVideo.value = false;
-      void player?.play();
     });
   }
 };

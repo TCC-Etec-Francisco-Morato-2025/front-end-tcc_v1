@@ -71,7 +71,7 @@ const useAtividadeStore = defineStore('atividade', {
 
     isCerto(resposta: boolean) {
       const questaoStore = useQuestaoStore();
-      if (this.acertos != undefined && this.vida != undefined)
+      if (this.acertos && this.vida){
         if (resposta) {
           this.acertos++;
           popUpStore.questoes.playVideo = true;
@@ -91,6 +91,7 @@ const useAtividadeStore = defineStore('atividade', {
           popUpStore.questoes.playVideo = true;
           this.videoExtraAcionado = true
         }
+      }
     },
 
     resetarVidas() {
